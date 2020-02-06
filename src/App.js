@@ -6,22 +6,24 @@ import "./App.css";
 function App() {
   return (
     <Router>
-      <div className="header">
-        <div className="wrapper">
-          <ul className="menu">
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/dashboard">Dashboard</Link>
-            </li>
-            <li>
-              <Link to="/projects">Project</Link>
-            </li>
-            <li>
-              <Link to="/resources">Resources</Link>
-            </li>
-          </ul>
+      <div className="App">
+        <div className="header">
+          <div className="wrapper">
+            <ul className="menu">
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+              <li>
+                <Link to="/dashboard">Dashboard</Link>
+              </li>
+              <li>
+                <Link to="/projects">Project</Link>
+              </li>
+              <li>
+                <Link to="/resources">Resources</Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       <Switch>
