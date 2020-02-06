@@ -16,5 +16,6 @@ const YearPicker = styled.select`
   font-family: Muli;
   font-size: 14px;
   line-height: 18px;
+  margin-left:32.5px;
 `;
 export default YearPicker;
