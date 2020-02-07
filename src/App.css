@@ -1,5 +1,4 @@
 .App {
-<<<<<<< HEAD
   text-align: center;
 }
 
@@ -36,7 +35,4 @@
   to {
     transform: rotate(360deg);
   }
-=======
-  margin: 0 20px;
->>>>>>> 3e5c93b310aeea6b4f7d37145a148bf98158bc50
 }

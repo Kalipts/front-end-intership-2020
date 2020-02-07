@@ -6,5 +6,6 @@ const MonthPicker = styled.div`
   align-items: center;
   z-index: 0;
   position: relative;
+  margin-left:59px;
 `;
 export default  MonthPicker;
