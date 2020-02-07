@@ -3,13 +3,16 @@ import styled from "styled-components";
 import ToolbarCalendar from "./ToolbarCalendar";
 import Calendar from "./Calendar";
 
+import Header from "../../components/Header";
+import TableCalendar from "../../components/TableCalendar";
 
 export default function DashboardPage() {
 
   return (
     <div>
-      <ToolbarCalendar ></ToolbarCalendar>
-      <Calendar></Calendar>
+        <Header/>
+      <ToolbarCalendar />
+      <TableCalendar/>
     </div>
   );
 }

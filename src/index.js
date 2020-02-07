@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Header from "./components/Header";
-
+import DashboardPage from "./containers/DashboardPage";
 
 function Greeting() {
     return (
@@ -10,5 +10,5 @@ function Greeting() {
     )
 }
 
-ReactDOM.render(<Header /> , document.getElementById('root'));
+ReactDOM.render(<DashboardPage /> , document.getElementById('root'));
 
