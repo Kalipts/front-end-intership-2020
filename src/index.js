@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import Header from "./components/Header";
 import DashboardPage from "./containers/DashboardPage";
+import TertScrollBar from './containers/TertScrollBar';
 
 function Greeting() {
     return (
@@ -10,5 +11,5 @@ function Greeting() {
     )
 }
 
-ReactDOM.render(<DashboardPage /> , document.getElementById('root'));
+ReactDOM.render(<TertScrollBar /> , document.getElementById('root'));
 
