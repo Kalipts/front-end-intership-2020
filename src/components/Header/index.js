@@ -9,7 +9,7 @@ class Header extends React.Component{
                 <li><a >Dashboard</a></li>
                 <li><a >Projects</a></li>
                 <li><a >Resources</a></li>
-                <li className="user"><a className="active" ><img className="test1" src="Oval.png"/></a> </li>
+                <li className="user"><a className="active" ><img className="test1" src={require('../../images/Oval.png')}/></a> </li>
             </ul>
         )
     }
