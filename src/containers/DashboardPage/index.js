@@ -1,18 +1,13 @@
 import React from "react";
-import styled from "styled-components";
-import ToolbarCalendar from "./ToolbarCalendar";
-import Calendar from "./Calendar";
+import Calendar from "../DashboardPage/Calendar";
 
-import Header from "../../components/Header";
-import TableCalendar from "../../components/TableCalendar";
+import ToolbarCalendar from "./ToolbarCalendar";
 
 export default function DashboardPage() {
-
   return (
     <div>
-        <Header/>
       <ToolbarCalendar />
-      <TableCalendar/>
+      <Calendar />
     </div>
   );
 }
