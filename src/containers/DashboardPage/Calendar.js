@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 
+import Sidebar from "./ResourceBar/Sidebar";
+
 import "./Calendar.css";
-import "./Sidebar.css";
 
 class Calendar extends Component {
   constructor() {
@@ -11,7 +12,9 @@ class Calendar extends Component {
     return (
       <>
         <div className="container">
-          <div className="sidebar"></div>
+          <div className="sidebar">
+            <Sidebar />
+          </div>
           <div className="wrapper-calendar"></div>
         </div>
       </>
