@@ -1,0 +1,39 @@
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #f95b27;
+  height: 50px;
+}
+
+li {
+  float: left;
+  font-family: Muli;
+  font-size: 14px;
+  font-weight: bold;
+}
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+.user {
+  float: right;
+  margin-top: 0;
+}
+
+.logo {
+  float: left;
+  display: block;
+}
+li .test0 {
+  margin-left: 5px;
+  margin-top: -5px;
+}
+.test1 {
+  margin-right: 15px;
+  margin-top: -5px;
+}

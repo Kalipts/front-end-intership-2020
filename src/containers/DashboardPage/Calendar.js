@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import "../components/Sidebar.css";
 import "./Calendar.css";
-
+import "./Sidebar.css";
+import TableCalendar from "../../components/TableCalendar/index";
 class Calendar extends Component {
   constructor() {
     super();
@@ -12,7 +12,7 @@ class Calendar extends Component {
       <>
         <div className="container">
           <div className="sidebar"></div>
-          <div className="wrapper-calendar"></div>
+          <TableCalendar />
         </div>
       </>
     );
