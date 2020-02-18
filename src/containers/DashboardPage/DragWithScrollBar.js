@@ -78,7 +78,6 @@ export default class DragWithScrollBar extends React.Component {
     }
   };
 
-
   render() {
     return (
       <Container

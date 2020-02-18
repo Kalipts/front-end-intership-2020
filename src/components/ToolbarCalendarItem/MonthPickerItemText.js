@@ -1,7 +1,7 @@
-
 import styled from "styled-components";
 const MonthPickerItemText = styled.div`
   position: absolute;
+  width:23.22px;
   height: 40px;
   color: ${props => (props.selected ? "#F15927" : "#000")};
   font-family: Muli;
@@ -16,4 +16,4 @@ const MonthPickerItemText = styled.div`
   border-width: 3px;
   z-index: 0;
 `;
-export default  MonthPickerItemText
+export default MonthPickerItemText;

@@ -1,6 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import App from "./App";
+import Header from "./components/Header";
+import DashboardPage from "./containers/DashboardPage";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+function Greeting() {
+    return (
+        <h1>Hello world!</h1>
+    )
+}
+
+ReactDOM.render(<DashboardPage /> , document.getElementById('root'));

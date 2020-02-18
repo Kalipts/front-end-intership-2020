@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import { MAX_OFFSET_YEAR, NUMBERS_OF_MONTHS } from "../App/constant";
-import moment from "moment";
-import { FaMinus, FaPlus } from "react-icons/fa";
-import MonthPickerItem from "../../components/ToolbarCalendarItem/MonthPickerItem";
-import MonthPickerItemText from "../../components/ToolbarCalendarItem/MonthPickerItemText";
-import Toolbar from "../../components/ToolbarCalendarItem/Toolbar";
-import HeaderToolbar from "../../components/ToolbarCalendarItem/HeaderToolbar";
-import YearPicker from "../../components/ToolbarCalendarItem/YearPicker";
-import YearPickerItem from "../../components/ToolbarCalendarItem/YearPickerItem";
-import MonthPicker from "../../components/ToolbarCalendarItem/MonthPicker";
-import ToggleZoom from "../../components/ToolbarCalendarItem/ToggleZoom";
-import ButtonToggle from "../../components/ToolbarCalendarItem/ButtonToggle";
-import TextButtonToggle from "../../components/ToolbarCalendarItem/TextButtonToggle";
-import BarToggle from "../../components/ToolbarCalendarItem/BarToggle";
-import Bar from "../../components/ToolbarCalendarItem/Bar";
-import Ball from "../../components/ToolbarCalendarItem/Ball";
+import React, { useState } from 'react';
+import { MAX_OFFSET_YEAR, NUMBERS_OF_MONTHS } from '../App/constant';
+import moment from 'moment';
+import { FaMinus, FaPlus } from 'react-icons/fa';
+import MonthPickerItem from '../../components/ToolbarCalendarItem/MonthPickerItem';
+import MonthPickerItemText from '../../components/ToolbarCalendarItem/MonthPickerItemText';
+import Toolbar from '../../components/ToolbarCalendarItem/Toolbar';
+import HeaderToolbar from '../../components/ToolbarCalendarItem/HeaderToolbar';
+import YearPicker from '../../components/ToolbarCalendarItem/YearPicker';
+import YearPickerItem from '../../components/ToolbarCalendarItem/YearPickerItem';
+import MonthPicker from '../../components/ToolbarCalendarItem/MonthPicker';
+import ToggleZoom from '../../components/ToolbarCalendarItem/ToggleZoom';
+import ButtonToggle from '../../components/ToolbarCalendarItem/ButtonToggle';
+import TextButtonToggle from '../../components/ToolbarCalendarItem/TextButtonToggle';
+import BarToggle from '../../components/ToolbarCalendarItem/BarToggle';
+import Bar from '../../components/ToolbarCalendarItem/Bar';
+import Ball from '../../components/ToolbarCalendarItem/Ball';
 
-export default function ToolbarCalendar({...props}) {
+export default function ToolbarCalendar({ ...props }) {
   const [year, setYear] = useState(2019);
   const [month, setMonth] = useState(0);
   const allYears = [...Array(MAX_OFFSET_YEAR).keys()];
@@ -26,7 +26,7 @@ export default function ToolbarCalendar({...props}) {
         key={m}
         value={m}
         onClick={evt => {
-          changeMonth(Number(evt.target.value));
+          changeMonth(m);
         }}
       >
         <MonthPickerItemText
@@ -39,20 +39,30 @@ export default function ToolbarCalendar({...props}) {
         >
           {moment()
             .month(m)
-            .format("MMM")}
+            .format('MMM')}
         </MonthPickerItemText>
       </MonthPickerItem>
     );
   });
   const [isZoomed, setIsZoomed] = useState(false);
   const changeMonth = m => {
-    console.log("Name la:", m);
-    setMonth(m);
+    if(typeof(m) === "number"){
+      console.log('Name la:', m);
+      setMonth(m);
+    }
   };
   return (
     <Toolbar>
       <HeaderToolbar>Calendar</HeaderToolbar>
-      <YearPicker value={year} onChange={evt => setYear(evt.target.value)}>
+      <YearPicker
+        value={year}
+        onChange={evt => {
+          if(typeof(evt.target.value) === "number"){
+            setYear(evt.target.value);
+
+          }
+        }}
+      >
         {allYears.map(x => {
           return (
             <YearPickerItem key={x} value={x}>
@@ -65,7 +75,6 @@ export default function ToolbarCalendar({...props}) {
       <ToggleZoom>
         <ButtonToggle
           onClick={() => {
-            console.log("Da nhan giam");
             setIsZoomed(isZoomed ? !isZoomed : isZoomed);
           }}
         >
@@ -80,8 +89,6 @@ export default function ToolbarCalendar({...props}) {
 
         <ButtonToggle
           onClick={() => {
-            console.log("Da nhan tang");
-
             setIsZoomed(isZoomed ? isZoomed : !isZoomed);
           }}
         >

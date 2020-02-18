@@ -1,12 +1,10 @@
 
 import styled from "styled-components";
-const MonthPickerItem = styled.button`
+const MonthPickerItem = styled.div`
   position: relative;
   height: 40px;
   width: 50.5px;
   border: none;
-  /* border-bottom-width: 3px;
-    border-style: solid; */
   text-align: center;
   display: flex;
   align-items: center;
