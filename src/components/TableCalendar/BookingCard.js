@@ -4,7 +4,7 @@ const BookingCard = styled.div`
   width: ${props => Number(props.length) * 86 + "px"};
   border-radius: 1px;
   background-color: ${props => props.color};
-  display:flex;
+  display: flex;
   align-items:center;
 `;
 export default BookingCard;
