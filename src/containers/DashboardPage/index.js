@@ -11,7 +11,6 @@ export default function DashboardPage() {
         <Header/>
       <ToolbarCalendar />
       <TableCalendar/>
-      <Calendar></Calendar>
     </div>
   );
 }
