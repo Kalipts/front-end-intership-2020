@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import Header from './components/Header';
+import DashboardPage from './containers/DashboardPage';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+function Greeting() {
+  const abc = new Array(200000).fill(1);
+  const abcRender = abc.map((item,index)=>(<div key={index}>{item}</div>))
+  return <h1>{abcRender}</h1>;
+}
+
+ReactDOM.render(<DashboardPage />, document.getElementById('root'));
