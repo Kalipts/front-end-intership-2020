@@ -7,7 +7,7 @@ const BookingCard = styled.div`
   display: flex;
   align-items:center;
   position:relative;
-  margin-top:${props=>props.top+42+"px"};
+  margin-top:${props=>props.top*42+"px"};
   border-radius: 1px;
 `;
 export default BookingCard;
