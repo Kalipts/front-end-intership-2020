@@ -1,7 +1,10 @@
-import filterResources from "../actions/index";
+import getResouceData from "../actions/index";
 
-const initialState = [];
-
-export default function resourceReducer(state = initialState, action) {
-  filterResources(state, action);
+export default function resourceReducer(state = [], action) {
+  switch (action.type) {
+    case "GET_RESOURCE_DATA":
+      return [...state, { ...action.payload }];
+    default:
+      return state;
+  }
 }
