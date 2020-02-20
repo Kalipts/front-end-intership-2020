@@ -1,10 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import moment from 'moment';
-import BookingCard from './BookingCard';
-import BookingContent from './BookingContent';
-import BookingTime from './BookingTime';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import moment from "moment";
+import BookingCard from "./BookingCard";
+import BookingContent from "./BookingContent";
+import BookingTime from "./BookingTime";
+import Sidebar from "../../containers/DashboardPage/ResourceBar/Sidebar";
 
 class TableCalendar extends React.Component {
   state = {
@@ -14,15 +15,15 @@ class TableCalendar extends React.Component {
 
   weekdaysShort = moment.weekdaysShort();
   year = () => {
-    return this.state.dateContext.format('Y');
+    return this.state.dateContext.format("Y");
   };
 
   month = () => {
-    return this.state.dateContext.format('MMMM');
+    return this.state.dateContext.format("MMMM");
   };
 
   monthNumber = () => {
-    return this.state.dateContext.format('M');
+    return this.state.dateContext.format("M");
   };
 
   getDateOfISOWeek(w, y) {
@@ -46,19 +47,19 @@ class TableCalendar extends React.Component {
       let days = [];
       for (let j = 0; j <= 6; j++) {
         let day = moment(this.getDateOfISOWeek(i, 2020))
-          .add(j, 'days')
-          .format('D');
+          .add(j, "days")
+          .format("D");
         let date = moment(this.getDateOfISOWeek(i, 2020))
-          .add(j, 'days')
-          .format('MM/DD/YYYY');
+          .add(j, "days")
+          .format("MM/DD/YYYY");
 
-        let month = moment(date).format('M');
-        console.log(' hello : ', month);
+        let month = moment(date).format("M");
+        console.log(" hello : ", month);
 
-        let completeDay = month + '-' + day + '-' + this.year();
+        let completeDay = month + "-" + day + "-" + this.year();
 
         let d = this.weekdaysShort[(j + 1) % 7];
-        let classOfDay = 'day0 day ' + d.toLowerCase();
+        let classOfDay = "day0 day " + d.toLowerCase();
         days.push(
           <div className={classOfDay}>
             <span className="day1">{d}</span>
@@ -84,21 +85,19 @@ class TableCalendar extends React.Component {
       grid_contain.push(
         <div className="item contain">
           <div>
-            {' '}
-            <BookingCard color={'green'} length ={5}>
-              {' '}
+            {" "}
+            <BookingCard color={"green"} length={5}>
+              {" "}
               <BookingContent>asd</BookingContent>
               <BookingTime>4h</BookingTime>
-            </BookingCard>
-            {' '}
-            <BookingCard color={'red'}length ={4}>
-              {' '}
+            </BookingCard>{" "}
+            <BookingCard color={"red"} length={4}>
+              {" "}
               <BookingContent>asd</BookingContent>
               <BookingTime>4h</BookingTime>
-            </BookingCard>
-            {' '}
-            <BookingCard color={'blue'} length ={3}>
-              {' '}
+            </BookingCard>{" "}
+            <BookingCard color={"blue"} length={3}>
+              {" "}
               <BookingContent>asd</BookingContent>
               <BookingTime>4h</BookingTime>
             </BookingCard>
@@ -157,12 +156,9 @@ class TableCalendar extends React.Component {
 
     return (
       <div className="container">
-        <div className="item aside1 left"></div>
-        <div className="item aside2 left"></div>
-
+        <Sidebar />
         <div className="right">
           <div className="grid-top  ">{week_dates}</div>
-
           <div className="gird-contain ">{grid_contain}</div>
         </div>
       </div>

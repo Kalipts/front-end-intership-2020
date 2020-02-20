@@ -18,9 +18,6 @@ body {
 .aside1 {
     grid-row: 1;
     grid-column: 1;
-
-
-
 }
 .aside2 {
     grid-row: 2;

@@ -3,7 +3,7 @@ import { combineReducers } from "redux";
 import resourceReducer from "./resourceReducer";
 
 const rootReducer = combineReducers({
-  combineReducers
+  resourceReducer
 });
 
 export default rootReducer;

@@ -1,17 +1,34 @@
 import React from "react";
-import './index.css';
+import { NavLink } from "react-router-dom";
+import "./index.css";
 
-class Header extends React.Component{
-    render() {
-        return (
-            <ul>
-                <li className="logo"><a ><img className="test0" src={require('../../images/Bitmap.png')} alt="ces-logo" /></a></li>
-                <li><a >Dashboard</a></li>
-                <li><a >Projects</a></li>
-                <li><a >Resources</a></li>
-                <li className="user"><a className="active" ><img className="test1" src={require('../../images/Oval.png')}/></a> </li>
-            </ul>
-        )
-    }
-}
+const Header = () => {
+  return (
+    <ul>
+      <li className="logo">
+        <NavLink to="/">
+          <img
+            className="test0"
+            src={require("../../images/Bitmap.png")}
+            alt="ces-logo"
+          />
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/dashboard">Dashboard</NavLink>
+      </li>
+      <li>
+        <NavLink to="/project">Projects</NavLink>
+      </li>
+      <li>
+        <NavLink to="/resource">Resources</NavLink>
+      </li>
+      <li className="user">
+        <NavLink to="/" className="active">
+          <img className="test1" src={require("../../images/Oval.png")} />
+        </NavLink>
+      </li>
+    </ul>
+  );
+};
 export default Header;
