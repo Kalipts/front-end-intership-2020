@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css?family=Muli&display=swap");
+
 .App {
+  font-family: "Muli", sans-serif;
   margin: 0 30px;
 }

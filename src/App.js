@@ -1,10 +1,10 @@
 import React from "react";
-import { Provider } from "react-redux";
-import configureStore from "./store/store";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
 
 import "./App.css";
-import DashboardPage from "./containers/DashboardPage";
 
+<<<<<<< HEAD
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 <<<<<<< HEAD
 import "./App.css";
@@ -58,6 +58,22 @@ function App() {
         <Route path="/dashboard" component={Dashboard} />
       </Switch>
     </Router>
+=======
+import Header from "./components/Header/index";
+import Dashboard from "./containers/DashboardPage";
+import { theme } from "./containers/common/AppStyle";
+
+function App() {
+  return (
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Header />
+        <Switch>
+          <Route path="/dashboard" component={Dashboard} />
+        </Switch>
+      </Router>
+    </ThemeProvider>
+>>>>>>> 08e5284... Refactor Header and add common directory
   );
 }
 

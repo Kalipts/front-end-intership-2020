@@ -1,9 +1,12 @@
 import React from "react";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import "./index.css";
 import moment from "moment";
 =======
 import ReactDOM from "react-dom";
+=======
+>>>>>>> 08e5284... Refactor Header and add common directory
 import "./index.css";
 import moment from "moment";
 import BookingCard from "./BookingCard";
@@ -63,9 +66,12 @@ class TableCalendar extends React.Component {
 <<<<<<< HEAD
 =======
 
+<<<<<<< HEAD
         let completeDay = month + "-" + day + "-" + this.year();
 >>>>>>> 2a772b1... Fix person sidebar and Structure Redux, Call API for resource
 
+=======
+>>>>>>> 08e5284... Refactor Header and add common directory
         let d = this.weekdaysShort[(j + 1) % 7];
         let classOfDay = "day0 day " + d.toLowerCase();
         days.push(

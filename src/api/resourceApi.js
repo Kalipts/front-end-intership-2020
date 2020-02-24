@@ -14,9 +14,9 @@ export const updateResource = data => {
 };
 export const editResource = data => {
   const resourceId = data;
-  return this.delete({ url: `${url}/${resourceId}/edit`, resourceId });
+  return deleteData({ url: `${url}/${resourceId}/edit`, resourceId });
 };
 export const addResource = data => {
   const resourceId = data;
-  return this.addData({ url: `${url}/${resourceId}`, resourceId });
+  return addData({ url: `${url}/${resourceId}`, resourceId });
 };

@@ -1,11 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import "./index.css";
+import StyledHeader from "./StyledHeader";
 
 const Header = () => {
   return (
-    <ul>
-      <li className="logo">
+    <StyledHeader>
+      <li>
         <NavLink to="/">
           <img
             className="test0"
@@ -25,10 +25,14 @@ const Header = () => {
       </li>
       <li className="user">
         <NavLink to="/" className="active">
-          <img className="test1" src={require("../../images/Oval.png")} />
+          <img
+            alt="user-icon"
+            className="test1"
+            src={require("../../images/Oval.png")}
+          />
         </NavLink>
       </li>
-    </ul>
+    </StyledHeader>
   );
 };
 export default Header;
