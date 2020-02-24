@@ -14,7 +14,7 @@ export default function Booking(props) {
     return (
         <BookingCard length={length} color={color} top={top}>
             <BookingText>{detail}</BookingText>
-            {isDuration && (<BookingTime>{hours}</BookingTime>)}
+            {isDuration && (<BookingTime>{`${hours}h`}</BookingTime>)}
         </BookingCard>
     )
 }

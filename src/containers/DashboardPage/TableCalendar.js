@@ -1,168 +1,260 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import moment from 'moment';
 import * as _ from 'lodash';
-import Calendar from '../../components/TableCalendar/Calendar';
-import '../../components/TableCalendar/index.css';
 
 import Booking from './Booking';
-import BodyCalendar from '../../components/TableCalendar/BodyCalendar';
-import HeaderCalendar from '../../components/TableCalendar/HeaderCalendar';
-import GridContain from '../../components/TableCalendar/GridContain';
-import CellInGrid from '../../components/TableCalendar/CellInGrid';
-import DayHeader from '../../components/TableCalendar/DayHeader';
-import Week from '../../components/TableCalendar/Week';
-import BottomWeek from '../../components/TableCalendar/BottomWeek';
-import { TopWeek, BodyTopWeek } from '../../components/TableCalendar/TopWeek';
+import ContainerBookingView from './TableCalendar/Style/ContainerBookingView';
+import BookingView from './TableCalendar/Style/BookingView';
+import RowBookingView from './TableCalendar/Style/RowBookingView';
+import ContentBooking from './TableCalendar/Style/ContentBooking';
+import DateBooking from './TableCalendar/Style/DateBooking';
 
-const BookingA = {
-  startDay: moment('2020-01-01'),
-  details: 'ABC',
-  endDay: moment('2020-01-02'),
-  resourceId: 1
-};
+import HeaderCalendar from './TableCalendar/HeaderCalendar';
 
-class TableCalendar extends React.Component {
-  state = {
-    dateContext: moment(),
-    today: moment(),
-    schedulerData: [
-      BookingA,
-      {
-        startDay: moment('2020-01-01'),
-        details: 'ABCD',
-        endDay: moment('2020-01-03'),
-        resourceId: 0
-      },
-      {
-        startDay: moment('2020-01-06'),
-        details: 'ABCD',
-        endDay: moment('2020-01-06'),
-        resourceId: 0
-      }
-    ],
-    resource: []
-  };
-  getBooking = (startDay, resourceId) => {
-    const { schedulerData } = this.state;
-    const listBookings = _.filter(schedulerData, booking => {
-      return (
-        booking.startDay.isSame(moment(startDay)) &&
-        booking.resourceId === resourceId
-      );
-    });
-    const listBookingView = listBookings.map((booking, index) => (
-      <Booking
-        key={index}
-        startDay={booking.startDay}
-        endDay={booking.endDay}
-        color={'green'}
-        isDuration={false}
-        top={0}
-        detail={booking.details}
-      ></Booking>
-    ));
-    if (listBookings.length !== 0) {
-      console.log('Hello');
+export default function TableCalendar(props) {
+  const [cellInCalendar, setCellInCalendar] = useState([]);
+  const [bookings, setBookings] = useState([
+    {
+      startDay: moment('2019-12-30', 'YYYY-MM-DD'),
+      details: 'ABC',
+      endDay: moment('2020-01-02', 'YYYY-MM-DD'),
+      resourceId: 0
+    },
+    {
+      startDay: moment('2019-12-30', 'YYYY-MM-DD'),
+      details: 'ABCD',
+      endDay: moment('2020-01-01', 'YYYY-MM-DD'),
+      resourceId: 0
+    },
+    {
+      startDay: moment('2019-12-30', 'YYYY-MM-DD'),
+      details: 'ABCD',
+      endDay: moment('2020-01-01', 'YYYY-MM-DD'),
+      resourceId: 0
     }
-    return listBookingView;
-  };
-  weekdaysShort = moment.weekdaysShort();
-  year = () => {
-    return this.state.dateContext.format('Y');
-  };
+  ]);
+  const [startDay,setStartDay] = useState(props.startDay);
+  const [endDay,setEndDay] = useState(props.endDay);
 
-  month = () => {
-    return this.state.dateContext.format('MMMM');
-  };
-
-  monthNumber = () => {
-    return this.state.dateContext.format('M');
-  };
-
-  getDateOfISOWeek(w, y) {
-    const simple = new Date(y, 0, 1 + (w - 1) * 7);
-    const dow = simple.getDay();
-    let ISOWeekStart = simple;
-    if (dow <= 4) ISOWeekStart.setDate(simple.getDate() - simple.getDay() + 1);
-    else ISOWeekStart.setDate(simple.getDate() + 8 - simple.getDay());
-    return ISOWeekStart;
+  function getNumberOfDay() {
+    return endDay.diff(startDay, 'days');
   }
-  render() {
-    const gridContain = [];
-    const numberOfWeek = new Array(53).fill(1);
-    const weekDates = numberOfWeek.map((day, i) => {
-      let week;
-      let days;
-      let cellInCalendar = new Array(7 * 7).fill(1);
-
-      days = new Array(7).fill(1).map((day, index) => {
-        day = moment(this.getDateOfISOWeek(i + 1, 2020))
-          .add(index, 'days')
-          .format('D');
-        let date = moment(this.getDateOfISOWeek(i + 1, 2020))
-          .add(index, 'days')
-          .format('YYYY-MM-DD');
-        let month = moment(date).format('M');
-        let d = this.weekdaysShort[(index + 1) % 7];
-        let isWeekend = d === 'Sat' || d === 'Sun';
-
-        cellInCalendar = cellInCalendar.map((cell, cellIndex) => {
-          let bookings = [];
-          let cellView;
-          if((cellIndex - index) % 7 === 0){
-            bookings = this.getBooking(date, (cellIndex - index) / 7);
-          }
-          if(bookings.length ===0){
-          }
-          
-          return (cellIndex - index) % 7 === 0 ? (
-            <CellInGrid
-              key={date + ' ' + (cellIndex - index) / 7}
-              isWeekend={isWeekend}
-            >
-              {this.getBooking(date, (cellIndex - index) / 7)}{' '}
-            </CellInGrid>
-          ) : (
-            cell
-          );
+ 
+  function getMaxTotalOvepBooking(resourceId) {
+    const maxNumberOfBookingOverlap = _.reduce(
+      bookings,
+      (accum, val) => {
+        if (resourceId !== val.resourceId) {
+          return 0;
+        }
+        const numberBookingOverlap = _.filter(bookings, booking => {
+          const isOverlapBooking =
+            (booking.startDay.diff(val.startDay, 'days') <= 0 &&
+              booking.endDay.diff(val.startDay, 'days') >= 0) ||
+            (booking.startDay.diff(val.endDay, 'days') >= 0 &&
+              booking.endDay.diff(val.endDay, 'days') <= 0);
+          return isOverlapBooking;
         });
+        return numberBookingOverlap.length - 1;
+      },
+      0
+    );
+    return maxNumberOfBookingOverlap;
+  }
+ 
+  function getBookingWithResource(date, resourceId) {
+    const bookingWithResource = bookings.filter(
+      (booking, index) =>
+        booking.startDay.isSame(date) && booking.resourceId === resourceId
+    );
+    const bookingDateWithResourceRender = bookingWithResource.map(
+      (booking, index) => {
         return (
-          <DayHeader key={day + ' ' + i} isWeekend={isWeekend}>
-            <span className="day1"> {d} </span>
-            <br />
-            <span> {day} </span>
-          </DayHeader>
+          <Booking
+            key={index}
+            startDay={booking.startDay}
+            endDay={booking.endDay}
+            color={'green'}
+            isDuration={true}
+            top={0}
+            detail={booking.details}
+          ></Booking>
+        );
+      }
+    );
+
+    return bookingDateWithResourceRender;
+  }
+  function createRenderCellsInCalendar(numberOfResource, numberOfDay) {
+    let renderCells = new Array(numberOfResource).fill(1).map((cell, index) => {
+      let date = moment(startDay);
+      let overlapBooking = getMaxTotalOvepBooking(index);
+
+      const days = new Array(getNumberOfDay()).fill(1).map((item, i) => {
+        const bookingDateWithResource = getBookingWithResource(date, index);
+        const weekDayName = date.format('ddd');
+        const isWeekend = weekDayName === 'Sun' || weekDayName === 'Sat';
+        date.add(i + 1, 'days');
+
+        return (
+          <ContentBooking isWeekend={false} key={date + ' ' + i}>
+            {bookingDateWithResource}
+          </ContentBooking>
         );
       });
-      week = (
-        <TopWeek>
-          <BodyTopWeek> Week {i + 1} </BodyTopWeek>
-        </TopWeek>
-      );
-
-      gridContain.push(
-        <div key={i} className="item contain">
-          {cellInCalendar}
-        </div>
-      );
       return (
-        <Week>
-          {week}
-          <BottomWeek>{days}</BottomWeek>
-        </Week>
+        <RowBookingView
+          key={index}
+          overlapBooking={overlapBooking}
+          numberOfDay={getNumberOfDay()}
+        >
+          {days}
+        </RowBookingView>
       );
     });
-    return (
-      <Calendar>
-        <div className="item aside1 left"></div>
-        <div className="item aside2 left"></div>
-        <BodyCalendar>
-          <HeaderCalendar>{weekDates}</HeaderCalendar>
-          <GridContain numberOfResource={7}>{gridContain}</GridContain>
-        </BodyCalendar>
-      </Calendar>
-    );
+    return renderCells;
   }
-}
+  
+  useEffect(() => {
+    setCellInCalendar(createRenderCellsInCalendar(4, getNumberOfDay()));
+    return () => {};
+  }, [ cellInCalendar]);
 
-export default TableCalendar;
+  return (
+    <table cellPadding={0} cellSpacing={0}>
+      <tbody>
+        <tr>
+          <td
+            style={{
+              width: '185px',
+              verticalAlign: 'top'
+            }}
+          >
+            <div
+              style={{
+                border: '1px solid #e9e9e9',
+                overflow: 'hidden',
+                display: 'block'
+              }}
+            >
+              <div
+                style={{
+                  overflow: 'hidden',
+                  borderBottom: '	border: 1px solid #E1E7ED',
+                  height: '70px'
+                }}
+              ></div>
+              <div
+                style={{
+                  overflow: 'auto',
+                  width: '186px'
+                }}
+              >
+                <div style={{ paddingBottom: '0px' }}>
+                  <table
+                    cellPadding={0}
+                    cellSpacing={0}
+                    style={{
+                      width: '100%',
+                      margin: '0',
+                      padding: '0',
+                      borderSpacing: '0',
+                      textAlign: 'center'
+                    }}
+                  >
+                    <tbody
+                      style={{
+                        display: 'table-row-group',
+                        verticalAlign: 'middle',
+                        borderColor: 'inherit'
+                      }}
+                    >
+                      <tr
+                        style={{
+                          borderBottom: '1px solid #e9e9e9',
+                          height: 46 + getMaxTotalOvepBooking(0) * 22 + 'px'
+                        }}
+                      >
+                        <td style={{ height: '46px' }}>
+                          <div
+                            style={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              paddingRight: '5px !important',
+                              fontSize: '14px',
+                              fontWeight: '500'
+                            }}
+                          >
+                            <span>ABC</span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr style={{ borderBottom: '1px solid #e9e9e9' }}>
+                        <td style={{ height: '46px' }}>
+                          <div
+                            style={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              paddingRight: '5px !important',
+                              fontSize: '14px',
+                              fontWeight: '500'
+                            }}
+                          >
+                            <span>ABC</span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr style={{ borderBottom: '1px solid #e9e9e9' }}>
+                        <td style={{ height: '46px' }}>
+                          <div
+                            style={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              paddingRight: '5px !important',
+                              fontSize: '14px',
+                              fontWeight: '500'
+                            }}
+                          >
+                            <span>ABC</span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr style={{ borderBottom: '1px solid #e9e9e9' }}>
+                        <td style={{ height: '46px' }}>
+                          <div
+                            style={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              paddingRight: '5px !important',
+                              fontSize: '14px',
+                              fontWeight: '500'
+                            }}
+                          >
+                            <span>ABC</span>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </td>
+          <DateBooking>
+            <HeaderCalendar startDay={startDay} endDay={endDay}></HeaderCalendar>
+            <ContainerBookingView numberOfDay={getNumberOfDay()}>
+              <BookingView cellPadding={0} cellSpacing={0}>
+                <tbody>{cellInCalendar}</tbody>
+              </BookingView>
+            </ContainerBookingView>
+          </DateBooking>
+        </tr>
+      </tbody>
+    </table>
+  );
+}
