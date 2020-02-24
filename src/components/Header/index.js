@@ -7,11 +7,7 @@ const Header = () => {
     <StyledHeader>
       <li>
         <NavLink to="/">
-          <img
-            className="test0"
-            src={require("../../images/Bitmap.png")}
-            alt="ces-logo"
-          />
+          <img src={require("../../images/Bitmap.png")} alt="ces-logo" />
         </NavLink>
       </li>
       <li>
@@ -23,13 +19,9 @@ const Header = () => {
       <li>
         <NavLink to="/resource">Resources</NavLink>
       </li>
-      <li className="user">
-        <NavLink to="/" className="active">
-          <img
-            alt="user-icon"
-            className="test1"
-            src={require("../../images/Oval.png")}
-          />
+      <li>
+        <NavLink to="/">
+          <img alt="user-icon" src={require("../../images/Oval.png")} />
         </NavLink>
       </li>
     </StyledHeader>

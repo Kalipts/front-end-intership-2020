@@ -7,30 +7,31 @@ const StyledHeader = styled.ul`
   overflow: hidden;
   background-color: ${props => props.theme.color.primary};
   height: 50px;
-  > li {
+  li {
     float: left;
-    font-family: Muli;
     font-size: 14px;
     font-weight: bold;
-    .test0 {
-      margin-left: 5px;
-      margin-top: -5px;
+    a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
     }
-    .test1 {
-      margin-right: 15px;
-      margin-top: -5px;
+    &:first-child {
+      img {
+        margin-left: 5px;
+        margin-top: -5px;
+      }
     }
-  }
-  > li > a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-  }
-  .user {
-    float: right;
-    margin-top: 0;
+    &:last-child {
+      float: right;
+      margin-top: 0;
+      img {
+        margin-right: 15px;
+        margin-top: -5px;
+      }
+    }
   }
 `;
 
