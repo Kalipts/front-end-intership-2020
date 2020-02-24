@@ -32,9 +32,6 @@ export function deleteData({ url, data = {} }) {
   return axiosInstance({
     url,
     method: "DELETE",
-    data,
-    header: {
-      "Content-Type": "multipart/form-data"
-    }
+    data
   });
 }

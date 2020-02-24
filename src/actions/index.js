@@ -1,3 +1,3 @@
-import GET_RESOURCE_DATA from "../constants/actionTypes";
+const GET_RESOURCE_DATA = undefined;
 
 export const getResouceData = () => ({ type: GET_RESOURCE_DATA, payload: {} });

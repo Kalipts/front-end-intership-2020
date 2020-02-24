@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const StyledFilter = styled.div`
   margin: 2px 0;
-  border-bottom: 0.1em solid #e3e3e3;
+  border-bottom: 0.1em solid ${props => props.theme.color.line};
   & > input {
     width: 100px;
     height: 77px;

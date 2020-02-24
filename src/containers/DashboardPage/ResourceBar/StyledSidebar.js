@@ -7,6 +7,6 @@ const StyledSideBar = styled.div`
   width: 190px;
   height: 659px;
   float: left;
-  border-right: 0.1em solid #e3e3e3;
+  border-right: 0.1em solid ${props => props.theme.color.line};
 `;
 export default StyledSideBar;

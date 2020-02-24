@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import "./index.css";
 import moment from "moment";
 import BookingCard from "./BookingCard";
@@ -55,8 +54,6 @@ class TableCalendar extends React.Component {
 
         let month = moment(date).format("M");
         console.log(" hello : ", month);
-
-        let completeDay = month + "-" + day + "-" + this.year();
 
         let d = this.weekdaysShort[(j + 1) % 7];
         let classOfDay = "day0 day " + d.toLowerCase();
