@@ -8,26 +8,22 @@ function Sidebar() {
   const [persons, setPersons] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchData = async () => {
-    setIsLoading(true);
-    const res = await getResource();
-    const result = await res.data.resources;
-    const personsFilter = result.map(resource => {
-      const person = {
-        name: resource.name.first + " " + resource.name.last,
-        avatar: resource.avatar
-      };
-      return person;
-    });
-    try {
-      setPersons(personsFilter);
-    } catch (error) {
-      console.log(error);
-    }
-    setIsLoading(false);
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const res = await getResource();
+      const result = res.data.resources;
+      const personsFilter = result.map(resource => {
+        const person = {
+          _id: resource._id,
+          name: resource.name.first + " " + resource.name.last,
+          avatar: resource.avatar
+        };
+        return person;
+      });
+      setPersons(personsFilter);
+      setIsLoading(false);
+    };
     fetchData();
   }, []);
 
