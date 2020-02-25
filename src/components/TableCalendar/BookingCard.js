@@ -10,5 +10,8 @@ const BookingCard = styled.div`
   display:flex;
 >>>>>>> 2cdbc787d54ed7f4e17c3fec34aca8c61d1e7a6d
   align-items:center;
+  position:relative;
+  margin-top:${props=>props.top*42+"px"};
+  border-radius: 1px;
 `;
 export default BookingCard;

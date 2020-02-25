@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+<<<<<<< HEAD
 import App from "./App";
 
 <<<<<<< HEAD
@@ -8,6 +9,10 @@ import App from "./App";
 function Greeting() {
   return <h1>Hello world!</h1>;
 }
+=======
+import DashboardPage from './containers/DashboardPage';
+
+>>>>>>> 009b25be33377ec40d99c977e6a7ec7896fa95eb
 
 ReactDOM.render(<DashboardPage />, document.getElementById('root'));
 =======
