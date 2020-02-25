@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-const HeaderDay = styled.th`
-  width: 85px;
+import { WIDTH_CELL_IN_TABLE_CALENDAR, BORDER_CELL_IN_TABLE_CALENDAR } from '../../../App/constant';
+const Day = styled.th`
+  width: ${WIDTH_CELL_IN_TABLE_CALENDAR- BORDER_CELL_IN_TABLE_CALENDAR +'px'};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,4 +11,4 @@ const HeaderDay = styled.th`
   text-align:inherit;
   border-right:1px solid #e9e9e9;
 `;
-export default HeaderDay;
+export default Day;

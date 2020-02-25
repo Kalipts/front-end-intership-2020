@@ -1,7 +1,9 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import moment from 'moment';
-import * as _ from 'lodash';
+
+import { getNumberOfDay } from '../../utils/Date';
+import { useWindowSize } from '../../utils/WIndow';
 
 import Booking from './Booking';
 import ContainerBookingView from './TableCalendar/Style/ContainerBookingView';
@@ -9,12 +11,11 @@ import BookingView from './TableCalendar/Style/BookingView';
 import RowBookingView from './TableCalendar/Style/RowBookingView';
 import ContentBooking from './TableCalendar/Style/ContentBooking';
 import DateBooking from './TableCalendar/Style/DateBooking';
-
 import HeaderCalendar from './TableCalendar/HeaderCalendar';
 
+
 export default function TableCalendar(props) {
-  const [cellInCalendar, setCellInCalendar] = useState([]);
-  const [bookings, setBookings] = useState([
+  const [bookings] = useState([
     {
       startDay: moment('2019-12-30', 'YYYY-MM-DD'),
       details: 'ABC',
@@ -34,21 +35,19 @@ export default function TableCalendar(props) {
       resourceId: 0
     }
   ]);
-  const [startDay,setStartDay] = useState(props.startDay);
-  const [endDay,setEndDay] = useState(props.endDay);
+  const [startDay] = useState(props.startDay);
+  const [endDay] = useState(props.endDay);
+  const [size] = useWindowSize();
 
-  function getNumberOfDay() {
-    return endDay.diff(startDay, 'days');
-  }
- 
+  const numberOfDay = getNumberOfDay(startDay,endDay);
+
   function getMaxTotalOvepBooking(resourceId) {
-    const maxNumberOfBookingOverlap = _.reduce(
-      bookings,
+    const maxNumberOfBookingOverlap = bookings.reduce(
       (accum, val) => {
         if (resourceId !== val.resourceId) {
           return 0;
         }
-        const numberBookingOverlap = _.filter(bookings, booking => {
+        const numberBookingOverlap = bookings.filter( booking => {
           const isOverlapBooking =
             (booking.startDay.diff(val.startDay, 'days') <= 0 &&
               booking.endDay.diff(val.startDay, 'days') >= 0) ||
@@ -62,7 +61,6 @@ export default function TableCalendar(props) {
     );
     return maxNumberOfBookingOverlap;
   }
- 
   function getBookingWithResource(date, resourceId) {
     const bookingWithResource = bookings.filter(
       (booking, index) =>
@@ -91,10 +89,8 @@ export default function TableCalendar(props) {
       let date = moment(startDay);
       let overlapBooking = getMaxTotalOvepBooking(index);
 
-      const days = new Array(getNumberOfDay()).fill(1).map((item, i) => {
+      const days = new Array(numberOfDay).fill(1).map((item, i) => {
         const bookingDateWithResource = getBookingWithResource(date, index);
-        const weekDayName = date.format('ddd');
-        const isWeekend = weekDayName === 'Sun' || weekDayName === 'Sat';
         date.add(i + 1, 'days');
 
         return (
@@ -107,19 +103,16 @@ export default function TableCalendar(props) {
         <RowBookingView
           key={index}
           overlapBooking={overlapBooking}
-          numberOfDay={getNumberOfDay()}
+          numberOfDay={numberOfDay}
         >
           {days}
         </RowBookingView>
       );
     });
-    return renderCells;
-  }
-  
-  useEffect(() => {
-    setCellInCalendar(createRenderCellsInCalendar(4, getNumberOfDay()));
-    return () => {};
-  }, [ cellInCalendar]);
+    return renderCells
+  };
+  const cellInCalendar = createRenderCellsInCalendar(4,numberOfDay);
+
 
   return (
     <table cellPadding={0} cellSpacing={0}>
@@ -245,9 +238,9 @@ export default function TableCalendar(props) {
               </div>
             </div>
           </td>
-          <DateBooking>
+          <DateBooking width={size.width}>
             <HeaderCalendar startDay={startDay} endDay={endDay}></HeaderCalendar>
-            <ContainerBookingView numberOfDay={getNumberOfDay()}>
+            <ContainerBookingView numberOfDay={getNumberOfDay(startDay,endDay)}>
               <BookingView cellPadding={0} cellSpacing={0}>
                 <tbody>{cellInCalendar}</tbody>
               </BookingView>

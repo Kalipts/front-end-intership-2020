@@ -1,19 +1,21 @@
 import React from 'react';
 import Container from '../../components/DragWithScrollBarItem/Container';
-import { DISTANCE_SCROLLBAR_BOUNCE, DISTANCE_TO_CHECK_BOUNCE_OF_SCROLLBAR } from '../App/constant';
-
+import {
+  DISTANCE_SCROLLBAR_BOUNCE,
+  DISTANCE_TO_CHECK_BOUNCE_OF_SCROLLBAR
+} from '../App/constant';
 
 export default class DragWithScrollBar extends React.Component {
   constructor(props) {
     super(props);
-    const {numberInit,widthItem,} = this.props
+    const { numberInit, widthItem } = this.props;
     this.state = {
       error: false,
       hasMore: true,
       isScrolling: false,
       isScrolling: false,
       data: [],
-      scrollWidth:numberInit * widthItem -DISTANCE_SCROLLBAR_BOUNCE,
+      scrollWidth: numberInit * widthItem - DISTANCE_SCROLLBAR_BOUNCE
     };
   }
   componentDidMount() {
@@ -21,11 +23,13 @@ export default class DragWithScrollBar extends React.Component {
     window.addEventListener('mousemove', this.mouseMoveHandle);
     this.refs.slider.addEventListener('scroll', () => {
       let { scrollLeft, clientHeight } = this.refs.slider;
-      const {scrollWidth} = this.state;
-      console.log(scrollLeft,scrollWidth,clientHeight);
-      if(scrollLeft + DISTANCE_TO_CHECK_BOUNCE_OF_SCROLLBAR >= scrollWidth || scrollLeft  === 0){
+      const { scrollWidth } = this.state;
+      if (
+        scrollLeft + DISTANCE_TO_CHECK_BOUNCE_OF_SCROLLBAR >= scrollWidth ||
+        scrollLeft === 0
+      ) {
         this.loadItems(scrollLeft);
-      } 
+      }
     });
   }
 
@@ -33,31 +37,30 @@ export default class DragWithScrollBar extends React.Component {
     window.removeEventListener('mouseup', this.mouseUpHandle);
     window.removeEventListener('mousemove', this.mouseMoveHandle);
   }
-  loadItems = (scrollLeft)=>{
-    console.log("load items ... ");
-    const { isLoading } = this.state
-    const {widthItem} = this.props
-    if(isLoading === false){
-      if(scrollLeft >0){
-        this.setState({ isLoading: true }, () => {
-          this.setState({
-            isLoading: false,
-            scrollWidth: this.state.scrollWidth + widthItem
-          });
-          this.props.loadItems();
-        });
-      } else {
-        this.setState({ isLoading: true }, () => {
-          this.setState({
-            isLoading: false,
-            scrollWidth: this.state.scrollWidth + widthItem
-          })
-          this.props.loadItems();
-        });
-      }
-     
+  loadItems = scrollLeft => {
+    const { isLoading } = this.state;
+    const { widthItem } = this.props;
+    if (isLoading === false) {
+      return;
     }
-  }
+    if (scrollLeft > 0) {
+      this.setState({ isLoading: true }, () => {
+        this.setState({
+          isLoading: false,
+          scrollWidth: this.state.scrollWidth + widthItem
+        });
+        this.props.loadItems();
+      });
+      return;
+    }
+    this.setState({ isLoading: true }, () => {
+      this.setState({
+        isLoading: false,
+        scrollWidth: this.state.scrollWidth + widthItem
+      });
+      this.props.loadItems();
+    });
+  };
   mouseUpHandle = async e => {
     if (this.state.isScrolling) {
       this.state.isScrolling = false;
