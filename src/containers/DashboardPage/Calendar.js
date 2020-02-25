@@ -11,7 +11,7 @@ class Calendar extends Component {
     return (
       <>
         <div className="container">
-          <div className="sidebar"></div>
+          <div className="sidebar">asdfasdf</div>
           <TableCalendar />
         </div>
       </>

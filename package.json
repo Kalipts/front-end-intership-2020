@@ -1,8 +1,8 @@
 {
   "name": "spring-2020-internship-frontend",
   "engines": {
-    "node": "12.16.1",
-    "npm": "6.13.4"
+    "node": "10.x",
+    "npm": "6.x"
   },
   "version": "0.1.0",
   "private": true,
@@ -11,7 +11,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.15",sssss
     "moment": "^2.24.0",
     "rc-slider": "^9.2.1",
     "react": "^16.12.0",
