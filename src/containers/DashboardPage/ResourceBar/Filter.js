@@ -6,11 +6,11 @@ const photo = require("../../../images/17.jpg");
 const icon = require("../../../images/search.ico");
 
 const StyleFilter = styled.div`
-  margin: 0 auto;
+  margin: 2px 0;
   border-bottom: 0.1em solid #e3e3e3;
   & > div > input {
     width: 100px;
-    height: 40px;
+    height: 77px;
     font-size: 18px;
     border: none;
     outline: none;
@@ -20,11 +20,13 @@ const StyleFilter = styled.div`
 `;
 
 const Filter = props => {
+  console.log(props.content);
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   useEffect(() => {
-    const filteredResults = props.content.filter(item => {
-      return item.toLowerCase().indexOf(search) !== -1;
+    const persons = props.content || [{ name: "", avatar: "" }];
+    const filteredResults = persons.filter(item => {
+      return item.name.toLowerCase().indexOf(search) !== -1;
     });
     setSearchResults(filteredResults);
   }, [props.content, search]);
@@ -45,13 +47,13 @@ const Filter = props => {
           <img src={icon} />
         </div>
       </StyleFilter>
+      {console.log(props.content)}
       <div className="list-person">
         {searchResults &&
           searchResults.map(item => {
             return (
-              <div key={item + Math.random()}>
-                <Profile src={photo} name={item} />
-                {console.log(typeof photo)}
+              <div key={item.name + Math.random()}>
+                <Profile src={item.avatar} name={item.name} />
               </div>
             );
           })}

@@ -6,13 +6,19 @@ import "./App.css";
 import DashboardPage from "./containers/DashboardPage";
 
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+<<<<<<< HEAD
 import "./App.css";
 import "./containers/Header/Header.css";
 const iconUser = require("./images/Oval.png");
+=======
+import Header from "./components/Header/index";
+import Dashboard from "./containers/DashboardPage";
+>>>>>>> 2a772b1... Fix person sidebar and Structure Redux, Call API for resource
 
 function App() {
   return (
     <Router>
+<<<<<<< HEAD
       <div className="header">
         <div className="wrapper">
           <ul className="menu">
@@ -45,8 +51,11 @@ function App() {
           </div>
         </div>
       </div>
+=======
+      <Header />
+>>>>>>> 2a772b1... Fix person sidebar and Structure Redux, Call API for resource
       <Switch>
-        <Route path="/dashboard" component={DashboardPage} />
+        <Route path="/dashboard" component={Dashboard} />
       </Switch>
     </Router>
   );

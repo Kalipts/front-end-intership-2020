@@ -1,16 +1,21 @@
 import React from "react";
 import ToolbarCalendar from "./ToolbarCalendar";
-import Calendar from "./Calendar";
 
-import Header from "../../components/Header";
 import TableCalendar from "../../components/TableCalendar";
 
-export default function DashboardPage() {
+function DashboardPage() {
   return (
     <div>
+<<<<<<< HEAD
         <Header/>
       <ToolbarCalendar />
       <TableCalendar/>
+=======
+      <ToolbarCalendar />
+      <TableCalendar />
+>>>>>>> 2a772b1... Fix person sidebar and Structure Redux, Call API for resource
     </div>
   );
 }
+
+export default DashboardPage;

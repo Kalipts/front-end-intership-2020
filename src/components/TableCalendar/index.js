@@ -1,6 +1,16 @@
 import React from "react";
+<<<<<<< HEAD
 import "./index.css";
 import moment from "moment";
+=======
+import ReactDOM from "react-dom";
+import "./index.css";
+import moment from "moment";
+import BookingCard from "./BookingCard";
+import BookingContent from "./BookingContent";
+import BookingTime from "./BookingTime";
+import Sidebar from "../../containers/DashboardPage/ResourceBar/Sidebar";
+>>>>>>> 2a772b1... Fix person sidebar and Structure Redux, Call API for resource
 
 class TableCalendar extends React.Component {
   state = {
@@ -50,6 +60,11 @@ class TableCalendar extends React.Component {
 
         let month = moment(date).format("M");
         console.log(" hello : ", month);
+<<<<<<< HEAD
+=======
+
+        let completeDay = month + "-" + day + "-" + this.year();
+>>>>>>> 2a772b1... Fix person sidebar and Structure Redux, Call API for resource
 
         let d = this.weekdaysShort[(j + 1) % 7];
         let classOfDay = "day0 day " + d.toLowerCase();
@@ -77,7 +92,28 @@ class TableCalendar extends React.Component {
 
       grid_contain.push(
         <div className="item contain">
+<<<<<<< HEAD
           <div></div>
+=======
+          <div>
+            {" "}
+            <BookingCard color={"green"} length={5}>
+              {" "}
+              <BookingContent>asd</BookingContent>
+              <BookingTime>4h</BookingTime>
+            </BookingCard>{" "}
+            <BookingCard color={"red"} length={4}>
+              {" "}
+              <BookingContent>asd</BookingContent>
+              <BookingTime>4h</BookingTime>
+            </BookingCard>{" "}
+            <BookingCard color={"blue"} length={3}>
+              {" "}
+              <BookingContent>asd</BookingContent>
+              <BookingTime>4h</BookingTime>
+            </BookingCard>
+          </div>
+>>>>>>> 2a772b1... Fix person sidebar and Structure Redux, Call API for resource
           <div></div>
           <div></div>
           <div></div>
@@ -132,12 +168,9 @@ class TableCalendar extends React.Component {
 
     return (
       <div className="container">
-        <div className="item aside1 left"></div>
-        <div className="item aside2 left"></div>
-
+        <Sidebar />
         <div className="right">
           <div className="grid-top  ">{week_dates}</div>
-
           <div className="gird-contain ">{grid_contain}</div>
         </div>
       </div>

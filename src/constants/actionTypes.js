@@ -1,2 +1,2 @@
-const FILTER_RESOURCES = undefined;
-export default FILTER_RESOURCES;
+const GET_RESOURCE_DATA = undefined;
+export default GET_RESOURCE_DATA;
