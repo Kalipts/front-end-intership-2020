@@ -11,12 +11,10 @@ export const WIDTH_CELL_IN_TABLE_CALENDAR = 86;
 export const HEIGHT_CELL_IN_TABLE_CALENDAR = 46;
 export const BORDER_CELL_IN_TABLE_CALENDAR = 1;
 export const HEIGHT_HEADER_DATE = 35;
-export const WIDTH_RESOURCE_BAR  = 186;
-export const WIDTH_DAY='20px';
-export const HEIGHT_DAY='15px';
-export const NUMBER_OF_DAYS_IN_WEEK=7;
+export const WIDTH_RESOURCE_BAR = 186;
+export const WIDTH_DAY = '20px';
+export const HEIGHT_DAY = '15px';
+export const NUMBER_OF_DAYS_IN_WEEK = 7;
 
 // BOOKING
 export const HEIGHT_BOOKING = 35;
-
-
