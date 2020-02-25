@@ -1,9 +1,11 @@
 import { combineReducers } from "redux";
 
-import resourceReducer from "./resourceReducer";
+import resources from "./resourceReducer";
+import bookings from "./bookingReducer";
 
 const rootReducer = combineReducers({
-  resourceReducer
+  resources:  resources,
+  bookings: bookings
 });
 
 export default rootReducer;
