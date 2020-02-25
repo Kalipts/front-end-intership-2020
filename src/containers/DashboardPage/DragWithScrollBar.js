@@ -6,14 +6,14 @@ import { DISTANCE_SCROLLBAR_BOUNCE, DISTANCE_TO_CHECK_BOUNCE_OF_SCROLLBAR } from
 export default class DragWithScrollBar extends React.Component {
   constructor(props) {
     super(props);
-    const {numberInit,widthItem,} = this.props
+    const { numberInit, widthItem } = this.props;
     this.state = {
       error: false,
       hasMore: true,
       isScrolling: false,
       isScrolling: false,
       data: [],
-      scrollWidth:numberInit * widthItem -DISTANCE_SCROLLBAR_BOUNCE,
+      scrollWidth: numberInit * widthItem - DISTANCE_SCROLLBAR_BOUNCE
     };
   }
   componentDidMount() {

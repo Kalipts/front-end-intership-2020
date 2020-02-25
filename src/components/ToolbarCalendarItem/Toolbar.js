@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const Toolbar = styled.div`
+  margin-bottom: 2px;
   height: 40px;
   width: 1345px;
   background-color: #ffffff;
