@@ -57,16 +57,7 @@ const  BookingForm = styled.form`
   border-radius: 2px;
   box-shadow: 0 5px 50px 0 rgba(0,0,0,0,3);
   border: 1px solid #F95B27;
-  
 `;
-
-
-
-
-const style = {
-    'margin': '50px'
-};
-
 
 
 
@@ -83,7 +74,7 @@ export default function AddBookingForm () {
         const [endDate, setEndDate] = useState(new Date());
 
     return (
-        <div style={style} >
+        <div>
             <BookingForm onSubmit={handleSubmit}>
                 <Header>
                     <HeaderBooking>
@@ -127,7 +118,6 @@ export default function AddBookingForm () {
                                     onChange={(date)=>setStartDate(date)}
                                     dateFormat="d MMM, yyyy"
                                 />
-
 
                                 <DateImage alt="" src={require("../../images/calendar.svg")} />
                             </StartDate>
