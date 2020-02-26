@@ -22,18 +22,17 @@ export default function TableCalendar(props) {
   const [size] = useWindowSize();
   const calendarContext = useContext(CalendarContext);
   const {
-    search,
     searchResult,
-    persons,
-    bookings,
     getMaxTotalOverlapBooking,
-    getBookingWithResource
+    getBookingWithResource,
+    getMarginTopBooking
   } = calendarContext;
 
   const numberOfDay = getNumberOfDay(startDay, endDay);
 
   function renderBooking(date, indexResource) {
     const bookingWithResource = getBookingWithResource(date, indexResource);
+
     const bookingDateWithResourceRender = bookingWithResource.map(
       (booking, index) => {
         return (
@@ -43,7 +42,7 @@ export default function TableCalendar(props) {
             endDay={booking.endDay}
             color={'green'}
             isDuration={true}
-            top={0}
+            top={index === 0 ? getMarginTopBooking(booking) : 0}
             detail={booking.details}
           ></Booking>
         );
@@ -53,10 +52,16 @@ export default function TableCalendar(props) {
   }
   const renderCellsInCalendar = (numberOfDay, indexResource) => {
     const days = new Array(numberOfDay).fill(1).map((item, i) => {
-      const dateInCell = moment(startDay.toString()).add(i,"days");
+      const dateInCell = moment(startDay.toString()).add(i, 'days');
       const bookingDateWithResource = renderBooking(dateInCell, indexResource);
+      const weekDayName = dateInCell.format('ddd');
+      const isWeekend = weekDayName === 'Sun' || weekDayName === 'Sat';
+      
       return (
-        <ContentBooking isWeekend={false} key={dateInCell + ' ' + indexResource}>
+        <ContentBooking
+          isWeekend={isWeekend}
+          key={dateInCell + ' ' + indexResource}
+        >
           {bookingDateWithResource}
         </ContentBooking>
       );
@@ -65,19 +70,21 @@ export default function TableCalendar(props) {
   };
 
   const renderRowsInCalendar = (resources, numberOfDay) => {
-    const renderCells = new Array(resources.length).fill(1).map((cell, indexResource) => {
-      const days = renderCellsInCalendar(numberOfDay, indexResource);
+    const renderCells = new Array(resources.length)
+      .fill(1)
+      .map((cell, indexResource) => {
+        const days = renderCellsInCalendar(numberOfDay, indexResource);
 
-      return (
-        <RowBookingView
-          key={searchResult[indexResource]._id}
-          overlapBooking={getMaxTotalOverlapBooking(indexResource)}
-          numberOfDay={numberOfDay}
-        >
-          {days}
-        </RowBookingView>
-      );
-    });
+        return (
+          <RowBookingView
+            key={searchResult[indexResource]._id}
+            overlapBooking={getMaxTotalOverlapBooking(indexResource)}
+            numberOfDay={numberOfDay}
+          >
+            {days}
+          </RowBookingView>
+        );
+      });
     return renderCells;
   };
 

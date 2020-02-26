@@ -9,6 +9,6 @@ const ContentBooking = styled.td`
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
-  background-color:${props=>props.isWeekend ? '#FEFAF7' :'#FFFFFF'};
+  background-color:${props=>props.isWeekend ? props.theme.color.weekendBackground :props.theme.color.background};
 `;
 export default ContentBooking;

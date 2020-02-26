@@ -1,7 +1,7 @@
 
 import styled from "styled-components";
 const YearPicker = styled.select`
-  text-indent: 2px;
+  text-indent: 0px;
   text-overflow: "";
   width: 50px;
   -webkit-appearance: none;

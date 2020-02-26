@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import Dashboard from './containers/DashboardPage';
 import Header from './components/Header/index';
@@ -10,7 +10,6 @@ import './App.css';
 import './containers/Header/Header.css';
 import store from './store/store';
 
-const iconUser = require('./images/Oval.png');
 
 function App() {
   return (
