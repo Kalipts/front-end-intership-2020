@@ -38,14 +38,14 @@ export default function TableCalendar(props) {
       (booking, index) => {
         return (
           <Booking
-            key={index}
-            startDay={booking.startDay}
-            endDay={booking.endDay}
-            color={'green'}
-            isDuration={true}
-            top={0}
-            detail={booking.details}
-          ></Booking>
+    key={index}
+    startDay={booking.startDay}
+    endDay={booking.endDay}
+    color={'green'}
+    isDuration={true}
+    top={0}
+    detail={booking.details}
+    />
         );
       }
     );
