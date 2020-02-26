@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import { MAX_OFFSET_YEAR, NUMBERS_OF_MONTHS } from '../App/constant';
 import moment from 'moment';
 import { FaMinus, FaPlus } from 'react-icons/fa';
-import MonthPickerItem from '../../components/ToolbarCalendarItem/MonthPickerItem';
-import MonthPickerItemText from '../../components/ToolbarCalendarItem/MonthPickerItemText';
-import Toolbar from '../../components/ToolbarCalendarItem/Toolbar';
-import HeaderToolbar from '../../components/ToolbarCalendarItem/HeaderToolbar';
-import YearPicker from '../../components/ToolbarCalendarItem/YearPicker';
-import YearPickerItem from '../../components/ToolbarCalendarItem/YearPickerItem';
-import MonthPicker from '../../components/ToolbarCalendarItem/MonthPicker';
-import ToggleZoom from '../../components/ToolbarCalendarItem/ToggleZoom';
-import ButtonToggle from '../../components/ToolbarCalendarItem/ButtonToggle';
-import TextButtonToggle from '../../components/ToolbarCalendarItem/TextButtonToggle';
-import BarToggle from '../../components/ToolbarCalendarItem/BarToggle';
-import Bar from '../../components/ToolbarCalendarItem/Bar';
-import Ball from '../../components/ToolbarCalendarItem/Ball';
+import MonthPickerItem from './ToolbarCalendarItem/MonthPickerItem';
+import MonthPickerItemText from './ToolbarCalendarItem/MonthPickerItemText';
+import Toolbar from './ToolbarCalendarItem/Toolbar';
+import HeaderToolbar from './ToolbarCalendarItem/HeaderToolbar';
+import YearPicker from './ToolbarCalendarItem/YearPicker';
+import YearPickerItem from './ToolbarCalendarItem/YearPickerItem';
+import MonthPicker from './ToolbarCalendarItem/MonthPicker';
+import ToggleZoom from './ToolbarCalendarItem/ToggleZoom';
+import ButtonToggle from './ToolbarCalendarItem/ButtonToggle';
+import TextButtonToggle from './ToolbarCalendarItem/TextButtonToggle';
+import BarToggle from './ToolbarCalendarItem/BarToggle';
+import Bar from './ToolbarCalendarItem/Bar';
+import Ball from './ToolbarCalendarItem/Ball';
 
 export default function ToolbarCalendar({ ...props }) {
   const [year, setYear] = useState(2019);
@@ -59,7 +59,6 @@ export default function ToolbarCalendar({ ...props }) {
         onChange={evt => {
           if(typeof(evt.target.value) === "number"){
             setYear(evt.target.value);
-
           }
         }}
       >

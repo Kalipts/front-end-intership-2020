@@ -1,27 +1,29 @@
-import React, { Fragment } from "react";
-import Avatar from "@material-ui/core/Avatar";
-
-import styled from "styled-components";
-
-const StyledProfile = styled.div`
-  width: 100%;
-  height: 55px;
-  border-bottom: 0.1em solid #e3e3e3;
-  display: flex;
-  align-items: center;
-  padding: 0 auto;
-  & > div {
-    margin-left: 20px;
-  }
-`;
+import React from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import StyledProfile from './StyledProfile';
 
 const Profile = props => {
   const { src, name } = props;
   return (
-    <StyledProfile>
-      <Avatar alt="profile" src={src} />
-      <div>{name}</div>
-    </StyledProfile>
+    <tr style={{ borderBottom: '1px solid #e9e9e9' }}>
+      <td style={{ height: '46px' }}>
+        <div
+          style={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            paddingRight: '5px !important',
+            fontSize: '14px',
+            fontWeight: '500'
+          }}
+        >
+          <StyledProfile>
+            <Avatar alt="profile" src={src} />
+            <div>{name}</div>
+          </StyledProfile>{' '}
+        </div>
+      </td>
+    </tr>
   );
 };
 

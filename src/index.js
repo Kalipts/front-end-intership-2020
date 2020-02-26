@@ -1,12 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import Header from './components/Header';
-import DashboardPage from './containers/DashboardPage';
-import AddBookingForm from "./components/AddBookingForm";
+import App from "./App";
 
-function Greeting() {
-  return <h1>Hello world!</h1>;
-}
-
-ReactDOM.render(<AddBookingForm />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

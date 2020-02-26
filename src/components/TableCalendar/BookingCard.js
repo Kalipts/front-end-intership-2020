@@ -6,5 +6,8 @@ const BookingCard = styled.div`
   background-color: ${props => props.color};
   display: flex;
   align-items:center;
+  position:relative;
+  margin-top:${props=>props.top*42+"px"};
+  border-radius: 1px;
 `;
 export default BookingCard;

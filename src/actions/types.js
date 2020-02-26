@@ -1,0 +1,3 @@
+export const ADD_BOOKING = 'ADD_BOOKING';
+export const DELETE_BOOKING = 'DELETE_BOOKING';
+export const FETCH_BOOKING = 'FETCH_BOOKING';

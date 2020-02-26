@@ -1,5 +1,3 @@
-import FILTER_RESOURCES from "../constants/actionTypes";
+const GET_RESOURCE_DATA = {};
 
-const filterResources = () => ({ type: FILTER_RESOURCES });
-
-export default filterResources;
+export const getResouceData = () => ({ type: GET_RESOURCE_DATA, payload: {} });
