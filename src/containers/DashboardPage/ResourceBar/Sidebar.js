@@ -4,7 +4,7 @@ import Filter from "./Filter";
 import StyledSidebar from "./StyledSidebar";
 import { getResource } from "../../../api/resourceApi";
 
-function Sidebar() {
+function Sidebar(props) {
   const [persons, setPersons] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,10 +28,11 @@ function Sidebar() {
   }, []);
 
   return (
-    <StyledSidebar>
+    <>
+   
       {isLoading && <div>Loading</div>}
       {persons && <Filter content={persons} />}
-    </StyledSidebar>
+    </>
   );
 }
 

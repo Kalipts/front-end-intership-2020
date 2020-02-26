@@ -1,25 +1,29 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
-import { ThemeProvider } from "styled-components";
-import Dashboard from "./containers/DashboardPage";
-import Header from "./components/Header/index";
-import { theme } from "./containers/common/AppStyle";
+import React from 'react';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+import Dashboard from './containers/DashboardPage';
+import Header from './components/Header/index';
+import { theme } from './containers/common/AppStyle';
+import { Provider } from 'react-redux';
 
-import "./App.css";
-import "./containers/Header/Header.css";
+import './App.css';
+import './containers/Header/Header.css';
+import store from './store/store';
 
-const iconUser = require("./images/Oval.png");
+const iconUser = require('./images/Oval.png');
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <Header />
-        <Switch>
-          <Route path="/dashboard" component={Dashboard} />
-        </Switch>
-      </Router>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <Header />
+          <Switch>
+            <Route path="/dashboard" component={Dashboard} />
+          </Switch>
+        </Router>
+      </ThemeProvider>
+    </Provider>
   );
 }
 

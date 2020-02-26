@@ -9,11 +9,5 @@ const BookingText = styled.div`
   margin-left: 14px;
   text-overflow: ellipsis;
   overflow: hidden;
-<<<<<<< HEAD
-  white-space: nowrap;
-  display: block;
-  overflow: hidden;
-=======
->>>>>>> 2cdbc787d54ed7f4e17c3fec34aca8c61d1e7a6d
 `;
 export default BookingText;

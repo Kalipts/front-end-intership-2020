@@ -59,7 +59,6 @@ export default function ToolbarCalendar({ ...props }) {
         onChange={evt => {
           if(typeof(evt.target.value) === "number"){
             setYear(evt.target.value);
-
           }
         }}
       >

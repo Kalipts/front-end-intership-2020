@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useState } from 'react';
 import moment from 'moment';
 
@@ -13,59 +13,27 @@ import ContentBooking from './TableCalendar/Style/ContentBooking';
 import DateBooking from './TableCalendar/Style/DateBooking';
 import HeaderCalendar from './TableCalendar/HeaderCalendar';
 
+import Sidebar from './ResourceBar/Sidebar';
+import { CalendarContext } from '../../context/Calendar';
 
 export default function TableCalendar(props) {
-  const [bookings] = useState([
-    {
-      startDay: moment('2019-12-30', 'YYYY-MM-DD'),
-      details: 'ABC',
-      endDay: moment('2020-01-02', 'YYYY-MM-DD'),
-      resourceId: 0
-    },
-    {
-      startDay: moment('2019-12-30', 'YYYY-MM-DD'),
-      details: 'ABCD',
-      endDay: moment('2020-01-01', 'YYYY-MM-DD'),
-      resourceId: 0
-    },
-    {
-      startDay: moment('2019-12-30', 'YYYY-MM-DD'),
-      details: 'ABCD',
-      endDay: moment('2020-01-01', 'YYYY-MM-DD'),
-      resourceId: 0
-    }
-  ]);
   const [startDay] = useState(props.startDay);
   const [endDay] = useState(props.endDay);
   const [size] = useWindowSize();
+  const calendarContext = useContext(CalendarContext);
+  const {
+    search,
+    searchResult,
+    persons,
+    bookings,
+    getMaxTotalOverlapBooking,
+    getBookingWithResource
+  } = calendarContext;
 
-  const numberOfDay = getNumberOfDay(startDay,endDay);
+  const numberOfDay = getNumberOfDay(startDay, endDay);
 
-  function getMaxTotalOvepBooking(resourceId) {
-    const maxNumberOfBookingOverlap = bookings.reduce(
-      (accum, val) => {
-        if (resourceId !== val.resourceId) {
-          return 0;
-        }
-        const numberBookingOverlap = bookings.filter( booking => {
-          const isOverlapBooking =
-            (booking.startDay.diff(val.startDay, 'days') <= 0 &&
-              booking.endDay.diff(val.startDay, 'days') >= 0) ||
-            (booking.startDay.diff(val.endDay, 'days') >= 0 &&
-              booking.endDay.diff(val.endDay, 'days') <= 0);
-          return isOverlapBooking;
-        });
-        return numberBookingOverlap.length - 1;
-      },
-      0
-    );
-    return maxNumberOfBookingOverlap;
-  }
-  function getBookingWithResource(date, resourceId) {
-    const bookingWithResource = bookings.filter(
-      (booking, index) =>
-        booking.startDay.isSame(date) && booking.resourceId === resourceId
-    );
+  function renderBooking(date, indexResource) {
+    const bookingWithResource = getBookingWithResource(date, indexResource);
     const bookingDateWithResourceRender = bookingWithResource.map(
       (booking, index) => {
         return (
@@ -81,168 +49,59 @@ export default function TableCalendar(props) {
         );
       }
     );
-
     return bookingDateWithResourceRender;
   }
-  function createRenderCellsInCalendar(numberOfResource, numberOfDay) {
-    let renderCells = new Array(numberOfResource).fill(1).map((cell, index) => {
-      let date = moment(startDay);
-      let overlapBooking = getMaxTotalOvepBooking(index);
+  const renderCellsInCalendar = (numberOfDay, indexResource) => {
+    const days = new Array(numberOfDay).fill(1).map((item, i) => {
+      const dateInCell = moment(startDay.toString()).add(i,"days");
+      const bookingDateWithResource = renderBooking(dateInCell, indexResource);
+      return (
+        <ContentBooking isWeekend={false} key={dateInCell + ' ' + indexResource}>
+          {bookingDateWithResource}
+        </ContentBooking>
+      );
+    });
+    return days;
+  };
 
-      const days = new Array(numberOfDay).fill(1).map((item, i) => {
-        const bookingDateWithResource = getBookingWithResource(date, index);
-        date.add(i + 1, 'days');
+  const renderRowsInCalendar = (resources, numberOfDay) => {
+    const renderCells = new Array(resources.length).fill(1).map((cell, indexResource) => {
+      const days = renderCellsInCalendar(numberOfDay, indexResource);
 
-        return (
-          <ContentBooking isWeekend={false} key={date + ' ' + i}>
-            {bookingDateWithResource}
-          </ContentBooking>
-        );
-      });
       return (
         <RowBookingView
-          key={index}
-          overlapBooking={overlapBooking}
+          key={searchResult[indexResource]._id}
+          overlapBooking={getMaxTotalOverlapBooking(indexResource)}
           numberOfDay={numberOfDay}
         >
           {days}
         </RowBookingView>
       );
     });
-    return renderCells
+    return renderCells;
   };
-  const cellInCalendar = createRenderCellsInCalendar(4,numberOfDay);
 
+  useEffect(() => {
+    return () => {};
+  }, []);
 
   return (
     <table cellPadding={0} cellSpacing={0}>
       <tbody>
         <tr>
-          <td
-            style={{
-              width: '185px',
-              verticalAlign: 'top'
-            }}
-          >
-            <div
-              style={{
-                border: '1px solid #e9e9e9',
-                overflow: 'hidden',
-                display: 'block'
-              }}
-            >
-              <div
-                style={{
-                  overflow: 'hidden',
-                  borderBottom: '	border: 1px solid #E1E7ED',
-                  height: '70px'
-                }}
-              ></div>
-              <div
-                style={{
-                  overflow: 'auto',
-                  width: '186px'
-                }}
-              >
-                <div style={{ paddingBottom: '0px' }}>
-                  <table
-                    cellPadding={0}
-                    cellSpacing={0}
-                    style={{
-                      width: '100%',
-                      margin: '0',
-                      padding: '0',
-                      borderSpacing: '0',
-                      textAlign: 'center'
-                    }}
-                  >
-                    <tbody
-                      style={{
-                        display: 'table-row-group',
-                        verticalAlign: 'middle',
-                        borderColor: 'inherit'
-                      }}
-                    >
-                      <tr
-                        style={{
-                          borderBottom: '1px solid #e9e9e9',
-                          height: 46 + getMaxTotalOvepBooking(0) * 22 + 'px'
-                        }}
-                      >
-                        <td style={{ height: '46px' }}>
-                          <div
-                            style={{
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                              paddingRight: '5px !important',
-                              fontSize: '14px',
-                              fontWeight: '500'
-                            }}
-                          >
-                            <span>ABC</span>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr style={{ borderBottom: '1px solid #e9e9e9' }}>
-                        <td style={{ height: '46px' }}>
-                          <div
-                            style={{
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                              paddingRight: '5px !important',
-                              fontSize: '14px',
-                              fontWeight: '500'
-                            }}
-                          >
-                            <span>ABC</span>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr style={{ borderBottom: '1px solid #e9e9e9' }}>
-                        <td style={{ height: '46px' }}>
-                          <div
-                            style={{
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                              paddingRight: '5px !important',
-                              fontSize: '14px',
-                              fontWeight: '500'
-                            }}
-                          >
-                            <span>ABC</span>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr style={{ borderBottom: '1px solid #e9e9e9' }}>
-                        <td style={{ height: '46px' }}>
-                          <div
-                            style={{
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                              paddingRight: '5px !important',
-                              fontSize: '14px',
-                              fontWeight: '500'
-                            }}
-                          >
-                            <span>ABC</span>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </td>
+          <Sidebar
+            getMaxTotalOverlapBooking={getMaxTotalOverlapBooking}
+          ></Sidebar>
           <DateBooking width={size.width}>
-            <HeaderCalendar startDay={startDay} endDay={endDay}></HeaderCalendar>
-            <ContainerBookingView numberOfDay={getNumberOfDay(startDay,endDay)}>
+            <HeaderCalendar
+              startDay={startDay}
+              endDay={endDay}
+            ></HeaderCalendar>
+            <ContainerBookingView
+              numberOfDay={getNumberOfDay(startDay, endDay)}
+            >
               <BookingView cellPadding={0} cellSpacing={0}>
-                <tbody>{cellInCalendar}</tbody>
+                <tbody>{renderRowsInCalendar(searchResult, numberOfDay)}</tbody>
               </BookingView>
             </ContainerBookingView>
           </DateBooking>

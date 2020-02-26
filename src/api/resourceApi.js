@@ -1,6 +1,6 @@
 import { getData, updateData, deleteData, addData } from "./axiosService";
 
-const url = `http://localhost:${process.env.REACT_APP_PORT}/api/resource`;
+const url = `http://localhost:5000/api/resource`;
 
 export const getResource = data => {
   return getData(url, data);
