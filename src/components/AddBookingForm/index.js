@@ -6,9 +6,9 @@ import {
     BodyAddBooking, BookingTime,
     BottomLineDate,
     ContainDetails,
-    DateImage,
+    DateImage, DetailsBottom,
     DetailsIcon,
-    DetailsSpan,
+    DetailsSpan, DetailsTop,
     Duratio,
     DurationInside,
     End, EndDate, EndDatePicker,
@@ -49,6 +49,9 @@ import DayPickerInput from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import useBookingForm from "./CustomHooks";
 import "./styles.css";
+import useModal from "./details/useModalDetails";
+import Modal from "./details";
+
 
 
 const  BookingForm = styled.form`
@@ -62,16 +65,14 @@ const  BookingForm = styled.form`
 
 
 
-export default function AddBookingForm () {
+export default function AddBookingForm (props) {
 
     const {inputs,handleInputChange, handleSubmit} = useBookingForm();
 
-    const booking = () => {
 
-    };
-
-    const [startDate, setStartDate] = useState(new Date());
-        const [endDate, setEndDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(props.startDate);
+    const [endDate, setEndDate] = useState(props.endDate);
+    const {isShowing, toggle} = useModal();
 
     return (
         <div>
@@ -173,13 +174,20 @@ export default function AddBookingForm () {
                         </ProjectContain>
                     </Project>
 
-                    <ProjectDetails>
+                    <ProjectDetails onClick={toggle}>
                         <ContainDetails>
-                            <DetailsIcon alt="" src={require('../../images/files-and-folders.svg')}/>
-                            <DetailsSpan>
-                                Details
-                            </DetailsSpan>
+                            <DetailsTop>
+                                <DetailsIcon alt="" src={require('../../images/files-and-folders.svg')}/>
+                                <DetailsSpan>
+                                    Details
+                                </DetailsSpan>
+                            </DetailsTop>
+
+                            <DetailsBottom id="details">
+                            </DetailsBottom>
+
                         </ContainDetails>
+                        <Modal isShowing={isShowing} hide={toggle} />
                     </ProjectDetails>
 
                     <Resource>
@@ -202,19 +210,23 @@ export default function AddBookingForm () {
                         </ResourceContain>
 
                     </Resource>
+
+
+                    <FooterBooking>
+                        <ContainButton>
+                            <AddBookingButton type="submit">
+                                <AddBookingSpan>
+                                    Add Booking
+                                </AddBookingSpan>
+                            </AddBookingButton>
+                            <CancelButton>
+                                Cancel
+                            </CancelButton>
+                        </ContainButton>
+                    </FooterBooking>
+
                 </BodyAddBooking>
-                <FooterBooking>
-                    <ContainButton>
-                        <AddBookingButton type="submit">
-                            <AddBookingSpan>
-                                Add Booking
-                            </AddBookingSpan>
-                        </AddBookingButton>
-                        <CancelButton>
-                            Cancel
-                        </CancelButton>
-                    </ContainButton>
-                </FooterBooking>
+
             </BookingForm>
 
         </div>
