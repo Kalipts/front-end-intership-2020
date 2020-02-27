@@ -1,12 +1,13 @@
 import {ADD_BOOKING, DELETE_BOOKING, FETCH_BOOKING} from "./types";
 import axios from "axios";
 
-const apiUrl = "http://localhost:8080/bookings";
+const apiUrl = "http://localhost:5000/api/booking   ";
 
 export const createBooking = ({id, name, start, end}) => {
     return (dispatch) => {
         return axios.post(`${apiUrl}`, {id,name,start,end})
             .then(response => {
+                
                 dispatch(createBookingSuccess(response.data))
             })
             .catch(error => {
