@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-const BookingText = styled.div`
-  color: #ffffff;
+const Name = styled.tr`
   font-family: Muli;
   font-size: 11px;
   font-weight: 500;
@@ -10,4 +9,4 @@ const BookingText = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
 `;
-export default BookingText;
+export default Name;

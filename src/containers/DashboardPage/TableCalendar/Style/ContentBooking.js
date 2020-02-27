@@ -3,12 +3,12 @@ import { WIDTH_CELL_IN_TABLE_CALENDAR, BORDER_CELL_IN_TABLE_CALENDAR } from '../
 const ContentBooking = styled.td`
   height: ${props => props.overlapBooking + 45 * 22 + 'px'};
   width: ${WIDTH_CELL_IN_TABLE_CALENDAR - BORDER_CELL_IN_TABLE_CALENDAR + 'px'};
-  border-right: 1px solid #e1e7ed;
-  border-bottom: 1px solid #e1e7ed;
+  border-right: 1px solid ${props=>props.theme.color.borderCellCalendar};
+  border-bottom: 1px solid ${props=>props.theme.color.borderCellCalendar};
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
-  background-color:${props=>props.isWeekend ? '#FEFAF7' :'#FFFFFF'};
+  background-color:${props=>props.isWeekend ? props.theme.color.weekendBackground :props.theme.color.background};
 `;
 export default ContentBooking;

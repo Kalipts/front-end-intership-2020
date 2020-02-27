@@ -1,95 +1,54 @@
-import React, {  useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import Profile from './Profile';
-import StyledFilter from './StyledFilter';
+import StyledFilter from './Style/StyledFilter';
 import { CalendarContext } from '../../../context/Calendar';
+import ContainerResource from './Style/ContainerResource';
+import SearchBar from './Style/SeachBar';
+import ResourceList from './Style/ResourceList';
+import ResourceTable from './Style/ResourceTable';
+import ResourceBody from './Style/ResourceBody';
 
-const icon = require('../../../images/search.ico');
+import icon from '../../../images/search.ico';
 
 const Filter = props => {
   const calendarContext = useContext(CalendarContext);
-  const {searchResult,updateSearch} = calendarContext;
-
-  useEffect(() => {
-    
-    return () => {
-    };
-  }, [])
+  const { searchResult, updateSearch } = calendarContext;
 
   return (
     <>
-      <td
-        style={{
-          width: '185px',
-          verticalAlign: 'top'
-        }}
-      >
-        <div
-          style={{
-            border: '1px solid #e9e9e9',
-            overflow: 'hidden',
-            display: 'block'
-          }}
-        >
-          <div
-            style={{
-              overflow: 'hidden',
-              borderBottom: '	border: 1px solid #E1E7ED',
-              height: '70px'
-            }}
-          >
-            <StyledFilter>
-              <input
-                type="text"
-                placeholder="Search"
-                onChange={updateSearch.bind(this)}
-              />
-              <img alt="search-icon" src={icon} />
-            </StyledFilter>
-          </div>
-          <div
-            style={{
-              overflow: 'auto',
-              width: '186px'
-            }}
-          >
-            <div style={{ paddingBottom: '0px' }}>
-              <table
-                cellPadding={0}
-                cellSpacing={0}
-                style={{
-                  width: '100%',
-                  margin: '0',
-                  padding: '0',
-                  borderSpacing: '0',
-                  textAlign: 'center'
-                }}
-              >
-                <tbody
-                  style={{
-                    display: 'table-row-group',
-                    verticalAlign: 'middle',
-                    borderColor: 'inherit'
-                  }}
-                >
-                  {searchResult &&
-                    searchResult.map(item => {
-                      return (
-                        <div>
-                          <Profile
-                            src={item.avatar}
-                            name={item.name}
-                            key={item._id}
-                          />
-                        </div>
-                      );
-                    })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </td>
+      <ContainerResource>
+        <SearchBar>
+          <StyledFilter>
+            <input
+              type="text"
+              placeholder="Search"
+              onChange={updateSearch.bind(this)}
+            />
+            <img alt="search-icon" src={icon} />
+          </StyledFilter>
+        </SearchBar>
+
+        <ResourceList>
+          <ResourceTable cellPadding={0} cellSpacing={0}>
+            <ResourceBody>
+              {searchResult &&
+                searchResult.map((item,index) => {
+                  return (
+                    <>
+                      <Profile
+                        indexResource={index}
+                        src={item.avatar}
+                        name={item.name}
+                        key={item._id}
+                      />
+                    </>
+                  );
+                })}
+            </ResourceBody>
+          </ResourceTable>
+        </ResourceList>
+      </ContainerResource>
     </>
   );
 };

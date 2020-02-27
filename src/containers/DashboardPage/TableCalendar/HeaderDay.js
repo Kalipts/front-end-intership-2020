@@ -17,7 +17,7 @@ export default function HeaderDay(props) {
       const day = nowDay.format('DD');
       nowDay = nowDay.add(1, 'days');
       return (
-        <Day key={index}>
+        <Day key={index} isWeekend={isWeekend}>
           <ContentWeek>
             <WeekDayName isWeekend={isWeekend}>{weekDayName}</WeekDayName>
             <span>{day}</span>

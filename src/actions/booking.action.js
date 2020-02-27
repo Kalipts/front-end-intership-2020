@@ -57,10 +57,9 @@ export const fetchBookingsSuccess = (bookings) => {
     }
 };
 
-export const fetchBookings = async () => {
-    console.log("da chay");
-    return async (dispatch) => {
-        return await axios.get(`${apiUrl}`)
+export const fetchBookings = () => {
+    return (dispatch) => {
+        return axios.get(`${apiUrl}`)
             .then(response => {
                 dispatch(fetchBookingsSuccess(response.data))
             })

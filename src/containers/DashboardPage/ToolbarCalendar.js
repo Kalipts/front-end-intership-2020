@@ -15,11 +15,13 @@ import TextButtonToggle from './ToolbarCalendarItem/TextButtonToggle';
 import BarToggle from './ToolbarCalendarItem/BarToggle';
 import Bar from './ToolbarCalendarItem/Bar';
 import Ball from './ToolbarCalendarItem/Ball';
+import { useWindowSize } from '../../utils/Window';
 
 export default function ToolbarCalendar({ ...props }) {
   const [year, setYear] = useState(2019);
   const [month, setMonth] = useState(0);
   const allYears = [...Array(MAX_OFFSET_YEAR).keys()];
+  const [size] = useWindowSize();
   const listMonths = [...Array(NUMBERS_OF_MONTHS).keys()].map(m => {
     return (
       <MonthPickerItem
@@ -47,12 +49,11 @@ export default function ToolbarCalendar({ ...props }) {
   const [isZoomed, setIsZoomed] = useState(false);
   const changeMonth = m => {
     if(typeof(m) === "number"){
-      console.log('Name la:', m);
       setMonth(m);
     }
   };
   return (
-    <Toolbar>
+    <Toolbar width={size.width}>
       <HeaderToolbar>Calendar</HeaderToolbar>
       <YearPicker
         value={year}

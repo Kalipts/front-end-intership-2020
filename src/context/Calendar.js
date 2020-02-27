@@ -19,7 +19,7 @@ const CalendarProvider = props => {
     const personsFilter = result.map(resource => {
       const person = {
         _id: resource._id,
-        name: resource.name.first + ' ' + resource.name.last,
+        name: `${resource.name.first  } ${  resource.name.last}`,
         avatar: resource.avatar
       };
       return person;
@@ -46,25 +46,50 @@ const CalendarProvider = props => {
   const updateSearch = event => {
     setSearch(event.target.value.toLowerCase());
   };
+  const getMarginTopBooking = schedule => {
+    let numberBookingOverlap = 0;
 
+    const bookingsNotSameScheduleStart = bookings.filter((booking, index) => {
+      const isNotSameStart =
+        booking.startDay.diff(schedule.startDay, 'days') !== 0 &&
+        booking.resourceId === schedule.resourceId;
+      return isNotSameStart;
+    });
+    bookingsNotSameScheduleStart.forEach(booking => {
+      const isOverlapBookingStart =
+        schedule.startDay.diff(booking.startDay, 'days') >= 0 &&
+        schedule.startDay.diff(booking.endDay, 'days') <= 0;
+      const isOverlapBookingEnd =
+        schedule.endDay.diff(booking.startDay, 'days') <= 0 &&
+        schedule.endDay.diff(booking.endDay, 'days') >= 0;
+      if (isOverlapBookingStart) {
+        numberBookingOverlap += 1;
+      } else if (isOverlapBookingEnd) {
+        numberBookingOverlap -= 1;
+      }
+    });
+    return numberBookingOverlap;
+  };
   const getMaxTotalOverlapBooking = indexResource => {
     let maxNumberOfBookingOverlap = 0;
+
     bookings.forEach(val => {
       if (searchResult[indexResource]._id !== val.resourceId) {
         return;
       }
       const bookingOverlap = bookings.filter(booking => {
         const isOverlapBooking =
-          (booking.startDay.diff(val.startDay, 'days') <= 0 &&
+          ((booking.startDay.diff(val.startDay, 'days') <= 0 &&
             booking.endDay.diff(val.startDay, 'days') >= 0) ||
-          (booking.startDay.diff(val.endDay, 'days') >= 0 &&
-            booking.endDay.diff(val.endDay, 'days') <= 0);
+            (booking.startDay.diff(val.endDay, 'days') >= 0 &&
+              booking.endDay.diff(val.endDay, 'days') <= 0)) &&
+          searchResult[indexResource]._id === booking.resourceId;
         return isOverlapBooking;
       });
       const numberBookingOverlap = bookingOverlap.length - 1;
       maxNumberOfBookingOverlap =
         numberBookingOverlap > maxNumberOfBookingOverlap
-          ? numberBookingOverlap 
+          ? numberBookingOverlap
           : maxNumberOfBookingOverlap;
     });
     return maxNumberOfBookingOverlap;
@@ -100,7 +125,8 @@ const CalendarProvider = props => {
         bookings,
         setBookings,
         getMaxTotalOverlapBooking,
-        getBookingWithResource
+        getBookingWithResource,
+        getMarginTopBooking
       }}
     >
       {props.children}

@@ -3,7 +3,7 @@ import styled from "styled-components";
  const YearPickerItem = styled.option`
   height: 19px;
   width: 35px;
-  color: #000000;
+  color: ${props=>props.theme.color.fontDefault};
   font-family: Muli;
   font-size: 14px;
   line-height: 18px;

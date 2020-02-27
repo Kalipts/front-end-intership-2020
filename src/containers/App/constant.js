@@ -17,4 +17,4 @@ export const HEIGHT_DAY = "15px";
 export const NUMBER_OF_DAYS_IN_WEEK = 7;
 
 // BOOKING
-export const HEIGHT_BOOKING = 35;
+export const HEIGHT_BOOKING = 26;
