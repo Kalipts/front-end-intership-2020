@@ -1,20 +1,12 @@
 import {ADD_BOOKING, DELETE_BOOKING, FETCH_BOOKING} from "./types";
 import axios from "axios";
 
-<<<<<<< HEAD
 const apiUrl = "http://localhost:8080/bookings";
-=======
-const apiUrl = "http://localhost:5000/api/booking   ";
->>>>>>> 5161864... Display booking with api
 
 export const createBooking = ({id, name, start, end}) => {
     return (dispatch) => {
         return axios.post(`${apiUrl}`, {id,name,start,end})
             .then(response => {
-<<<<<<< HEAD
-=======
-                
->>>>>>> 5161864... Display booking with api
                 dispatch(createBookingSuccess(response.data))
             })
             .catch(error => {
@@ -64,16 +56,9 @@ export const fetchBookingsSuccess = (bookings) => {
     }
 };
 
-<<<<<<< HEAD
 export const fetchBookings = () => {
     return (dispatch) => {
         return axios.get(`${apiUrl}`)
-=======
-export const fetchBookings = async () => {
-    console.log("da chay");
-    return async (dispatch) => {
-        return await axios.get(`${apiUrl}`)
->>>>>>> 5161864... Display booking with api
             .then(response => {
                 dispatch(fetchBookingsSuccess(response.data))
             })

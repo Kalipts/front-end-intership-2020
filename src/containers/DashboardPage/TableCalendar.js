@@ -5,7 +5,7 @@ import moment from 'moment';
 import { getNumberOfDay } from '../../utils/Date';
 import { useWindowSize } from '../../utils/Window';
 
-import Booking from './Booking';
+import Booking from './TableCalendar/Booking';
 import ContainerBookingView from './TableCalendar/Style/ContainerBookingView';
 import BookingView from './TableCalendar/Style/BookingView';
 import RowBookingView from './TableCalendar/Style/RowBookingView';

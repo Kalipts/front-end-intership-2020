@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 const BookingTime = styled.div`
-  color: #ffffff;
+  color:${props=>props.theme.color.none};
   font-family: Muli;
   font-size: 11px;
   font-weight: 500;

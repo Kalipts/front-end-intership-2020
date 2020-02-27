@@ -9,7 +9,7 @@ const Day = styled.th`
   font-size:12px;
   font-weight:500;
   text-align:inherit;
-  border-right:1px solid #e9e9e9;
+  border-right:1px solid ${props=>props.theme.color.borderBookingView};
   color: ${props =>
     props.isWeekend
       ? props.theme.color.primary

@@ -1,7 +1,6 @@
 import { getData, updateData, deleteData, addData } from "./axiosService";
 
 const url = `${process.env.REACT_APP_API_URL}/api/resource`;
-
 export const getResource = data => {
   return getData(url, data);
 };

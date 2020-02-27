@@ -49,7 +49,6 @@ export default function ToolbarCalendar({ ...props }) {
   const [isZoomed, setIsZoomed] = useState(false);
   const changeMonth = m => {
     if(typeof(m) === "number"){
-      console.log('Name la:', m);
       setMonth(m);
     }
   };
