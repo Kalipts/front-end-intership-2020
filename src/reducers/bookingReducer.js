@@ -1,4 +1,5 @@
-import {ADD_BOOKING, FETCH_BOOKING, DELETE_BOOKING} from "../actions/types";
+import { ADD_BOOKING, FETCH_BOOKING, DELETE_BOOKING } from '../actions/types'
+
 export default function bookingReducer(state=[], action) {
     switch (action.type) {
         case ADD_BOOKING:

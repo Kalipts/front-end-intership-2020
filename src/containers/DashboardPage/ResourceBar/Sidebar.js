@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 import Filter from "./Filter";
-import StyledSidebar from "./StyledSidebar";
 import { getResource } from "../../../api/resourceApi";
 
 function Sidebar(props) {
@@ -29,8 +28,7 @@ function Sidebar(props) {
 
   return (
     <>
-   
-      {isLoading && <div>Loading</div>}
+      {isLoading && <th>Loading</th>}
       {persons && <Filter content={persons} />}
     </>
   );

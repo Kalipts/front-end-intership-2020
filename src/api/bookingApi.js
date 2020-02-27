@@ -1,7 +1,7 @@
 import { getData, updateData, deleteData, addData } from "./axiosService";
 
-const url = `http://localhost:5000/api/booking`;
-
+const url = `${process.env.REACT_APP_API_URL}/api/booking`;
+console.log(url);
 console.log(url);
 export const getBooking = data => {
   return getData(url, data);

@@ -6,7 +6,7 @@ const ContentBooking = styled.td`
   border-right: 1px solid #e1e7ed;
   border-bottom: 1px solid #e1e7ed;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
   background-color:${props=>props.isWeekend ? props.theme.color.weekendBackground :props.theme.color.background};

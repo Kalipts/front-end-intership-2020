@@ -3,7 +3,7 @@ import { useState } from 'react';
 import moment from 'moment';
 
 import { getNumberOfDay } from '../../utils/Date';
-import { useWindowSize } from '../../utils/WIndow';
+import { useWindowSize } from '../../utils/Window';
 
 import Booking from './Booking';
 import ContainerBookingView from './TableCalendar/Style/ContainerBookingView';
@@ -42,7 +42,7 @@ export default function TableCalendar(props) {
             endDay={booking.endDay}
             color={'green'}
             isDuration={true}
-            top={index === 0 ? getMarginTopBooking(booking) : 0}
+            top={index === 0 ? '10px' : 0}
             detail={booking.details}
           ></Booking>
         );
@@ -103,7 +103,7 @@ export default function TableCalendar(props) {
             <HeaderCalendar
               startDay={startDay}
               endDay={endDay}
-            ></HeaderCalendar>
+            ></HeaderCalendar >
             <ContainerBookingView
               numberOfDay={getNumberOfDay(startDay, endDay)}
             >

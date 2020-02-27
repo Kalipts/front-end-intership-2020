@@ -19,7 +19,7 @@ const CalendarProvider = props => {
     const personsFilter = result.map(resource => {
       const person = {
         _id: resource._id,
-        name: resource.name.first + ' ' + resource.name.last,
+        name: `${resource.name.first  } ${  resource.name.last}`,
         avatar: resource.avatar
       };
       return person;
@@ -62,13 +62,6 @@ const CalendarProvider = props => {
       const isOverlapBookingEnd =
         schedule.endDay.diff(booking.startDay, 'days') <= 0 &&
         schedule.endDay.diff(booking.endDay, 'days') >= 0;
-      // console.log(
-      //   isOverlapBookingStart,
-      //   schedule.startDay.diff(booking.startDay, 'days'),
-      //   schedule.startDay.diff(booking.endDay, 'day'),
-      //   booking,
-      //   schedule
-      // );
       if (isOverlapBookingStart) {
         numberBookingOverlap += 1;
       } else if (isOverlapBookingEnd) {

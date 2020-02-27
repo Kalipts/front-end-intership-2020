@@ -1,29 +1,24 @@
 import React from 'react';
+import { useContext } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import StyledProfile from './StyledProfile';
+
+import StyledProfile from './Style/StyledProfile';
+import ResourceItem from './Style/ResourceItem';
+import Name from './Style/Name';
+import { CalendarContext } from '../../../context/Calendar';
 
 const Profile = props => {
-  const { src, name } = props;
+  const { src, name,indexResource } = props;
+  const calendarContext = useContext(CalendarContext);
+  const { getMaxTotalOverlapBooking } = calendarContext;
+
   return (
-    <tr style={{ borderBottom: '1px solid #e9e9e9' }}>
-      <td style={{ height: '46px' }}>
-        <div
-          style={{
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            paddingRight: '5px !important',
-            fontSize: '14px',
-            fontWeight: '500'
-          }}
-        >
-          <StyledProfile>
-            <Avatar alt="profile" src={src} />
-            <div>{name}</div>
-          </StyledProfile>{' '}
-        </div>
-      </td>
-    </tr>
+    <ResourceItem>
+      <StyledProfile numberBookingOverlap={getMaxTotalOverlapBooking(indexResource)}>
+        <Avatar alt="profile" src={src} />
+        <Name>{name}</Name>
+      </StyledProfile>{' '}
+    </ResourceItem>
   );
 };
 
