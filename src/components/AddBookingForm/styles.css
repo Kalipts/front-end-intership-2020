@@ -5,7 +5,8 @@
     font-family: Muli;
     font-size: 14px;
     line-height: 18px;
-    border: none;
+    outline: 0;
+    border-width: 0 0 0;
 }
 
 .react-datepicker__day--selected {

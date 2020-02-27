@@ -249,8 +249,11 @@ export const ProjectName = styled.div`
 
 
 export const ProjectDetails = styled.div`
-  height: 41px;
+ 
+  
   margin-top: 5px;
+ 
+  
 `;
 
 export const ContainDetails = styled.div`
@@ -258,20 +261,33 @@ export const ContainDetails = styled.div`
   margin-left: 24.5px;
   margin-right: 18.5px;
   display: flex;
+  flex-direction: column;
   box-sizing: border-box;
 
   border: 1px solid #DEDEDE;
   border-radius: 2px;
   background-color: #FFFFFF;
+
+`;
+export const DetailsTop = styled.div`
+  display: flex;
+
+`;
+
+export const DetailsBottom = styled.div`
+  margin-top: 2px;
+  margin-bottom: 2px;
+   min-height: 5px;
 `;
 
 export const DetailsIcon = styled.img`
   margin-left: 15.5px;
+  margin-top: 10px ;
 `;
 
 export const DetailsSpan = styled.div`
     margin-left: 8px ;
-    margin-top: 12px;
+    margin-top: 10px;
     
     height: 15px;
   width: 39px;
