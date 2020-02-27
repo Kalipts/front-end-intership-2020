@@ -1,25 +1,25 @@
 import styled from "styled-components";
-import {CES_GREY} from "../../constants/colorTypes";
+import { CES_GREY } from "../../constants/colorTypes";
 
 export const Header = styled.div`
-  height:46px;
+  height: 46px;
   display: block;
 `;
 
- export  const HeaderBooking = styled.div`
+export const HeaderBooking = styled.div`
   font-size: 14px;
   font-weight: bold;
   line-height: 18px;
 `;
 
-export  const GridHeader = styled.div`
+export const GridHeader = styled.div`
   padding-left: 8px;
   padding-right: 8px;
   height: 100%;
   display: flex;
 `;
 
-export  const NewBooking = styled.div`
+export const NewBooking = styled.div`
   flex: 0 0 auto;
   height: 20px;
   width: 90px;
@@ -29,7 +29,7 @@ export  const NewBooking = styled.div`
   margin-top: 17px;
 `;
 
-export  const NewTimeOff = styled.div`
+export const NewTimeOff = styled.div`
   flex: 0 0 auto;
   height: 20px;
   width: 90px;
