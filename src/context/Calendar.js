@@ -31,7 +31,8 @@ const CalendarProvider = props => {
   const fetchBooking = async () => {
     setIsLoading(true);
     const res = await getBooking();
-    const result = res.data.bookings;
+    const result = res.data.bookings; 
+    console.log(result);
     const bookingsConvert = result.map(booking => {
       const schedule = {
         ...booking,

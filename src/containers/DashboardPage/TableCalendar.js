@@ -9,7 +9,7 @@ import Booking from './TableCalendar/Booking';
 import ContainerBookingView from './TableCalendar/Style/ContainerBookingView';
 import BookingView from './TableCalendar/Style/BookingView';
 import RowBookingView from './TableCalendar/Style/RowBookingView';
-import ContentBooking from './TableCalendar/Style/ContentBooking';
+import ContentBooking from './TableCalendar/ContentBooking';
 import DateBooking from './TableCalendar/Style/DateBooking';
 import HeaderCalendar from './TableCalendar/HeaderCalendar';
 
@@ -91,7 +91,7 @@ export default function TableCalendar(props) {
   useEffect(() => {
     return () => {};
   }, []);
-
+  console.log(size.height);
   return (
     <table cellPadding={0} cellSpacing={0}>
       <tbody>
@@ -99,12 +99,12 @@ export default function TableCalendar(props) {
           <Sidebar
             getMaxTotalOverlapBooking={getMaxTotalOverlapBooking}
           ></Sidebar>
-          <DateBooking width={size.width}>
+          <DateBooking width={size.width} >
             <HeaderCalendar
               startDay={startDay}
               endDay={endDay}
             ></HeaderCalendar >
-            <ContainerBookingView
+            <ContainerBookingView height={size.height}
               numberOfDay={getNumberOfDay(startDay, endDay)}
             >
               <BookingView cellPadding={0} cellSpacing={0}>
