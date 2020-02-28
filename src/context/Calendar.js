@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect, createContext } from 'react';
 import moment from 'moment';
 
@@ -7,7 +8,7 @@ import { getBooking } from '../api/bookingApi';
 const CalendarContext = createContext();
 
 const CalendarProvider = props => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [persons, setPersons] = useState([]);
   const [search, setSearch] = useState('');
   const [searchResult, setSearchResult] = useState([]);
@@ -18,9 +19,10 @@ const CalendarProvider = props => {
     const result = res.data.resources;
     const personsFilter = result.map(resource => {
       const person = {
+        // eslint-disable-next-line no-underscore-dangle
         _id: resource._id,
-        name: `${resource.name.first  } ${  resource.name.last}`,
-        avatar: resource.avatar
+        name: `${resource.name.first} ${resource.name.last}`,
+        avatar: resource.avatar,
       };
       return person;
     });
@@ -31,13 +33,12 @@ const CalendarProvider = props => {
   const fetchBooking = async () => {
     setIsLoading(true);
     const res = await getBooking();
-    const result = res.data.bookings; 
-    console.log(result);
+    const result = res.data.bookings;
     const bookingsConvert = result.map(booking => {
       const schedule = {
         ...booking,
         startDay: moment(booking.startDay),
-        endDay: moment(booking.endDay)
+        endDay: moment(booking.endDay),
       };
       return schedule;
     });
@@ -50,7 +51,7 @@ const CalendarProvider = props => {
   const getMarginTopBooking = schedule => {
     let numberBookingOverlap = 0;
 
-    const bookingsNotSameScheduleStart = bookings.filter((booking, index) => {
+    const bookingsNotSameScheduleStart = bookings.filter(booking => {
       const isNotSameStart =
         booking.startDay.diff(schedule.startDay, 'days') !== 0 &&
         booking.resourceId === schedule.resourceId;
@@ -96,7 +97,7 @@ const CalendarProvider = props => {
     return maxNumberOfBookingOverlap;
   };
   function getBookingWithResource(date, indexResource) {
-    const bookingsWithResource = bookings.filter((booking, index) => {
+    const bookingsWithResource = bookings.filter(booking => {
       const isBookingBelongResource =
         booking.startDay.isSame(date, 'day') &&
         booking.resourceId === searchResult[indexResource]._id;
@@ -111,9 +112,9 @@ const CalendarProvider = props => {
     return () => {};
   }, []);
   useEffect(() => {
-    const filteredResults = persons.filter(item => {
-      return item.name.toLowerCase().indexOf(search) !== -1;
-    });
+    const filteredResults = persons.filter(
+      item => item.name.toLowerCase().indexOf(search) !== -1,
+    );
     setSearchResult(filteredResults);
   }, [search]);
   return (
@@ -127,7 +128,7 @@ const CalendarProvider = props => {
         setBookings,
         getMaxTotalOverlapBooking,
         getBookingWithResource,
-        getMarginTopBooking
+        getMarginTopBooking,
       }}
     >
       {props.children}
