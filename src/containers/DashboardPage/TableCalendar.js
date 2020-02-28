@@ -91,7 +91,6 @@ export default function TableCalendar(props) {
   useEffect(() => {
     return () => {};
   }, []);
-  console.log(size.height);
   return (
     <table cellPadding={0} cellSpacing={0}>
       <tbody>
