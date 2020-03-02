@@ -1,20 +1,32 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import BookingCard from './Style/BookingCard';
 import BookingText from './Style/BookingContent';
 import BookingTime from './Style/BookingTime';
-import moment from 'moment';
+import { HOURS_IN_DAY } from '../../App/constant';
 
 export default function Booking(props) {
-  const { startDay, endDay, detail, color, top, isDuration } = props;
-  const start = moment(startDay);
-  const end = moment(endDay);
-  const length = end.diff(start, 'days') + 1;
-  const duration = moment.duration(end.diff(start));
-  const hours = duration.asHours();
+  const {
+    startDay,
+    endDay,
+    details,
+    color,
+    top,
+    isDuration,
+    utilize,
+    hour,
+  } = props;
+
+  const length =
+    endDay
+      .clone()
+      .startOf('day')
+      .diff(startDay.clone().startOf('day'), 'days') + 1;
+  const percentageHour = (length * utilize * HOURS_IN_DAY) / 100;
   return (
     <BookingCard length={length} color={color} top={top}>
-      <BookingText>{detail}</BookingText>
-      {isDuration && <BookingTime>{`${hours}h`}</BookingTime>}
+      <BookingText>{details}</BookingText>
+      <BookingTime>{`${isDuration ? hour : percentageHour}h`}</BookingTime>
     </BookingCard>
   );
 }

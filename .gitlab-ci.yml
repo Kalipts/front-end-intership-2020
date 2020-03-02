@@ -17,7 +17,6 @@ staging:
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
   only:
     - develop
-    - fix_heroku_npm_version
 
 production:
   type: deploy

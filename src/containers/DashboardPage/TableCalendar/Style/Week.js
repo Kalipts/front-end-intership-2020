@@ -1,11 +1,9 @@
 import styled from 'styled-components';
-import { HEIGHT_HEADER_DATE, WIDTH_CELL_IN_TABLE_CALENDAR } from '../../../App/constant';
-const Week = styled.tr`
-  border-bottom: 1px solid ${props=>props.theme.color.borderCellCalendar};
-  height: ${HEIGHT_HEADER_DATE + 'px'};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width:  ${props =>WIDTH_CELL_IN_TABLE_CALENDAR *props.numberOfDay+ 'px'} ;
+const Week = styled.div`
+  border-bottom: 1px solid ${props => props.theme.color.borderCellCalendar};
+  display: grid;
+  justify-content: flex-start;
+  align-items: flex-start;
+  grid-template-columns: 602px 602px 602px 602px 602px;
 `;
 export default Week;

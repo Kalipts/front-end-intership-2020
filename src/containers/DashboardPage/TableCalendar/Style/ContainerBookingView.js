@@ -5,10 +5,13 @@ const ContainerBookingView = styled.div`
   margin: 0px;
   position: relative;
   padding-bottom: 0px;
-  max-height: 360px;
-  width: ${props=>props.numberOfDay*WIDTH_CELL_IN_TABLE_CALENDAR +'px'};
-  height: 184;
+  width: ${props => `${props.numberOfDay * WIDTH_CELL_IN_TABLE_CALENDAR}px`};
+  grid-template-columns: repeat(
+    ${props => props.numberOfDays},
+    ${() => `${WIDTH_CELL_IN_TABLE_CALENDAR}px`}
+  );
   position: relative;
   z-index: 2;
+  height: ${props => `${props.height - 200}px`};
 `;
 export default ContainerBookingView;

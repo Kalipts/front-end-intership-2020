@@ -1,5 +1,9 @@
 import styled from "styled-components";
-import {CES_GREY_BORDER, CES_GREY_TITLE, CES_ORANGE} from "../../constants/colorTypes";
+import {
+  CES_GREY_BORDER,
+  CES_GREY_TITLE,
+  CES_ORANGE
+} from "../../constants/colorTypes";
 
 export const BodyAddBooking = styled.div`
   margin-top: 10px;
@@ -86,17 +90,16 @@ export const StartSpan = styled.div`
 
 export const StartDate = styled.div`
   display: flex;
-  
 `;
 
-export const StartDatePicker = styled.input.attrs({type:'text'})`
-    height: 18px;
-    width: 80px;
-    color: black;
-    font-family: Muli;
-    font-size: 14px;
-    line-height: 18px;
-    border: none;
+export const StartDatePicker = styled.input.attrs({ type: "text" })`
+  height: 18px;
+  width: 80px;
+  color: black;
+  font-family: Muli;
+  font-size: 14px;
+  line-height: 18px;
+  border: none;
 `;
 
 export const DateImage = styled.img`
@@ -107,7 +110,7 @@ export const BottomLineDate = styled.div`
   height: 2px;
   width: 136px;
   transform: scaleY(-1);
-  background-color: #D0D0D0;
+  background-color: #d0d0d0;
   margin-top: 3px;
 `;
 
@@ -128,17 +131,16 @@ export const EndSpan = styled.div`
 
 export const EndDate = styled.div`
   display: flex;
-  
 `;
 
-export const EndDatePicker = styled.input.attrs({type:'text'})`
-    height: 18px;
-    width: 80px;
-    color: black;
-    font-family: Muli;
-    font-size: 14px;
-    line-height: 18px;
-    border: none;
+export const EndDatePicker = styled.input.attrs({ type: "text" })`
+  height: 18px;
+  width: 80px;
+  color: black;
+  font-family: Muli;
+  font-size: 14px;
+  line-height: 18px;
+  border: none;
 `;
 
 export const Utilization = styled.div`
@@ -151,14 +153,14 @@ export const Utilization = styled.div`
 export const UtilizationSpan = styled.div`
   height: 15px;
   width: 56px;
-  color: #7B7B7B;
+  color: #7b7b7b;
   font-family: Muli;
   font-size: 12px;
   line-height: 15px;
 `;
 
 export const UtilizationPercent = styled.div`
-   height: 18px;
+  height: 18px;
   width: 39px;
   color: Black;
   font-family: Muli;
@@ -167,14 +169,14 @@ export const UtilizationPercent = styled.div`
 `;
 
 export const TotalTime = styled.div`
-    height: 20px;
-    margin-left: 25px;
+  height: 20px;
+  margin-left: 25px;
 `;
 
 export const TotalTimeSpan = styled.div`
   height: 15px;
   width: 100px;
-  color: #7B7B7B;
+  color: #7b7b7b;
   font-family: Muli;
   font-size: 12px;
   line-height: 15px;
@@ -193,9 +195,9 @@ export const ProjectContain = styled.div`
   flex-direction: column;
   box-sizing: border-box;
 
-  border: 1px solid #DEDEDE;
+  border: 1px solid #dedede;
   border-radius: 2px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 `;
 
 export const ProjectTopTitle = styled.div`
@@ -234,7 +236,6 @@ export const ProjectColor = styled.div`
   width: 3px;
   border-radius: 1px;
   background-color: ${props => props.color || "#F8465C"};
-
 `;
 
 export const ProjectName = styled.div`
@@ -247,13 +248,8 @@ export const ProjectName = styled.div`
   margin-left: 5px;
 `;
 
-
 export const ProjectDetails = styled.div`
- 
-  
   margin-top: 5px;
- 
-  
 `;
 
 export const ContainDetails = styled.div`
@@ -264,41 +260,36 @@ export const ContainDetails = styled.div`
   flex-direction: column;
   box-sizing: border-box;
 
-  border: 1px solid #DEDEDE;
+  border: 1px solid #dedede;
   border-radius: 2px;
-  background-color: #FFFFFF;
-
+  background-color: #ffffff;
 `;
 export const DetailsTop = styled.div`
   display: flex;
-
 `;
 
 export const DetailsBottom = styled.div`
   margin-top: 2px;
   margin-bottom: 2px;
-   min-height: 5px;
+  min-height: 5px;
 `;
 
 export const DetailsIcon = styled.img`
   margin-left: 15.5px;
-  margin-top: 10px ;
+  margin-top: 10px;
 `;
 
 export const DetailsSpan = styled.div`
-    margin-left: 8px ;
-    margin-top: 10px;
-    
-    height: 15px;
+  margin-left: 8px;
+  margin-top: 10px;
+
+  height: 15px;
   width: 39px;
   color: #000000;
   font-family: Muli;
   font-size: 12px;
-  line-height: 15px;  
+  line-height: 15px;
 `;
-
-
-
 
 export const Resource = styled.div`
   height: 55px;
@@ -313,9 +304,9 @@ export const ResourceContain = styled.div`
   flex-direction: column;
   box-sizing: border-box;
 
-  border: 1px solid #DEDEDE;
+  border: 1px solid #dedede;
   border-radius: 2px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 `;
 
 export const ResourceTopTitle = styled.div`
@@ -350,10 +341,10 @@ export const ResourceBody = styled.div`
 `;
 
 export const ResourceAvatar = styled.img`
-   box-sizing: border-box;
+  box-sizing: border-box;
   height: 21px;
   width: 21px;
-  border: 1px solid #E3E3E3;
+  border: 1px solid #e3e3e3;
   border-radius: 50%;
 `;
 
@@ -366,5 +357,3 @@ export const ResourceName = styled.div`
   line-height: 18px;
   margin-left: 5px;
 `;
-
-

@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import {CES_ORANGE} from "../../constants/colorTypes";
+import { CES_ORANGE } from "../../constants/colorTypes";
 
 export const FooterBooking = styled.div`
   height: 42px;
   margin-top: 5px;
-  
 `;
 
 export const ContainButton = styled.div`
@@ -26,7 +25,6 @@ export const CancelButton = styled.div`
   line-height: 18px;
   margin-right: 15px;
   margin-top: 11px;
-  
 `;
 
 export const AddBookingButton = styled.button`
@@ -39,13 +37,13 @@ export const AddBookingButton = styled.button`
 `;
 
 export const AddBookingSpan = styled.span`
-    height: 18px;
-    width: 87px;
-    color: WHITE;
-    font-family: Muli;
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 18px;
-    margin-left: 5px;
-    margin-top: 11px;
+  height: 18px;
+  width: 87px;
+  color: WHITE;
+  font-family: Muli;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 18px;
+  margin-left: 5px;
+  margin-top: 11px;
 `;
