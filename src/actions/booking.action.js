@@ -20,10 +20,10 @@ export const createBookingSuccess = (data) => {
     return {
         type: ADD_BOOKING,
         payload: {
-            id: data.id,
-            name: data.name,
-            start: data.start,
-            end: data.end
+            startDay: data.startDay,
+            endDay: data.endDay,
+            isDuration: false,
+            details: data
         }
     }
 };
