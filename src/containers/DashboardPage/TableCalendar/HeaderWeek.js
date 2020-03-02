@@ -1,5 +1,5 @@
 import React from 'react';
-    
+
 import WeekName from './Style/WeekName';
 import { getNumberOfDay } from '../../../utils/Date';
 

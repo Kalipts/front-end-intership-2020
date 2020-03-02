@@ -17,7 +17,7 @@ export default function HeaderCalendar(props) {
     <ContainerDate numberOfDay={numberOfDays}>
       <BodyDate
         cellPadding={0}
-        cellSpacing={0}
+        cellSpacing={500}
         numberOfDay={numberOfDays}
       >
         <thead>

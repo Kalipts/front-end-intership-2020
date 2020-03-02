@@ -56,7 +56,7 @@ export default function TableCalendar(props) {
       const bookingDateWithResource = renderBooking(dateInCell, indexResource);
       const weekDayName = dateInCell.format('ddd');
       const isWeekend = weekDayName === 'Sun' || weekDayName === 'Sat';
-      
+
       return (
         <ContentBooking
           isWeekend={isWeekend}
@@ -70,6 +70,8 @@ export default function TableCalendar(props) {
   };
 
   const renderRowsInCalendar = (resources, numberOfDay) => {
+
+
     const renderCells = new Array(resources.length)
       .fill(1)
       .map((cell, indexResource) => {
