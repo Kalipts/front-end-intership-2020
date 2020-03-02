@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
 
 import ContainerDate from './Style/ContainerDate';
 import BodyDate from './Style/BodyDate';
@@ -9,26 +11,24 @@ import HeaderDay from './HeaderDay';
 
 import HeaderWeek from './HeaderWeek';
 
-export default function HeaderCalendar(props) {
-  const { startDay, endDay } = props;
-  const numberOfDays = getNumberOfDay(startDay, endDay)
+function HeaderCalendar({ startDay, endDay }) {
+  const numberOfDays = getNumberOfDay(startDay, endDay);
 
   return (
-    <ContainerDate numberOfDay={numberOfDays}>
-      <BodyDate
-        cellPadding={0}
-        cellSpacing={0}
-        numberOfDay={numberOfDays}
-      >
-        <thead>
-          <Week numberOfDay={numberOfDays}>
-            <HeaderWeek startDay={startDay} endDay={endDay}></HeaderWeek>
-          </Week>
-          <DateInWeek numberOfDay={numberOfDays}>
-            <HeaderDay startDay={startDay} endDay={endDay}></HeaderDay>
-          </DateInWeek>
-        </thead>
+    <ContainerDate>
+      <BodyDate>
+        <Week>
+          <HeaderWeek startDay={startDay} endDay={endDay}></HeaderWeek>
+        </Week>
+        <DateInWeek numberOfDays={numberOfDays}>
+          <HeaderDay startDay={startDay} endDay={endDay}></HeaderDay>
+        </DateInWeek>
       </BodyDate>
     </ContainerDate>
   );
 }
+HeaderCalendar.propTypes = {
+  startDay: PropTypes.instanceOf(moment),
+  endDay: PropTypes.instanceOf(moment),
+};
+export default HeaderCalendar;

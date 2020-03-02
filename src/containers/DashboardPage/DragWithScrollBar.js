@@ -1,20 +1,18 @@
-import React from 'react';
-import Container from '../../components/DragWithScrollBarItem/Container';
+import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
+
 import {
   DISTANCE_SCROLLBAR_BOUNCE,
-  DISTANCE_TO_CHECK_BOUNCE_OF_SCROLLBAR
+  DISTANCE_TO_CHECK_BOUNCE_OF_SCROLLBAR,
 } from '../App/constant';
-import { useState } from 'react';
-import { useEffect } from 'react';
 
-export default function DragWithScrollBar() {
+export default function DragWithScrollBar(props) {
   const { numberInit, widthItem } = props;
-  cosnt[error] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
   const [scrollWidth, setScrollWidth] = useState(
-    numberInit * widthItem - DISTANCE_SCROLLBAR_BOUNCE
+    numberInit * widthItem - DISTANCE_SCROLLBAR_BOUNCE,
   );
-  loadItems = scrollLeft => {
+  loadItems = () => {
     if (isLoading === false) {
       setScrollWidth(scrollWidth + widthItem);
       props.loadItems();
@@ -32,18 +30,19 @@ export default function DragWithScrollBar() {
       e.preventDefault();
     }
   };
-  mouseMoveHandle = async e => {
+
+  mouseMoveHandle = useCallback(async e => {
     if (isScrolling) {
       this.refs.slider.scrollLeft -=
         -this.lastClientX + (this.lastClientX + e.clientX);
     }
-  };
+  });
 
   useEffect(() => {
     window.addEventListener('mouseup', this.mouseUpHandle);
     window.addEventListener('mousemove', this.mouseMoveHandle);
     this.refs.slider.addEventListener('scroll', () => {
-      let { scrollLeft, clientHeight } = this.refs.slider;
+      const { scrollLeft, clientHeight } = this.refs.slider;
 
       if (
         scrollLeft + DISTANCE_TO_CHECK_BOUNCE_OF_SCROLLBAR >= scrollWidth ||
@@ -53,9 +52,13 @@ export default function DragWithScrollBar() {
       }
     });
     return () => {
-      window.removeEventListener('mouseup', this.mouseUpHandle);
+      window.removeEventListener('mouseup', mouseUpHandle);
       window.removeEventListener('mousemove', this.mouseMoveHandle);
     };
   }, []);
   return <div></div>;
 }
+DragWithScrollBar.propTypes = {
+  numberInit: PropTypes.number,
+  widthItem: PropTypes.number,
+};

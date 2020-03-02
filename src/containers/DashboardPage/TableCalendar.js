@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { useState } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import { getNumberOfDay } from '../../utils/Date';
@@ -15,17 +15,15 @@ import HeaderCalendar from './TableCalendar/HeaderCalendar';
 
 import Sidebar from './ResourceBar/Sidebar';
 import { CalendarContext } from '../../context/Calendar';
+import Container from './TableCalendar/Style/Container';
 
-export default function TableCalendar(props) {
-  const [startDay] = useState(props.startDay);
-  const [endDay] = useState(props.endDay);
+function TableCalendar({ startDay, endDay }) {
   const [size] = useWindowSize();
   const calendarContext = useContext(CalendarContext);
   const {
     searchResult,
     getMaxTotalOverlapBooking,
     getBookingWithResource,
-    getMarginTopBooking
   } = calendarContext;
 
   const numberOfDay = getNumberOfDay(startDay, endDay);
@@ -34,31 +32,30 @@ export default function TableCalendar(props) {
     const bookingWithResource = getBookingWithResource(date, indexResource);
 
     const bookingDateWithResourceRender = bookingWithResource.map(
-      (booking, index) => {
-        return (
-          <Booking
-            key={index}
-            color={'green'}
-            isDuration={true}
-            top={index === 0 ? '10px' : 0}
-            {...booking}
-          ></Booking>
-        );
-      }
+      (booking, index) => (
+        <Booking
+          // eslint-disable-next-line no-underscore-dangle
+          key={booking._id}
+          color="green"
+          isDuration
+          top={index === 0 ? 0 : 0}
+          {...booking}
+        ></Booking>
+      ),
     );
     return bookingDateWithResourceRender;
   }
-  const renderCellsInCalendar = (numberOfDay, indexResource) => {
+  const renderCellsInCalendar = indexResource => {
     const days = new Array(numberOfDay).fill(1).map((item, i) => {
       const dateInCell = moment(startDay.toString()).add(i, 'days');
       const bookingDateWithResource = renderBooking(dateInCell, indexResource);
       const weekDayName = dateInCell.format('ddd');
       const isWeekend = weekDayName === 'Sun' || weekDayName === 'Sat';
-      
+
       return (
         <ContentBooking
           isWeekend={isWeekend}
-          key={dateInCell + ' ' + indexResource}
+          key={`${dateInCell} ${indexResource}`}
         >
           {bookingDateWithResource}
         </ContentBooking>
@@ -67,17 +64,17 @@ export default function TableCalendar(props) {
     return days;
   };
 
-  const renderRowsInCalendar = (resources, numberOfDay) => {
+  const renderRowsInCalendar = resources => {
     const renderCells = new Array(resources.length)
       .fill(1)
       .map((cell, indexResource) => {
-        const days = renderCellsInCalendar(numberOfDay, indexResource);
+        const days = renderCellsInCalendar(indexResource);
 
         return (
           <RowBookingView
+            // eslint-disable-next-line no-underscore-dangle
             key={searchResult[indexResource]._id}
             overlapBooking={getMaxTotalOverlapBooking(indexResource)}
-            numberOfDay={numberOfDay}
           >
             {days}
           </RowBookingView>
@@ -86,31 +83,25 @@ export default function TableCalendar(props) {
     return renderCells;
   };
 
-  useEffect(() => {
-    return () => {};
-  }, []);
+  useEffect(() => () => {}, []);
   return (
-    <table cellPadding={0} cellSpacing={0}>
-      <tbody>
-        <tr>
-          <Sidebar
-            getMaxTotalOverlapBooking={getMaxTotalOverlapBooking}
-          ></Sidebar>
-          <DateBooking width={size.width} >
-            <HeaderCalendar
-              startDay={startDay}
-              endDay={endDay}
-            ></HeaderCalendar >
-            <ContainerBookingView height={size.height}
-              numberOfDay={getNumberOfDay(startDay, endDay)}
-            >
-              <BookingView cellPadding={0} cellSpacing={0}>
-                <tbody>{renderRowsInCalendar(searchResult, numberOfDay)}</tbody>
-              </BookingView>
-            </ContainerBookingView>
-          </DateBooking>
-        </tr>
-      </tbody>
-    </table>
+    <Container>
+      <Sidebar getMaxTotalOverlapBooking={getMaxTotalOverlapBooking}></Sidebar>
+      <DateBooking width={size.width}>
+        <HeaderCalendar startDay={startDay} endDay={endDay}></HeaderCalendar>
+        <ContainerBookingView
+          width={size.width}
+          height={size.height}
+          numberOfDay={getNumberOfDay(startDay, endDay)}
+        >
+          {renderRowsInCalendar(searchResult, numberOfDay)}
+        </ContainerBookingView>
+      </DateBooking>
+    </Container>
   );
 }
+TableCalendar.propTypes = {
+  startDay: PropTypes.instanceOf(moment),
+  endDay: PropTypes.instanceOf(moment),
+};
+export default TableCalendar;
