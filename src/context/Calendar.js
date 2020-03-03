@@ -71,16 +71,15 @@ const CalendarProvider = props => {
       }
       const bookingOverlap = bookings.filter(booking => {
         const isOverlapBooking =
-          ((compareByDay(booking.startDay, val.startDay) <= 0 &&
-            compareByDay(booking.endDay, val.startDay) >= 0) ||
-            (compareByDay(booking.startDay, val.endDay) >= 0 &&
-              compareByDay(booking.endDay, val.endDay) <= 0)) &&
-          searchResult[indexResource]._id === booking.resourceId;
+          compareByDay(booking.startDay, val.startDay) <= 0 &&
+          compareByDay(booking.endDay, val.startDay) >= 0 &&
+          searchResult[indexResource]._id === booking.resourceId &&
+          searchResult !== val.resourceId;
         return isOverlapBooking;
       });
       const numberBookingOverlap = bookingOverlap.length - 1;
       maxNumberOfBookingOverlap =
-        numberBookingOverlap > maxNumberOfBookingOverlap
+        numberBookingOverlap >= maxNumberOfBookingOverlap
           ? numberBookingOverlap
           : maxNumberOfBookingOverlap;
     });
