@@ -1,37 +1,37 @@
-import axios from "axios";
+import axios from 'axios';
 const axiosInstance = axios.create({
   baseURL: `http://localhost:${process.env.REACT_APP_PORT}/api/`,
-  timeout: 20000
+  timeout: 20000,
 });
 
 export function getData(url, data = {}) {
   return axiosInstance({
     url,
-    method: "GET",
-    data
+    method: 'GET',
+    data,
   });
 }
 
 export function addData(url, data = {}) {
   return axiosInstance({
     url,
-    method: "POST",
-    data
+    method: 'POST',
+    data,
   });
 }
 
 export function updateData({ url, data = {} }) {
   return axiosInstance({
     url,
-    method: "PATCH",
-    data
+    method: 'PATCH',
+    data,
   });
 }
 
 export function deleteData({ url, data = {} }) {
   return axiosInstance({
     url,
-    method: "DELETE",
-    data
+    method: 'DELETE',
+    data,
   });
 }

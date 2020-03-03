@@ -33,18 +33,15 @@ function TableCalendar({ startDay, endDay }) {
   function renderBooking(date, indexResource) {
     const bookingWithResource = getBookingWithResource(date, indexResource);
 
-    const bookingDateWithResourceRender = bookingWithResource.map(
-      (booking, index) => (
-        <Booking
-          // eslint-disable-next-line no-underscore-dangle
-          key={booking._id}
-          color="green"
-          isDuration
-          top={index === 0 ? 0 : 0}
-          {...booking}
-        ></Booking>
-      ),
-    );
+    const bookingDateWithResourceRender = bookingWithResource.map(booking => (
+      <Booking
+        // eslint-disable-next-line no-underscore-dangle
+        key={booking._id}
+        color="green"
+        isDuration
+        booking={booking}
+      ></Booking>
+    ));
     return bookingDateWithResourceRender;
   }
   const renderCellsInCalendar = indexResource => {
@@ -71,7 +68,6 @@ function TableCalendar({ startDay, endDay }) {
       .fill(1)
       .map((cell, indexResource) => {
         const days = renderCellsInCalendar(indexResource);
-
         return (
           <RowBookingView
             // eslint-disable-next-line no-underscore-dangle
@@ -89,7 +85,6 @@ function TableCalendar({ startDay, endDay }) {
   return (
     <Container width={size.width} height={size.height}>
       <Sidebar getMaxTotalOverlapBooking={getMaxTotalOverlapBooking}></Sidebar>
-
       <DateBooking ref={ref} {...events}>
         <HeaderCalendar startDay={startDay} endDay={endDay}></HeaderCalendar>
         <ContainerBookingView
