@@ -1,13 +1,13 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import useScrollOnDrag from 'react-scroll-ondrag';
 
 import { getNumberOfDay } from '../../utils/Date';
 import { useWindowSize } from '../../utils/Window';
 
 import Booking from './TableCalendar/Booking';
 import ContainerBookingView from './TableCalendar/Style/ContainerBookingView';
-import BookingView from './TableCalendar/Style/BookingView';
 import RowBookingView from './TableCalendar/Style/RowBookingView';
 import ContentBooking from './TableCalendar/ContentBooking';
 import DateBooking from './TableCalendar/Style/DateBooking';
@@ -19,6 +19,8 @@ import Container from './TableCalendar/Style/Container';
 
 function TableCalendar({ startDay, endDay }) {
   const [size] = useWindowSize();
+  const ref = useRef();
+  const { events } = useScrollOnDrag(ref);
   const calendarContext = useContext(CalendarContext);
   const {
     searchResult,
@@ -85,9 +87,10 @@ function TableCalendar({ startDay, endDay }) {
 
   useEffect(() => () => {}, []);
   return (
-    <Container>
+    <Container width={size.width} height={size.height}>
       <Sidebar getMaxTotalOverlapBooking={getMaxTotalOverlapBooking}></Sidebar>
-      <DateBooking width={size.width}>
+
+      <DateBooking ref={ref} {...events}>
         <HeaderCalendar startDay={startDay} endDay={endDay}></HeaderCalendar>
         <ContainerBookingView
           width={size.width}

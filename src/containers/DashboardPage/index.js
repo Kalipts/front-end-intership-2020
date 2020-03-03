@@ -1,9 +1,9 @@
-import React from "react";
-import moment from "moment";
+import React from 'react';
+import moment from 'moment';
 
 import ToolbarCalendar from './ToolbarCalendar';
 import TableCalendar from './TableCalendar';
-import { CalendarProvider } from "../../context/Calendar";
+import { CalendarProvider } from '../../context/Calendar';
 
 function DashboardPage() {
   return (
