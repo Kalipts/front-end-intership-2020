@@ -9,6 +9,5 @@ const BookingCard = styled.div`
   align-items: center;
   position: relative;
   margin-top: ${props => props.top};
-  border-radius: 1px;
 `;
 export default BookingCard;

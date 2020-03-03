@@ -25,7 +25,7 @@ const Wrapper = styled.div`
 
 const ContentBooking = props => {
   const [isActive, setIsActive] = useState(false);
-  const handleClick = e => setIsActive(!isActive);
+  const handleClick = () => setIsActive(!isActive);
 
   return (
     <Wrapper onClick={handleClick}>
