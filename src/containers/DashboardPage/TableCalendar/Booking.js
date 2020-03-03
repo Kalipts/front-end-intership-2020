@@ -1,20 +1,27 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
+import React, { useContext } from 'react';
 import BookingCard from './Style/BookingCard';
 import BookingText from './Style/BookingContent';
 import BookingTime from './Style/BookingTime';
-import moment from 'moment';
+import { HOURS_IN_DAY } from '../../App/constant';
+import { CalendarContext } from '../../../context/Calendar';
+import { compareByDay } from '../../../utils/Date';
 
 export default function Booking(props) {
-  const { startDay, endDay, detail, color, top, isDuration } = props;
-  const start = moment(startDay);
-  const end = moment(endDay);
-  const length = end.diff(start, 'days') + 1;
-  const duration = moment.duration(end.diff(start));
-  const hours = duration.asHours();
+  const { booking, color, isFirst } = props;
+  const { startDay, endDay, details, hour, isDuration, utilize } = booking;
+  const calendarContext = useContext(CalendarContext);
+  const { getMarginTopBooking } = calendarContext;
+  let top = 0;
+  if (isFirst) {
+    top = getMarginTopBooking(booking);
+  }
+  const length = compareByDay(endDay, startDay) + 1;
+  const percentageHour = (length * utilize * HOURS_IN_DAY) / 100;
   return (
     <BookingCard length={length} color={color} top={top}>
-      <BookingText>{detail}</BookingText>
-      {isDuration && <BookingTime>{`${hours}h`}</BookingTime>}
+      <BookingText>{details}</BookingText>
+      <BookingTime>{`${isDuration ? hour : percentageHour}h`}</BookingTime>
     </BookingCard>
   );
 }
