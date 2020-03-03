@@ -9,7 +9,7 @@ import {
 
 const Wrapper = styled.div`
   padding-bottom: 10px;
-  padding-top: 10px;
+  padding-top: 9px;
   width: ${`${WIDTH_CELL_IN_TABLE_CALENDAR - BORDER_CELL_IN_TABLE_CALENDAR}px`};
   border-right: 1px solid ${props => props.theme.color.borderCellCalendar};
   border-bottom: 1px solid ${props => props.theme.color.borderCellCalendar};

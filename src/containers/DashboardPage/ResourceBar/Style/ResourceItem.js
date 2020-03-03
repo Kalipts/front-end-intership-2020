@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 const ResourceItem = styled.tr`
-  border-bottom: 1px solid ${props=>props.theme.color.borderCellCalendar};
-  border-right: 1px solid ${props=>props.theme.color.borderCellCalendar};
+  border-bottom: 1px solid ${props => props.theme.color.borderCellCalendar};
+  border-right: 1px solid ${props => props.theme.color.borderCellCalendar};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
