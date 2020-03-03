@@ -8,11 +8,14 @@ import { CalendarContext } from '../../../context/Calendar';
 import { compareByDay } from '../../../utils/Date';
 
 export default function Booking(props) {
-  const { booking, color } = props;
+  const { booking, color, isFirst } = props;
   const { startDay, endDay, details, hour, isDuration, utilize } = booking;
   const calendarContext = useContext(CalendarContext);
   const { getMarginTopBooking } = calendarContext;
-  const top = getMarginTopBooking(booking);
+  let top = 0;
+  if (isFirst) {
+    top = getMarginTopBooking(booking);
+  }
   const length = compareByDay(endDay, startDay) + 1;
   const percentageHour = (length * utilize * HOURS_IN_DAY) / 100;
   return (

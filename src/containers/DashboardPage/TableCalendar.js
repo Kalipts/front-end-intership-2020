@@ -33,15 +33,18 @@ function TableCalendar({ startDay, endDay }) {
   function renderBooking(date, indexResource) {
     const bookingWithResource = getBookingWithResource(date, indexResource);
 
-    const bookingDateWithResourceRender = bookingWithResource.map(booking => (
-      <Booking
-        // eslint-disable-next-line no-underscore-dangle
-        key={booking._id}
-        color="green"
-        isDuration
-        booking={booking}
-      ></Booking>
-    ));
+    const bookingDateWithResourceRender = bookingWithResource.map(
+      (booking, index) => (
+        <Booking
+          // eslint-disable-next-line no-underscore-dangle
+          key={booking._id}
+          color="green"
+          isFirst={index === 0}
+          isDuration
+          booking={booking}
+        ></Booking>
+      ),
+    );
     return bookingDateWithResourceRender;
   }
   const renderCellsInCalendar = indexResource => {
