@@ -7,6 +7,9 @@ const Wrapper = styled.div`
   align-items: center;
   height: 30px;
   width: 100%;
+  opacity: 0.6;
+  font-family: Muli;
+  font-size: 17px;
   img {
     margin-right: 7px;
   }

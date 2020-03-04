@@ -16,6 +16,10 @@ const CalendarProvider = props => {
   const [search, setSearch] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const [bookings, setBookings] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCloseModal = () => setIsModalOpen(!isModalOpen);
+
   const fetchResource = async () => {
     setIsLoading(true);
     const res = await getResource();
@@ -124,6 +128,8 @@ const CalendarProvider = props => {
         getMaxTotalOverlapBooking,
         getBookingWithResource,
         getMarginTopBooking,
+        isModalOpen,
+        handleCloseModal,
       }}
     >
       {props.children}

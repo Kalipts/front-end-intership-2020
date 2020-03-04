@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 
-import BookingModal from '../../../components/Dashboard/BookingModal';
 import {
   WIDTH_CELL_IN_TABLE_CALENDAR,
   BORDER_CELL_IN_TABLE_CALENDAR,
 } from '../../App/constant';
 
-const Wrapper = styled.div`
+const ContentBooking = styled.div`
   padding-bottom: 10px;
   padding-top: 9px;
   width: ${`${WIDTH_CELL_IN_TABLE_CALENDAR - BORDER_CELL_IN_TABLE_CALENDAR}px`};
@@ -22,17 +21,5 @@ const Wrapper = styled.div`
       ? props.theme.color.weekendBackground
       : props.theme.color.background};
 `;
-
-const ContentBooking = props => {
-  const [isActive, setIsActive] = useState(false);
-  const handleClick = () => setIsActive(!isActive);
-
-  return (
-    <Wrapper onClick={handleClick}>
-      {isActive && <BookingModal height="200px" />}
-      {props.children}
-    </Wrapper>
-  );
-};
 
 export default ContentBooking;
