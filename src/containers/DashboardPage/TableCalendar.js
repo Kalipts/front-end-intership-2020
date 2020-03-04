@@ -1,13 +1,13 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import useScrollOnDrag from 'react-scroll-ondrag';
 
 import { getNumberOfDay } from '../../utils/Date';
 import { useWindowSize } from '../../utils/Window';
 
 import Booking from './TableCalendar/Booking';
 import ContainerBookingView from './TableCalendar/Style/ContainerBookingView';
-import BookingView from './TableCalendar/Style/BookingView';
 import RowBookingView from './TableCalendar/Style/RowBookingView';
 import ContentBooking from './TableCalendar/ContentBooking';
 import DateBooking from './TableCalendar/Style/DateBooking';
@@ -19,6 +19,8 @@ import Container from './TableCalendar/Style/Container';
 
 function TableCalendar({ startDay, endDay }) {
   const [size] = useWindowSize();
+  const ref = useRef();
+  const { events } = useScrollOnDrag(ref);
   const calendarContext = useContext(CalendarContext);
   const {
     searchResult,
@@ -37,9 +39,9 @@ function TableCalendar({ startDay, endDay }) {
           // eslint-disable-next-line no-underscore-dangle
           key={booking._id}
           color="green"
+          isFirst={index === 0}
           isDuration
-          top={index === 0 ? 0 : 0}
-          {...booking}
+          booking={booking}
         ></Booking>
       ),
     );
@@ -48,6 +50,7 @@ function TableCalendar({ startDay, endDay }) {
   const renderCellsInCalendar = indexResource => {
     const days = new Array(numberOfDay).fill(1).map((item, i) => {
       const dateInCell = moment(startDay.toString()).add(i, 'days');
+      console.log(`day in cell: ${dateInCell}`);
       const bookingDateWithResource = renderBooking(dateInCell, indexResource);
       const weekDayName = dateInCell.format('ddd');
       const isWeekend = weekDayName === 'Sun' || weekDayName === 'Sat';
@@ -69,7 +72,6 @@ function TableCalendar({ startDay, endDay }) {
       .fill(1)
       .map((cell, indexResource) => {
         const days = renderCellsInCalendar(indexResource);
-
         return (
           <RowBookingView
             // eslint-disable-next-line no-underscore-dangle
@@ -85,9 +87,9 @@ function TableCalendar({ startDay, endDay }) {
 
   useEffect(() => () => {}, []);
   return (
-    <Container>
+    <Container width={size.width} height={size.height}>
       <Sidebar getMaxTotalOverlapBooking={getMaxTotalOverlapBooking}></Sidebar>
-      <DateBooking width={size.width}>
+      <DateBooking ref={ref} {...events}>
         <HeaderCalendar startDay={startDay} endDay={endDay}></HeaderCalendar>
         <ContainerBookingView
           width={size.width}

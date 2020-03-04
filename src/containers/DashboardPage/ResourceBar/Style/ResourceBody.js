@@ -3,6 +3,6 @@ const ResourceBody = styled.tbody`
   display: table-row-group;
   vertical-align: middle;
   border-color: inherit;
-  overflow:hidden;
+  overflow: hidden;
 `;
 export default ResourceBody;

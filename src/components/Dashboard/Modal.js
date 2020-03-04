@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import StyledModal from "./StyledModal";
 import isNil from "lodash/isNil";
+import { CalendarContext } from "../../context/Calendar";
 
 const Modal = props => {
   const [onClose, setOnClose] = useState(false);
   const modal = React.createRef();
-  const { cancle } = props;
+  const calendarContext = useContext(CalendarContext);
+  const { handleCloseModal, isModalOpen } = calendarContext;
 
   const handdleToggleClose = () => setOnClose(!onClose);
 
@@ -25,7 +27,7 @@ const Modal = props => {
     const keys = {
       27: () => {
         e.preventDefault();
-        handdleToggleClose();
+        handleCloseModal();
         window.removeEventListener("keyup", handleKeyUp, false);
       }
     };
@@ -40,12 +42,20 @@ const Modal = props => {
     if (!isNil(modal)) {
       const current = modal.current;
       if (current && !current.contains(e.target)) {
-        handdleToggleClose();
+        handleCloseModal();
         document.removeEventListener("click", handleOutsideClick, false);
       }
     }
   }
-  return <>{!onClose && <StyledModal ref={modal} {...props}></StyledModal>}</>;
+  return (
+    <>
+      {isModalOpen && (
+        <StyledModal tabIndex="0" onBlur={handdleToggleClose} ref={modal}>
+          {props.children}
+        </StyledModal>
+      )}
+    </>
+  );
 };
 
 export default Modal;

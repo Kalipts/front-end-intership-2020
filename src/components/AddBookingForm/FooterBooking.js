@@ -14,36 +14,15 @@ export const ContainButton = styled.div`
   flex-direction: row-reverse;
 `;
 
-export const CancelButton = styled.div`
-  height: 30px;
-  width: 60px;
-  border-radius: 2px;
-  opacity: 0.5;
-  color: BLACK;
+export const StyledButton = styled.div`
+  background-color: ${props => (props.primary ? `${CES_ORANGE}` : "WHITE")};
+  opacity: ${props => (props.primary ? 1 : 0.5)};
+  color: ${props => (props.primary ? "WHITE" : "BLACK")};
   font-family: Muli;
   font-size: 14px;
   line-height: 18px;
-  margin-right: 15px;
-  margin-top: 11px;
-`;
-
-export const AddBookingButton = styled.button`
-  height: 40px;
-  width: 137px;
-  border-radius: 2px;
-  background-color: ${CES_ORANGE};
+  font-weight: bold;
+  padding: 15px 20px;
   border: none;
   cursor: pointer;
-`;
-
-export const AddBookingSpan = styled.span`
-  height: 18px;
-  width: 87px;
-  color: WHITE;
-  font-family: Muli;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 18px;
-  margin-left: 5px;
-  margin-top: 11px;
 `;

@@ -1,36 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
-import Modal from "./StyledModal";
-import SelectItemModal from "./SelectItemModal";
 import AddBookingForm from "../AddBookingForm/index";
+import { CalendarContext } from "../../context/Calendar";
 
 const Wrapper = styled.div`
+  width: 100px;
+  height: 100xp;
+  background-color: palegoldenrod;
   position: absolute;
   top: 0;
   left: 40px;
   z-index: 1;
 `;
 
-const BookingModal = props => {
-  const [onClose, setOnClose] = useState(false);
-
-  const onClickCancle = e => setOnClose(true);
-  // const collapse = () => setOnClose(false);
+const BookingModal = () => {
+  const calendarContext = useContext(CalendarContext);
+  const { handleCloseModal, isModalOpen } = calendarContext;
+  const [onClose, setOnClose] = useState(isModalOpen);
 
   return (
-    <Wrapper>
-      {!onClose && (
-        <Modal
-          // tabIndex="0"
-          // onBlur={collapse}
-          handleClickCancle={onClickCancle}
-          height="430px"
-          cancle="true"
-        >
-          {/* <SelectItemModal /> */}
-          <AddBookingForm />
-        </Modal>
-      )}
+    <Wrapper
+      onClick={e => {
+        handleCloseModal();
+        setOnClose(!onClose);
+      }}
+    >
+      {!onClose && isModalOpen && <AddBookingForm height="500px" />}
     </Wrapper>
   );
 };

@@ -5,6 +5,5 @@ const RowBookingView = styled.div`
   position: relative;
   display: flex;
   flex-direction: row;
-
 `;
 export default RowBookingView;
