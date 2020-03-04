@@ -16,6 +16,12 @@ import HeaderCalendar from './TableCalendar/HeaderCalendar';
 import Sidebar from './ResourceBar/Sidebar';
 import { CalendarContext } from '../../context/Calendar';
 import Container from './TableCalendar/Style/Container';
+import "./TableCalendar/Style/Hover.css";
+import {beginSelection, updateSelection, endSelection} from "../../utils/Hover";
+
+
+
+
 
 function TableCalendar({ startDay, endDay }) {
   const [size] = useWindowSize();
@@ -46,16 +52,25 @@ function TableCalendar({ startDay, endDay }) {
     return bookingDateWithResourceRender;
   }
   const renderCellsInCalendar = indexResource => {
+
+    // 35 need dynamic(num of days in a row)
+    let k = 35*(indexResource);
     const days = new Array(numberOfDay).fill(1).map((item, i) => {
       const dateInCell = moment(startDay.toString()).add(i, 'days');
       const bookingDateWithResource = renderBooking(dateInCell, indexResource);
       const weekDayName = dateInCell.format('ddd');
       const isWeekend = weekDayName === 'Sun' || weekDayName === 'Sat';
 
+      let cellValue = [dateInCell.toString(), indexResource];
       return (
         <ContentBooking
-          isWeekend={isWeekend}
-          key={`${dateInCell} ${indexResource}`}
+            beginSelection={()=>beginSelection(k+i)}
+            endSelection={()=>endSelection(k+i)}
+            updateSelection={()=>updateSelection(k+i)}
+            date_value ={cellValue}
+
+           isWeekend={isWeekend}
+           key={`${dateInCell} ${indexResource}`}
         >
           {bookingDateWithResource}
         </ContentBooking>
@@ -69,7 +84,7 @@ function TableCalendar({ startDay, endDay }) {
       .fill(1)
       .map((cell, indexResource) => {
         const days = renderCellsInCalendar(indexResource);
-
+        console.log("index resource: ", indexResource);
         return (
           <RowBookingView
             // eslint-disable-next-line no-underscore-dangle
@@ -105,3 +120,9 @@ TableCalendar.propTypes = {
   endDay: PropTypes.instanceOf(moment),
 };
 export default TableCalendar;
+
+
+
+
+
+
