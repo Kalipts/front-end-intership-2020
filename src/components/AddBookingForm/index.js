@@ -1,235 +1,96 @@
-import React, {useState} from "react";
-import styled from "styled-components";
-import {CES_ORANGE} from "../../constants/colorTypes"
-import {GridHeader, Header, HeaderBooking, Line, NewBooking, NewTimeOff} from "./HeaderBooking";
+import React, { useState } from "react";
+import Header from "./HeaderBooking";
 import {
-    BodyAddBooking, BookingTime,
-    BottomLineDate,
-    ContainDetails,
-    DateImage, DetailsBottom,
-    DetailsIcon,
-    DetailsSpan, DetailsTop,
-    Duratio,
-    DurationInside,
-    End, EndDate, EndDatePicker,
-    EndSpan,
-    Lock,
-    Percentage,
-    PercentageInside,
-    Project,
-    ProjectBody,
-    ProjectColor,
-    ProjectContain,
-    ProjectDetails,
-    ProjectIcon, ProjectName,
-    ProjectSpan,
-    ProjectTopTitle,
-    Resource,
-    ResourceAvatar,
-    ResourceBody,
-    ResourceContain,
-    ResourceIcon, ResourceName,
-    ResourceSpan,
-    ResourceTopTitle,
-    Squater,
-    Start,
-    StartDate,
-    StartDatePicker,
-    StartSpan,
-    TimeRatio,
-    TotalTime,
-    TotalTimeSpan,
-    Utilization,
-    UtilizationPercent,
-    UtilizationSpan
+  BookingTime,
+  Duration,
+  DurationInside,
+  Lock,
+  Percentage,
+  PercentageInside,
+  Squater,
+  TimeRatio,
+  TotalTime,
+  Utilization
 } from "./BodyBooking";
 
-import {AddBookingButton, AddBookingSpan, CancelButton, ContainButton, FooterBooking} from "./FooterBooking";
-import DayPickerInput from "react-datepicker";
+import Label from "./Style/Label";
+import BottomLine from "./Style/BottomLine";
+import Item from "./Item";
+import SelectedItem from "./SelectedItem";
+
+import {
+  AddBookingButton,
+  AddBookingSpan,
+  CancelButton,
+  ContainButton,
+  FooterBooking
+} from "./FooterBooking";
+import InputDate from "./InputDate";
+import Button from "./Button";
+
 import "react-datepicker/dist/react-datepicker.css";
 import useBookingForm from "./CustomHooks";
 import "./styles.css";
 import useModal from "./details/useModalDetails";
-import Modal from "./details";
+import Modal from "../Dashboard/Modal";
 
+const AddBookingForm = props => {
+  const { inputs, handleInputChange, handleSubmit } = useBookingForm();
+  const [endDate, setEndDate] = useState(props.endDate);
+  const [onClose, setOnClose] = useState(false);
 
+  const onClickCancle = e => setOnClose(true);
 
-const  BookingForm = styled.form`
-  height: 473px;
-  width: 400px;
-  border-radius: 2px;
-  box-shadow: 0 5px 50px 0 rgba(0,0,0,0,3);
-  border: 1px solid #F95B27;
-`;
+  if (onClose) return null;
 
+  return (
+    <Modal cancle="true">
+      <Header />
+      <TimeRatio>
+        <Percentage>
+          <Squater alt="" src={require("../../images/quarter.svg")} />
+          <PercentageInside>Percentage</PercentageInside>
+        </Percentage>
+        <Duration>
+          <Lock alt="" src={require("../../images/clock .svg")} />
+          <DurationInside>Duration</DurationInside>
+        </Duration>
+      </TimeRatio>
+      <BookingTime>
+        <InputDate label="Start" />
+        <InputDate label="End" />
+      </BookingTime>
+      <Utilization>
+        <Label>Utilization</Label>
+        <input />
+        <BottomLine />
+      </Utilization>
+      <TotalTime>
+        <Label>Total: 24 hours</Label>
+      </TotalTime>
+      <SelectedItem title="Projects" src={require("../../images/bag.svg")}>
+        <Item makeIcon>CES Internal Projects</Item>
+      </SelectedItem>
+      <SelectedItem
+        title="Details"
+        src={require("../../images/files-and-folders.svg")}
+      ></SelectedItem>
+      <SelectedItem title="Resource" src={require("../../images/resource.svg")}>
+        <Item src={require("../../images/Oval.png")}>Hoang Nguyen</Item>
+      </SelectedItem>
 
+      <FooterBooking>
+        <ContainButton>
+          <Button primary>
+            <span>Add Booking</span>
+          </Button>
+          <Button>
+            <span>Cancle</span>
+          </Button>
+        </ContainButton>
+      </FooterBooking>
+    </Modal>
+  );
+};
 
-
-export default function AddBookingForm (props) {
-
-    const {inputs,handleInputChange, handleSubmit} = useBookingForm();
-
-
-    const [startDate, setStartDate] = useState(props.startDate);
-    const [endDate, setEndDate] = useState(props.endDate);
-    const {isShowing, toggle} = useModal();
-
-    return (
-        <div>
-            <BookingForm onSubmit={handleSubmit}>
-                <Header>
-                    <HeaderBooking>
-                        <GridHeader>
-                            <NewBooking color={CES_ORANGE}>
-                                New Booking
-                            </NewBooking>
-                            <NewTimeOff>
-                                New Time Off
-                            </NewTimeOff>
-
-                        </GridHeader>
-                        <Line/>
-                    </HeaderBooking>
-                </Header>
-                <BodyAddBooking>
-                    <TimeRatio>
-                        <Percentage>
-                            <Squater alt="" src={require("../../images/quarter.svg")} />
-                            <PercentageInside>
-                                Percentage
-                            </PercentageInside>
-                        </Percentage>
-                        <Duratio>
-                            <Lock alt="" src={require("../../images/clock .svg")} />
-                            <DurationInside>
-                                Duration
-                            </DurationInside>
-                        </Duratio>
-                    </TimeRatio>
-                    <BookingTime>
-                        <Start>
-                            <StartSpan>
-                                Start
-                            </StartSpan>
-                            <StartDate>
-                                <DayPickerInput
-                                    name="startDate"
-                                    className="ces-day-pick"
-                                    selected={ startDate}
-                                    onChange={(date)=>setStartDate(date)}
-                                    dateFormat="d MMM, yyyy"
-                                />
-
-                                <DateImage alt="" src={require("../../images/calendar.svg")} />
-                            </StartDate>
-                            <BottomLineDate/>
-                        </Start>
-                        <End>
-                            <EndSpan>
-                                End
-                            </EndSpan>
-                            <EndDate>
-                                <DayPickerInput
-                                    name="endDate"
-                                    className="ces-day-pick"
-                                    selected={endDate}
-                                    onChange={(date)=>setEndDate(date)}
-                                    dateFormat="d MMM, yyyy"
-                                />
-
-
-                                <DateImage alt="" src={require("../../images/calendar.svg")} />
-                            </EndDate>
-                            <BottomLineDate/>
-                        </End>
-                    </BookingTime>
-                    <Utilization>
-                        <UtilizationSpan>
-                            Utilization
-                        </UtilizationSpan>
-                        <UtilizationPercent>
-                            100%
-                        </UtilizationPercent>
-                        <BottomLineDate/>
-                    </Utilization>
-                    <TotalTime>
-                        <TotalTimeSpan>
-                            Total: 24 hours
-                        </TotalTimeSpan>
-                    </TotalTime>
-                    <Project>
-                        <ProjectContain>
-                            <ProjectTopTitle>
-                                <ProjectIcon alt="" src={require('../../images/bag.svg')}/>
-                                <ProjectSpan>
-                                    Projects
-                                </ProjectSpan>
-                            </ProjectTopTitle>
-                            <ProjectBody>
-                                <ProjectColor/>
-                                <ProjectName>
-                                    CES Internal Projects
-                                </ProjectName>
-                            </ProjectBody>
-                        </ProjectContain>
-                    </Project>
-
-                    <ProjectDetails onClick={toggle}>
-                        <ContainDetails>
-                            <DetailsTop>
-                                <DetailsIcon alt="" src={require('../../images/files-and-folders.svg')}/>
-                                <DetailsSpan>
-                                    Details
-                                </DetailsSpan>
-                            </DetailsTop>
-
-                            <DetailsBottom id="details">
-                            </DetailsBottom>
-
-                        </ContainDetails>
-                        <Modal isShowing={isShowing} hide={toggle} />
-                    </ProjectDetails>
-
-                    <Resource>
-                        <ResourceContain>
-                            <ResourceTopTitle>
-                                <ResourceIcon src={require('../../images/resource.svg')}>
-                                </ResourceIcon>
-                                <ResourceSpan>
-                                    Resource
-                                </ResourceSpan>
-                            </ResourceTopTitle>
-                            <ResourceBody>
-                                <ResourceAvatar src={require("../../images/Oval.png")}>
-                                </ResourceAvatar>
-                                <ResourceName>
-                                    Hoang Nguyen
-                                </ResourceName>
-                            </ResourceBody>
-
-                        </ResourceContain>
-
-                    </Resource>
-
-
-                    <FooterBooking>
-                        <ContainButton>
-                            <AddBookingButton type="submit">
-                                <AddBookingSpan>
-                                    Add Booking
-                                </AddBookingSpan>
-                            </AddBookingButton>
-                            <CancelButton>
-                                Cancel
-                            </CancelButton>
-                        </ContainButton>
-                    </FooterBooking>
-
-                </BodyAddBooking>
-
-            </BookingForm>
-
-        </div>
-
-    );
-}
+export default AddBookingForm;

@@ -53,6 +53,7 @@ export default function TableCalendar(props) {
   const renderCellsInCalendar = (numberOfDay, indexResource) => {
     const days = new Array(numberOfDay).fill(1).map((item, i) => {
       const dateInCell = moment(startDay.toString()).add(i, 'days');
+      console.log(`day in cell: ${dateInCell}`);
       const bookingDateWithResource = renderBooking(dateInCell, indexResource);
       const weekDayName = dateInCell.format('ddd');
       const isWeekend = weekDayName === 'Sun' || weekDayName === 'Sat';
