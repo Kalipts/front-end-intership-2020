@@ -1,5 +1,6 @@
 import { getData, updateData, deleteData, addData } from "./axiosService";
 
+
 const url = `${process.env.REACT_APP_API_URL}/api/booking`;
 export const getBooking = data => {
   return getData(url, data);
@@ -15,6 +16,5 @@ export const updateBooking = data => {
 };
 
 export const addBooking = data => {
-  const bookingId = data;
-  return addData({ url: `${url}/${bookingId}`, bookingId });
+  return addData({ url: `${url}`, data });
 };

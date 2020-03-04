@@ -1,6 +1,3 @@
-
-
-
 import styled from "styled-components";
 import React from "react";
 import ReactDOM from 'react-dom';
@@ -19,7 +16,6 @@ const InputDetailsModal = styled.input`
   border-color: ${CES_ORANGE}
   
 `;
-
 
 const Modal =({isShowing, hide}) => isShowing ? ReactDOM.createPortal(
     <React.Fragment>
