@@ -10,8 +10,8 @@ import {
   Squater,
   TimeRatio,
   TotalTime,
-  Utilization
-} from "./BodyBooking";
+  Utilization,
+} from './BodyBooking.js';
 
 import Label from "./Style/Label";
 import BottomLine from "./Style/BottomLine";
