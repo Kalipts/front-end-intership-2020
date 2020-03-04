@@ -10,6 +10,7 @@ import { compareByDay } from '../../../utils/Date';
 export default function Booking(props) {
   const { booking, color, isFirst } = props;
   const { startDay, endDay, details, hour, isDuration, utilize } = booking;
+
   const calendarContext = useContext(CalendarContext);
   const { getMarginTopBooking } = calendarContext;
   let top = 0;

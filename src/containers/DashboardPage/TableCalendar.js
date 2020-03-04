@@ -45,7 +45,7 @@ function TableCalendar({ startDay, endDay }) {
           color="green"
           isDuration
           top={index === 0 ? 0 : 0}
-          {...booking}
+          booking={booking}
         ></Booking>
       ),
     );
