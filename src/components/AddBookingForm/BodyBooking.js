@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { CES_GREY_BORDER, CES_ORANGE } from "../../constants/colorTypes";
+import styled from 'styled-components';
+import { CES_GREY_BORDER, CES_ORANGE } from '../../constants/colorTypes';
 
 export const TimeRatio = styled.div`
   height: 50px;

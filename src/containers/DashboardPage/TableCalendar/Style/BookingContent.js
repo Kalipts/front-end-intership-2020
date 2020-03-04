@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 const BookingText = styled.div`
-  color:${props=>props.theme.color.none};
+  color: ${props => props.theme.color.none};
   font-family: Muli;
   font-size: 11px;
   font-weight: 500;
@@ -9,6 +9,5 @@ const BookingText = styled.div`
   margin-left: 14px;
   text-overflow: ellipsis;
   overflow: hidden;
-  
 `;
 export default BookingText;

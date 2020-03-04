@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 const DateBooking = styled.div`
-  overflow-x: scroll;
+  overflow-x: auto;
+  overflow-y: auto;
   white-space: nowrap;
   display: grid;
-  grid-auto-rows: 72px 1fr;
+  grid-template-rows: 72px auto;
 `;
 export default DateBooking;

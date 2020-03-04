@@ -4,6 +4,7 @@ const Container = styled.div`
   grid-template-columns: 183px 1fr;
   width: ${props => `${props.width - 20}px`};
   height: ${props => `${props.height - 100}px`};
-  overflow-y: scroll;
+  overflow-y: hidden;
+  overflow-x: hidden;
 `;
 export default Container;

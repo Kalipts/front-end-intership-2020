@@ -28,6 +28,7 @@ module.exports = {
   plugins: ['prettier', 'react', 'react-hooks', 'jsx-a11y'],
 
   rules: {
+    'no-underscore-dangle': 0,
     'prettier/prettier': ['error', prettierOptions],
     'arrow-body-style': [2, 'as-needed'],
     'class-methods-use-this': 0,
