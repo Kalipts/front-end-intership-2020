@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 const ResourceList = styled.div`
-  overflow: hidden;
-  padding-bottom: 0px;
+  height: auto;
 `;
 export default ResourceList;

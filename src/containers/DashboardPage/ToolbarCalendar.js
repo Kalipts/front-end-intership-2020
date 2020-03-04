@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { MAX_OFFSET_YEAR, NUMBERS_OF_MONTHS } from '../App/constant';
 import moment from 'moment';
 import { FaMinus, FaPlus } from 'react-icons/fa';
+import { MAX_OFFSET_YEAR, NUMBERS_OF_MONTHS } from '../App/constant';
 import MonthPickerItem from './ToolbarCalendarItem/MonthPickerItem';
 import MonthPickerItemText from './ToolbarCalendarItem/MonthPickerItemText';
 import Toolbar from './ToolbarCalendarItem/Toolbar';
@@ -17,38 +17,36 @@ import Bar from './ToolbarCalendarItem/Bar';
 import Ball from './ToolbarCalendarItem/Ball';
 import { useWindowSize } from '../../utils/Window';
 
-export default function ToolbarCalendar({ ...props }) {
+export default function ToolbarCalendar() {
   const [year, setYear] = useState(2019);
   const [month, setMonth] = useState(0);
   const allYears = [...Array(MAX_OFFSET_YEAR).keys()];
   const [size] = useWindowSize();
-  const listMonths = [...Array(NUMBERS_OF_MONTHS).keys()].map(m => {
-    return (
-      <MonthPickerItem
+  const listMonths = [...Array(NUMBERS_OF_MONTHS).keys()].map(m => (
+    <MonthPickerItem
+      key={m}
+      value={m}
+      onClick={() => {
+        changeMonth(m);
+      }}
+    >
+      <MonthPickerItemText
         key={m}
-        value={m}
-        onClick={evt => {
+        selected={m === month}
+        onClick={e => {
           changeMonth(m);
+          e.stopPropagation();
         }}
       >
-        <MonthPickerItemText
-          key={m}
-          selected={m === month}
-          onClick={e => {
-            changeMonth(m);
-            e.stopPropagation();
-          }}
-        >
-          {moment()
-            .month(m)
-            .format('MMM')}
-        </MonthPickerItemText>
-      </MonthPickerItem>
-    );
-  });
+        {moment()
+          .month(m)
+          .format('MMM')}
+      </MonthPickerItemText>
+    </MonthPickerItem>
+  ));
   const [isZoomed, setIsZoomed] = useState(false);
   const changeMonth = m => {
-    if(typeof(m) === "number"){
+    if (typeof m === 'number') {
       setMonth(m);
     }
   };
@@ -58,18 +56,16 @@ export default function ToolbarCalendar({ ...props }) {
       <YearPicker
         value={year}
         onChange={evt => {
-          if(typeof(evt.target.value) === "number"){
+          if (typeof evt.target.value === 'number') {
             setYear(evt.target.value);
           }
         }}
       >
-        {allYears.map(x => {
-          return (
-            <YearPickerItem key={x} value={x}>
-              {x}
-            </YearPickerItem>
-          );
-        })}
+        {allYears.map(x => (
+          <YearPickerItem key={x} value={x}>
+            {x}
+          </YearPickerItem>
+        ))}
       </YearPicker>
       <MonthPicker>{listMonths}</MonthPicker>
       <ToggleZoom>
@@ -89,7 +85,7 @@ export default function ToolbarCalendar({ ...props }) {
 
         <ButtonToggle
           onClick={() => {
-            setIsZoomed(isZoomed ? isZoomed : !isZoomed);
+            setIsZoomed(isZoomed || !isZoomed);
           }}
         >
           <TextButtonToggle>

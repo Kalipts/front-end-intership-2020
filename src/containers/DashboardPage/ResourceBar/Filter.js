@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import Profile from './Profile';
 import StyledFilter from './Style/StyledFilter';
@@ -7,17 +8,31 @@ import ContainerResource from './Style/ContainerResource';
 import SearchBar from './Style/SeachBar';
 import ResourceList from './Style/ResourceList';
 import ResourceTable from './Style/ResourceTable';
-import ResourceBody from './Style/ResourceBody';
 
 import icon from '../../../images/search.ico';
+import { useWindowSize } from '../../../utils/Window';
 
 const Filter = props => {
   const calendarContext = useContext(CalendarContext);
   const { searchResult, updateSearch } = calendarContext;
+  const [size] = useWindowSize();
+  const { scrollTop } = props;
+  const refFilter = useRef(scrollTop);
 
+  useEffect(() => {
+    refFilter.current.scrollTop = scrollTop;
+    return () => {};
+  }, [scrollTop]);
   return (
     <>
-      <ContainerResource>
+      <ContainerResource
+        ref={refFilter}
+        height={size.height}
+        onScroll={e => {
+          e.preventDefault();
+          refFilter.current.scrollTop = scrollTop;
+        }}
+      >
         <SearchBar>
           <StyledFilter>
             <input
@@ -28,29 +43,27 @@ const Filter = props => {
             <img alt="search-icon" src={icon} />
           </StyledFilter>
         </SearchBar>
-
         <ResourceList>
-          <ResourceTable cellPadding={0} cellSpacing={0}>
-            <ResourceBody>
-              {searchResult &&
-                searchResult.map((item,index) => {
-                  return (
-                    <>
-                      <Profile
-                        indexResource={index}
-                        src={item.avatar}
-                        name={item.name}
-                        key={item._id}
-                      />
-                    </>
-                  );
-                })}
-            </ResourceBody>
+          <ResourceTable numberOfResources={searchResult.length}>
+            {searchResult &&
+              searchResult.map((item, index) => (
+                <>
+                  <Profile
+                    indexResource={index}
+                    src={item.avatar}
+                    name={item.name}
+                    key={`${item._id.toString()}`}
+                  />
+                </>
+              ))}
           </ResourceTable>
         </ResourceList>
       </ContainerResource>
     </>
   );
+};
+Filter.propTypes = {
+  scrollTop: PropTypes.number,
 };
 
 export default Filter;

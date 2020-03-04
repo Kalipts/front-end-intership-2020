@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 const StyledSideBar = styled.div`
   margin-right: 2px;
   display: flex;

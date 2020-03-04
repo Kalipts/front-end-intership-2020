@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-const Name = styled.tr`
+const Name = styled.div`
   font-family: Muli;
   font-size: 11px;
   font-weight: 500;

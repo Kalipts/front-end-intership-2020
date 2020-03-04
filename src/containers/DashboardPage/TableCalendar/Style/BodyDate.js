@@ -7,5 +7,7 @@ const BodyDate = styled.div`
   overflow-x: hidden;
   display: grid;
   grid-template-rows: 36px 36px;
+  top: 0;
+  position: sticky;
 `;
 export default BodyDate;

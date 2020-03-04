@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-const ResourceItem = styled.tr`
-  border-bottom: 1px solid ${props => props.theme.color.borderCellCalendar};
+const ResourceItem = styled.div`
   border-right: 1px solid ${props => props.theme.color.borderCellCalendar};
   overflow: hidden;
   text-overflow: ellipsis;
