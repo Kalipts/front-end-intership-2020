@@ -1,5 +1,4 @@
 import React, { useContext, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import { getNumberOfDay } from '../../utils/Date';
@@ -22,24 +21,25 @@ import {
   endSelection,
 } from '../../utils/Hover';
 import BodyCalendar from './TableCalendar/Style/BodyCalendar';
+import useCellsInCalendar from './TableCalendar/useCellsInCalendar';
 
-function TableCalendar({ startDay, endDay }) {
+function TableCalendar() {
   const [size] = useWindowSize();
   const calendarContext = useContext(CalendarContext);
   const {
-    searchResult,
     getMaxTotalOverlapBooking,
-    getBookingWithResource,
+    startDay,
+    endDay,
+    setStartDay,
+    setEndDay,
   } = calendarContext;
   const ref = useRef({ current: { scrollTop: 0 } });
-  const [scroll, setScroll] = useState(0);
-
+  const [scrollTop, setScrollTop] = useState(0);
+  const { cells } = useCellsInCalendar(startDay, endDay);
   const numberOfDay = getNumberOfDay(startDay, endDay);
 
-  function renderBooking(date, indexResource) {
-    const bookingWithResource = getBookingWithResource(date, indexResource);
-
-    const bookingDateWithResourceRender = bookingWithResource.map(
+  function renderBooking(bookingsInCell) {
+    const bookingDateWithResourceRender = bookingsInCell.map(
       (booking, index) => (
         <Booking
           key={booking._id}
@@ -52,14 +52,11 @@ function TableCalendar({ startDay, endDay }) {
     );
     return bookingDateWithResourceRender;
   }
-  const renderCellsInCalendar = indexResource => {
-    // 35 need dynamic(num of days in a row)
-    const k = 35 * indexResource;
-    const days = new Array(numberOfDay).fill(1).map((item, i) => {
-      const dateInCell = moment(startDay.toString()).add(i, 'days');
-      const bookingDateWithResource = renderBooking(dateInCell, indexResource);
-      const weekDayName = dateInCell.format('ddd');
-      const isWeekend = weekDayName === 'Sun' || weekDayName === 'Sat';
+  const renderCellsInCalendar = (row, indexResource) => {
+    const k = numberOfDay * indexResource;
+    const days = row.map((cell, i) => {
+      const { dateInCell, isWeekend, bookingsInCell } = cell;
+      const bookingDateWithResource = renderBooking(bookingsInCell);
 
       const cellValue = [dateInCell.toString(), indexResource];
       return (
@@ -77,52 +74,51 @@ function TableCalendar({ startDay, endDay }) {
     });
     return days;
   };
-
-  const renderRowsInCalendar = resources => {
-    const renderCells = new Array(resources.length)
-      .fill(1)
-      .map((cell, indexResource) => {
-        const days = renderCellsInCalendar(indexResource);
-        return (
-          <RowBookingView
-            key={searchResult[indexResource]._id}
-            overlapBooking={getMaxTotalOverlapBooking(indexResource)}
-          >
-            {days}
-          </RowBookingView>
-        );
-      });
+  const renderRowsInCalendar = () => {
+    const renderCells = cells.map((row, indexResource) => {
+      const { contentResource, resourceId } = row;
+      const days = renderCellsInCalendar(contentResource, indexResource);
+      return (
+        <RowBookingView
+          key={resourceId}
+          overlapBooking={getMaxTotalOverlapBooking(resourceId)}
+        >
+          {days}
+        </RowBookingView>
+      );
+    });
     return renderCells;
+  };
+  const checkOnBoundScroll = () => {
+    const { clientWidth, scrollWidth, scrollLeft } = ref.current;
+    if (scrollLeft + clientWidth === scrollWidth) {
+      setEndDay(moment(endDay.toString()).add(35, 'days'));
+    }
+    if (scrollLeft === 0) {
+      setStartDay(moment(startDay.toString()).add(-35, 'days'));
+    }
+    setScrollTop(ref.current.scrollTop);
   };
 
   return (
     <Container height={size.height} width={size.width}>
       <Sidebar
-        scrollTop={scroll}
+        scrollTop={scrollTop}
         getMaxTotalOverlapBooking={getMaxTotalOverlapBooking}
       ></Sidebar>
-      <DateBooking
-        ref={ref}
-        height={size.height}
-        onScroll={() => {
-          setScroll(ref.current.scrollTop);
-        }}
-      >
+      <DateBooking ref={ref} height={size.height} onScroll={checkOnBoundScroll}>
         <HeaderCalendar startDay={startDay} endDay={endDay}></HeaderCalendar>
         <BodyCalendar>
           <ContainerBookingView
             width={size.width}
             numberOfDays={getNumberOfDay(startDay, endDay)}
           >
-            {renderRowsInCalendar(searchResult, numberOfDay)}
+            {renderRowsInCalendar()}
           </ContainerBookingView>
         </BodyCalendar>
       </DateBooking>
     </Container>
   );
 }
-TableCalendar.propTypes = {
-  startDay: PropTypes.instanceOf(moment),
-  endDay: PropTypes.instanceOf(moment),
-};
+TableCalendar.propTypes = {};
 export default TableCalendar;

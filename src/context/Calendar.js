@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-underscore-dangle */
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext, useCallback } from 'react';
 import moment from 'moment';
 
 import { getResource } from '../api/resourceApi';
@@ -17,6 +17,8 @@ const CalendarProvider = props => {
   const [searchResult, setSearchResult] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [startDay, setStartDay] = useState(moment('2019-12-30', 'YYYY-MM-DD'));
+  const [endDay, setEndDay] = useState(moment('2020-02-03', 'YYYY-MM-DD'));
 
   const handleCloseModal = () => setIsModalOpen(!isModalOpen);
 
@@ -36,9 +38,9 @@ const CalendarProvider = props => {
     setSearchResult(personsFilter);
     setIsLoading(false);
   };
-  const fetchBooking = async () => {
+  const fetchBooking = useCallback(async () => {
     setIsLoading(true);
-    const res = await getBooking();
+    const res = await getBooking(startDay, endDay);
     const result = res.data.bookings;
     const bookingsConvert = result.map(booking => {
       const schedule = {
@@ -48,9 +50,9 @@ const CalendarProvider = props => {
       };
       return schedule;
     });
-    setBookings(bookingsConvert);
+    setBookings([...bookingsConvert]);
     setIsLoading(false);
-  };
+  }, [startDay, endDay]);
   const updateSearch = event => {
     setSearch(event.target.value.toLowerCase());
   };
@@ -68,18 +70,18 @@ const CalendarProvider = props => {
     const marginTop = `${numberBookingOverlap * HEIGHT_BOOKING}px`;
     return marginTop;
   };
-  const getMaxTotalOverlapBooking = indexResource => {
+  const getMaxTotalOverlapBooking = resourceId => {
     let maxNumberOfBookingOverlap = 0;
     bookings.forEach(val => {
-      if (searchResult[indexResource]._id !== val.resourceId) {
+      if (resourceId !== val.resourceId) {
         return;
       }
       const bookingOverlap = bookings.filter(booking => {
         const isOverlapBooking =
           compareByDay(booking.startDay, val.startDay) <= 0 &&
           compareByDay(booking.endDay, val.startDay) >= 0 &&
-          searchResult[indexResource]._id === booking.resourceId &&
-          searchResult[indexResource]._id === val.resourceId;
+          resourceId === booking.resourceId &&
+          resourceId === val.resourceId;
         return isOverlapBooking;
       });
       const numberBookingOverlap = bookingOverlap.length - 1;
@@ -107,15 +109,18 @@ const CalendarProvider = props => {
   }
   useEffect(() => {
     fetchResource();
-    fetchBooking();
     return () => {};
   }, []);
+  useEffect(() => {
+    fetchBooking();
+    return () => {};
+  }, [fetchBooking]);
   useEffect(() => {
     const filteredResults = persons.filter(
       item => item.name.toLowerCase().indexOf(search) !== -1,
     );
     setSearchResult(filteredResults);
-  }, [search]);
+  }, [search, persons]);
   return (
     <CalendarContext.Provider
       value={{
@@ -130,6 +135,10 @@ const CalendarProvider = props => {
         getMarginTopBooking,
         isModalOpen,
         handleCloseModal,
+        setStartDay,
+        setEndDay,
+        startDay,
+        endDay,
       }}
     >
       {props.children}

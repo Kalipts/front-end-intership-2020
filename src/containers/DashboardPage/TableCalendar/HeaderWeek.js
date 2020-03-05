@@ -1,25 +1,15 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 
-import moment from 'moment';
 import WeekName from './Style/WeekName';
-import { getNumberOfDay } from '../../../utils/Date';
 
 export default function HeaderWeek(props) {
-  const { startDay, endDay } = props;
+  const { weeks } = props;
 
-  const numberOfWeek = getNumberOfDay(startDay, endDay) / 7;
-  const renderHeaderWeek = new Array(numberOfWeek)
-    .fill(1)
-    .map((headerWeek, index) => {
-      const weekInCell = moment(startDay.toString()).add(index * 7, 'days');
-      const weekNumber = weekInCell.week();
-      const year = weekInCell.year();
-      return (
-        <WeekName key={`${year} ${weekNumber}`}>
-          <span>Week {weekNumber}</span>
-        </WeekName>
-      );
-    });
+  const renderHeaderWeek = weeks.map(week => (
+    <WeekName key={`${week.year} ${week.weekNumber}`}>
+      <span>Week {week.weekNumber}</span>
+    </WeekName>
+  ));
   return <>{renderHeaderWeek}</>;
 }

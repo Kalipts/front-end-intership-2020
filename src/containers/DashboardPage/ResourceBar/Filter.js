@@ -46,15 +46,13 @@ const Filter = props => {
         <ResourceList>
           <ResourceTable numberOfResources={searchResult.length}>
             {searchResult &&
-              searchResult.map((item, index) => (
-                <>
-                  <Profile
-                    indexResource={index}
-                    src={item.avatar}
-                    name={item.name}
-                    key={`${item._id.toString()}`}
-                  />
-                </>
+              searchResult.map(item => (
+                <Profile
+                  resourceId={item._id.toString()}
+                  src={item.avatar}
+                  name={item.name}
+                  key={`${item._id.toString()}`}
+                />
               ))}
           </ResourceTable>
         </ResourceList>
