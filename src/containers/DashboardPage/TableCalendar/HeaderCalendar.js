@@ -6,22 +6,22 @@ import ContainerDate from './Style/ContainerDate';
 import BodyDate from './Style/BodyDate';
 import Week from './Style/Week';
 import DateInWeek from './Style/DateInWeek';
-import { getNumberOfDay } from '../../../utils/Date';
 import HeaderDay from './HeaderDay';
 
 import HeaderWeek from './HeaderWeek';
+import useHeaderCalendar from './useHeaderCalendar';
 
 function HeaderCalendar({ startDay, endDay }) {
-  const numberOfDays = getNumberOfDay(startDay, endDay);
+  const { dates, weeks } = useHeaderCalendar(startDay, endDay);
 
   return (
     <ContainerDate>
       <BodyDate>
-        <Week>
-          <HeaderWeek startDay={startDay} endDay={endDay}></HeaderWeek>
+        <Week numberOfWeeks={weeks.length}>
+          <HeaderWeek weeks={weeks}></HeaderWeek>
         </Week>
-        <DateInWeek numberOfDays={numberOfDays}>
-          <HeaderDay startDay={startDay} endDay={endDay}></HeaderDay>
+        <DateInWeek numberOfDays={dates.length}>
+          <HeaderDay dates={dates}></HeaderDay>
         </DateInWeek>
       </BodyDate>
     </ContainerDate>

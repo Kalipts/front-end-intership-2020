@@ -8,14 +8,14 @@ import Name from './Style/Name';
 import { CalendarContext } from '../../../context/Calendar';
 
 const Profile = props => {
-  const { src, name, indexResource } = props;
+  const { src, name, resourceId } = props;
   const calendarContext = useContext(CalendarContext);
   const { getMaxTotalOverlapBooking } = calendarContext;
 
   return (
     <ResourceItem>
       <StyledProfile
-        numberBookingOverlap={getMaxTotalOverlapBooking(indexResource)}
+        numberBookingOverlap={getMaxTotalOverlapBooking(resourceId)}
       >
         <Avatar alt="profile" src={src} />
         <Name>{name}</Name>
@@ -26,7 +26,7 @@ const Profile = props => {
 Profile.propTypes = {
   src: PropTypes.string,
   name: PropTypes.string,
-  indexResource: PropTypes.number,
+  resourceId: PropTypes.string,
 };
 
 export default Profile;
