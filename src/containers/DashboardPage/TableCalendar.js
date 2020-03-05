@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useEffect, useContext, useRef, useState } from 'react';
 import moment from 'moment';
 
 import { getNumberOfDay } from '../../utils/Date';
@@ -22,6 +22,7 @@ import {
 } from '../../utils/Hover';
 import BodyCalendar from './TableCalendar/Style/BodyCalendar';
 import useCellsInCalendar from './TableCalendar/useCellsInCalendar';
+import AddBookingForm from '../../components/AddBookingForm';
 
 function TableCalendar() {
   const [size] = useWindowSize();
@@ -32,11 +33,14 @@ function TableCalendar() {
     endDay,
     setStartDay,
     setEndDay,
+    getBookingWithResource,
+    handleCloseModal,
   } = calendarContext;
   const ref = useRef({ current: { scrollTop: 0 } });
   const [scrollTop, setScrollTop] = useState(0);
   const { cells } = useCellsInCalendar(startDay, endDay);
   const numberOfDay = getNumberOfDay(startDay, endDay);
+  const [content, setContent] = useState({});
 
   function renderBooking(bookingsInCell) {
     const bookingDateWithResourceRender = bookingsInCell.map(
@@ -52,7 +56,10 @@ function TableCalendar() {
     );
     return bookingDateWithResourceRender;
   }
-  const renderCellsInCalendar = (row, indexResource) => {
+  const renderCellsInCalendar = (resource, row, indexResource) => {
+    const handleOnClick = (bookingsInCell, date) => {
+      setContent({ resource, bookingsInCell, date });
+    };
     const k = numberOfDay * indexResource;
     const days = row.map((cell, i) => {
       const { dateInCell, isWeekend, bookingsInCell } = cell;
@@ -61,10 +68,15 @@ function TableCalendar() {
       const cellValue = [dateInCell.toString(), indexResource];
       return (
         <ContentBooking
-          beginSelection={() => beginSelection(k + i)}
-          endSelection={() => endSelection(k + i)}
-          updateSelection={() => updateSelection(k + i)}
-          date_value={cellValue}
+          onClick={() => {
+            handleOnClick(dateInCell, moment(dateInCell));
+            handleCloseModal();
+          }}
+          onMouseDown={() => beginSelection(k + i)}
+          onMouseUp={() => endSelection(k + i)}
+          onMouseMove={() => updateSelection(k + i)}
+          value={cellValue}
+          className="cell"
           isWeekend={isWeekend}
           key={`${dateInCell} ${indexResource}`}
         >
@@ -76,12 +88,16 @@ function TableCalendar() {
   };
   const renderRowsInCalendar = () => {
     const renderCells = cells.map((row, indexResource) => {
-      const { contentResource, resourceId } = row;
-      const days = renderCellsInCalendar(contentResource, indexResource);
+      const { contentResource, resource } = row;
+      const days = renderCellsInCalendar(
+        resource,
+        contentResource,
+        indexResource,
+      );
       return (
         <RowBookingView
-          key={resourceId}
-          overlapBooking={getMaxTotalOverlapBooking(resourceId)}
+          key={resource._id}
+          overlapBooking={getMaxTotalOverlapBooking(resource._id)}
         >
           {days}
         </RowBookingView>
@@ -114,11 +130,11 @@ function TableCalendar() {
             numberOfDays={getNumberOfDay(startDay, endDay)}
           >
             {renderRowsInCalendar()}
+            <AddBookingForm content={content} />
           </ContainerBookingView>
         </BodyCalendar>
       </DateBooking>
     </Container>
   );
 }
-TableCalendar.propTypes = {};
 export default TableCalendar;

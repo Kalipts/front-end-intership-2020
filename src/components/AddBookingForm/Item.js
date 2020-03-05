@@ -1,29 +1,27 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState, useContext } from 'react';
+import styled from 'styled-components';
+import Avatar from '@material-ui/core/Avatar';
+import SelecteItemModal from '../Dashboard/SelectItemModal';
+import { CalendarContext } from '../../context/Calendar';
 
 const Body = styled.div`
-  height: 30px;
   display: flex;
   margin: 5px 0;
+  cursor: pointer;
+  align-items: center;
 `;
 
 const Color = styled.div`
   height: 75%;
   width: 4px;
   border-radius: 1px;
-  background-color: ${props => props.color || "#F8465C"};
+  background-color: ${props => props.color || '#F8465C'};
   margin-right: 5px;
-`;
-
-const Icon = styled.img`
-  margin-top: 5px;
-  max-height: 25px;
-  max-width: 25px;
 `;
 
 const Name = styled.div`
   height: 18px;
-  width: 135px;
+  min-width: 150px;
   color: black;
   font-size: 15px;
   margin-left: 5px;
@@ -31,10 +29,13 @@ const Name = styled.div`
 `;
 
 const Item = props => {
+  const { onDisabled, disabled } = useContext(CalendarContext);
+  const { src, type } = props;
   return (
-    <Body>
-      {props.makeIcon ? <Color /> : <Icon src={props.src} />}
+    <Body onClick={onDisabled}>
+      {props.makeIcon ? <Color /> : <Avatar alt="icon-person" src={src} />}
       <Name>{props.children}</Name>
+      {disabled && <SelecteItemModal type={type} />}
     </Body>
   );
 };

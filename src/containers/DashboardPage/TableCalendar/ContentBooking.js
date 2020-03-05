@@ -6,7 +6,7 @@ import {
   BORDER_CELL_IN_TABLE_CALENDAR,
 } from '../../App/constant';
 
-const Wrapper = styled.div`
+const ContentBooking = styled.div`
   padding-bottom: 9px;
   padding-top: 10px;
   width: ${`${WIDTH_CELL_IN_TABLE_CALENDAR - BORDER_CELL_IN_TABLE_CALENDAR}px`};
@@ -21,24 +21,5 @@ const Wrapper = styled.div`
       ? props.theme.color.weekendBackground
       : props.theme.color.background};
 `;
-
-const ContentBooking = props => {
-  const [isActive, setIsActive] = useState(false);
-  const handleClick = e => setIsActive(!isActive);
-
-  return (
-    <Wrapper
-      onMouseDown={props.beginSelection}
-      onMouseUp={props.endSelection}
-      onMouseMove={props.updateSelection}
-      value={props.date_value}
-      className="cell"
-      /* onClick={handleClick} */
-    >
-      {isActive && <BookingModal height="200px" />}
-      {props.children}
-    </Wrapper>
-  );
-};
 
 export default ContentBooking;

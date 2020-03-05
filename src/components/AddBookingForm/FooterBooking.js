@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { CES_ORANGE } from "../../constants/colorTypes";
+import styled from 'styled-components';
+import { CES_ORANGE } from '../../constants/colorTypes';
 
 export const FooterBooking = styled.div`
   height: 42px;
@@ -15,14 +15,21 @@ export const ContainButton = styled.div`
 `;
 
 export const StyledButton = styled.div`
-  background-color: ${props => (props.primary ? `${CES_ORANGE}` : "WHITE")};
+  background-color: ${props => (props.primary ? `${CES_ORANGE}` : 'WHITE')};
   opacity: ${props => (props.primary ? 1 : 0.5)};
-  color: ${props => (props.primary ? "WHITE" : "BLACK")};
+  color: ${props => (props.primary ? 'WHITE' : 'BLACK')};
   font-family: Muli;
   font-size: 14px;
   line-height: 18px;
   font-weight: bold;
   padding: 15px 20px;
+  margin-right: 5px;
   border: none;
   cursor: pointer;
+  :hover {
+    background-color: ${props =>
+      !props.primary ? '#DCDCDC' : `${CES_ORANGE}`};
+    color: white;
+    opacity: 1;
+  }
 `;

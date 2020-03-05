@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import Header from "./HeaderBooking";
+import React, { useState, useEffect, useContext } from 'react';
+import Header from './HeaderBooking';
 import {
   BookingTime,
   Duration,
@@ -11,54 +11,51 @@ import {
   TimeRatio,
   TotalTime,
   Utilization,
-} from './BodyBooking.js';
+} from './BodyBooking';
 
-import Label from "./Style/Label";
-import BottomLine from "./Style/BottomLine";
-import Item from "./Item";
-import SelectedItem from "./SelectedItem";
+import Label from './Style/Label';
+import BottomLine from './Style/BottomLine';
+import Item from './Item';
+import SelectedItem from './SelectedItem';
 
-import {
-  AddBookingButton,
-  AddBookingSpan,
-  CancelButton,
-  ContainButton,
-  FooterBooking
-} from "./FooterBooking";
-import InputDate from "./InputDate";
-import Button from "./Button";
+import { ContainButton, FooterBooking } from './FooterBooking';
+import InputDate from './InputDate';
+import Button from './Button';
 
-import "react-datepicker/dist/react-datepicker.css";
-import useBookingForm from "./CustomHooks";
-import "./styles.css";
-import useModal from "./details/useModalDetails";
-import Modal from "../Dashboard/Modal";
+import 'react-datepicker/dist/react-datepicker.css';
+import useBookingForm from './CustomHooks';
+import './styles.css';
+import Modal from '../Dashboard/Modal';
+import { CalendarContext } from '../../context/Calendar';
 
 const AddBookingForm = props => {
   const { inputs, handleInputChange, handleSubmit } = useBookingForm();
-  const [endDate, setEndDate] = useState(props.endDate);
-  const [onClose, setOnClose] = useState(false);
-
-  const onClickCancle = e => setOnClose(true);
-
-  if (onClose) return null;
+  const { resource, bookingWithResource, date } = props.content;
+  const [person, setPerson] = useState();
+  const { handleCloseModal, disabled, onDisabled } = useContext(
+    CalendarContext,
+  );
+  useEffect(() => {
+    setPerson(resource);
+  }, [{}]);
+  const onClickCancle = () => handleCloseModal();
 
   return (
-    <Modal cancle="true">
+    <Modal disabled={disabled}>
       <Header />
       <TimeRatio>
         <Percentage>
-          <Squater alt="" src={require("../../images/quarter.svg")} />
+          <Squater alt="" src={require('../../images/quarter.svg')} />
           <PercentageInside>Percentage</PercentageInside>
         </Percentage>
         <Duration>
-          <Lock alt="" src={require("../../images/clock .svg")} />
+          <Lock alt="" src={require('../../images/clock .svg')} />
           <DurationInside>Duration</DurationInside>
         </Duration>
       </TimeRatio>
       <BookingTime>
-        <InputDate label="Start" />
-        <InputDate label="End" />
+        <InputDate label="Start" default={date} />
+        <InputDate label="End" default={date} />
       </BookingTime>
       <Utilization>
         <Label>Utilization</Label>
@@ -68,15 +65,25 @@ const AddBookingForm = props => {
       <TotalTime>
         <Label>Total: 24 hours</Label>
       </TotalTime>
-      <SelectedItem title="Projects" src={require("../../images/bag.svg")}>
-        <Item makeIcon>CES Internal Projects</Item>
+      <SelectedItem title="Projects" src={require('../../images/bag.svg')}>
+        <Item onDisabled={onDisabled} type="Project" makeIcon></Item>
       </SelectedItem>
       <SelectedItem
         title="Details"
-        src={require("../../images/files-and-folders.svg")}
+        src={require('../../images/files-and-folders.svg')}
       ></SelectedItem>
-      <SelectedItem title="Resource" src={require("../../images/resource.svg")}>
-        <Item src={require("../../images/Oval.png")}>Hoang Nguyen</Item>
+      <SelectedItem
+        onDisabled={onDisabled}
+        title="Resource"
+        src={require('../../images/resource.svg')}
+      >
+        <Item
+          onDisabled={onDisabled}
+          type="Resource"
+          src={person ? person.avatar : ''}
+        >
+          {person ? person.name : ''}
+        </Item>
       </SelectedItem>
 
       <FooterBooking>
@@ -84,7 +91,7 @@ const AddBookingForm = props => {
           <Button primary>
             <span>Add Booking</span>
           </Button>
-          <Button>
+          <Button onClick={onClickCancle}>
             <span>Cancle</span>
           </Button>
         </ContainButton>

@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react";
-import styled from "styled-components";
-import AddBookingForm from "../AddBookingForm/index";
-import { CalendarContext } from "../../context/Calendar";
+import React, { useState, useContext } from 'react';
+import styled from 'styled-components';
+import AddBookingForm from '../AddBookingForm/index';
+import { CalendarContext } from '../../context/Calendar';
 
 const Wrapper = styled.div`
   width: 100px;

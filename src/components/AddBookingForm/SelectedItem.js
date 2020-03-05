@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Wrapper = styled.div`
   min-height: 36px;
@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   border: 1px solid #dedede;
-  border-radius: 2px;
+  border-radius: 3px;
   background-color: #ffffff;
   padding: 5px 15px;
   margin-bottom: 5px;
@@ -16,11 +16,15 @@ const Wrapper = styled.div`
     width: 20px;
     height: 20px;
   }
+  :hover {
+    border: 1px solid ${props => props.theme.color.primary};
+  }
 `;
 
 const Title = styled.div`
   display: flex;
   flex-direction: row;
+  cursor: pointer;
 `;
 
 const ProjectSpan = styled.span`
@@ -33,20 +37,26 @@ const ProjectSpan = styled.span`
 `;
 
 const SelectedItem = props => {
+  const [isShowItem, setIsShowItem] = useState(false);
+
+  const toggleShowItem = () => {
+    setIsShowItem(!isShowItem);
+  };
+
   return (
     <Wrapper>
-      <Title>
+      <Title onClick={toggleShowItem}>
         <img alt="project-icon" src={props.src} />
         <ProjectSpan>{props.title}</ProjectSpan>
       </Title>
-      {props.children}
+      {isShowItem && props.children}
     </Wrapper>
   );
 };
 
 SelectedItem.propTypes = {
   title: PropTypes.string,
-  src: PropTypes.string
+  src: PropTypes.string,
 };
 
 export default SelectedItem;

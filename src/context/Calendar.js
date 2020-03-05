@@ -11,7 +11,7 @@ import { compareByDay } from '../utils/Date';
 const CalendarContext = createContext();
 
 const CalendarProvider = props => {
-  const [, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [persons, setPersons] = useState([]);
   const [search, setSearch] = useState('');
   const [searchResult, setSearchResult] = useState([]);
@@ -19,9 +19,14 @@ const CalendarProvider = props => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [startDay, setStartDay] = useState(moment('2019-12-30', 'YYYY-MM-DD'));
   const [endDay, setEndDay] = useState(moment('2020-02-03', 'YYYY-MM-DD'));
+  const [disabled, setDisabled] = useState(false);
 
-  const handleCloseModal = () => setIsModalOpen(!isModalOpen);
-
+  const handleCloseModal = key => {
+    setIsModalOpen(!isModalOpen);
+  };
+  const onDisabled = () => {
+    setDisabled(true);
+  };
   const fetchResource = async () => {
     setIsLoading(true);
     const res = await getResource();
@@ -139,6 +144,8 @@ const CalendarProvider = props => {
         setEndDay,
         startDay,
         endDay,
+        disabled,
+        onDisabled,
       }}
     >
       {props.children}

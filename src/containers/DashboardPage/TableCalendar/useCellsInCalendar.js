@@ -26,8 +26,8 @@ export default function useCellsInCalendar(startDay, endDay) {
           bookingsInCell,
         };
       });
-      const resourceId = searchResult[indexResource]._id;
-      return { contentResource, resourceId };
+      resource = searchResult[indexResource];
+      return { contentResource, resource };
     });
     setCells([...cellsInCalendars]);
 
