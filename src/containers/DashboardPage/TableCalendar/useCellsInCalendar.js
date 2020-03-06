@@ -9,7 +9,7 @@ export default function useCellsInCalendar(startDay, endDay) {
   const { searchResult, getBookingWithResource, bookings } = calendarContext;
   useEffect(() => {
     const arrays = new Array(searchResult.length).fill(0);
-    const cellsInCalendars = arrays.fill(0).map((resource, indexResource) => {
+    const cellsInCalendars = arrays.fill(0).map((row, indexResource) => {
       const numberOfdays = getNumberOfDay(startDay, endDay);
       const contentResource = new Array(numberOfdays).fill(0).map((cell, i) => {
         const dateInCell = moment(startDay.toString()).add(i, 'days');
@@ -26,7 +26,7 @@ export default function useCellsInCalendar(startDay, endDay) {
           bookingsInCell,
         };
       });
-      resource = searchResult[indexResource];
+      const resource = searchResult[indexResource];
       return { contentResource, resource };
     });
     setCells([...cellsInCalendars]);

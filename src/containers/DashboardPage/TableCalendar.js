@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import moment from 'moment';
 
 import { getNumberOfDay } from '../../utils/Date';
@@ -33,7 +33,6 @@ function TableCalendar() {
     endDay,
     setStartDay,
     setEndDay,
-    getBookingWithResource,
     handleCloseModal,
   } = calendarContext;
   const ref = useRef({ current: { scrollTop: 0 } });
@@ -130,10 +129,10 @@ function TableCalendar() {
             numberOfDays={getNumberOfDay(startDay, endDay)}
           >
             {renderRowsInCalendar()}
-            <AddBookingForm content={content} />
           </ContainerBookingView>
         </BodyCalendar>
       </DateBooking>
+      <AddBookingForm content={content} />
     </Container>
   );
 }
