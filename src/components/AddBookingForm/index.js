@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
+import moment from 'moment';
+
 import Header from './HeaderBooking';
 import {
   BookingTime,
@@ -12,12 +14,10 @@ import {
   TotalTime,
   Utilization,
 } from './BodyBooking';
-
 import Label from './Style/Label';
 import BottomLine from './Style/BottomLine';
 import Item from './Item';
 import SelectedItem from './SelectedItem';
-
 import { ContainButton, FooterBooking } from './FooterBooking';
 import InputDate from './InputDate';
 import Button from './Button';
@@ -27,8 +27,11 @@ import useBookingForm from './CustomHooks';
 import './styles.css';
 import Modal from '../Dashboard/Modal';
 import { CalendarContext } from '../../context/Calendar';
+import { compareByDay } from '../../utils/Date';
 
 const AddBookingForm = props => {
+  const [startDay, setStartDay] = useState({});
+  const [endDay, setEndDay] = useState({});
   const { inputs, handleInputChange, handleSubmit } = useBookingForm();
   const { resource, bookingWithResource, date } = props.content;
   const [person, setPerson] = useState();
@@ -37,8 +40,24 @@ const AddBookingForm = props => {
   );
   useEffect(() => {
     setPerson(resource);
-  }, [{}]);
+    if (date !== undefined) {
+      setStartDay(moment(date.toString()));
+      setEndDay(moment(date.toString()));
+    }
+  }, [props]);
   const onClickCancle = () => handleCloseModal();
+  const changeEndDay = newDate => {
+    if (compareByDay(newDate, startDay) < 0) {
+      setStartDay(moment(newDate));
+    }
+    setEndDay(newDate);
+  };
+  const changeStartDay = newDate => {
+    if (compareByDay(newDate, endDay) > 0) {
+      setEndDay(newDate);
+    }
+    setStartDay(newDate);
+  };
 
   return (
     <Modal disabled={disabled}>
@@ -54,8 +73,8 @@ const AddBookingForm = props => {
         </Duration>
       </TimeRatio>
       <BookingTime>
-        <InputDate label="Start" default={date} />
-        <InputDate label="End" default={date} />
+        <InputDate label="Start" handleChange={changeStartDay} day={startDay} />
+        <InputDate label="End" handleChange={changeEndDay} day={endDay} />
       </BookingTime>
       <Utilization>
         <Label>Utilization</Label>
