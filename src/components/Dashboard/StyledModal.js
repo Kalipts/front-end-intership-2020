@@ -6,7 +6,7 @@ const StyledModal = styled.div`
   padding: 5px 20px;
   top: 20%;
   right: 40%;
-  z-index: 10;
+  z-index: 100;
   display: block;
   flex-direction: column;
   max-height: 550px;
