@@ -39,7 +39,11 @@ function TableCalendar() {
   const [scrollTop, setScrollTop] = useState(0);
   const { cells } = useCellsInCalendar(startDay, endDay);
   const numberOfDay = getNumberOfDay(startDay, endDay);
-  const [content, setContent] = useState({});
+  const [content, setContent] = useState({
+    resource: [],
+    bookingWithResource: [],
+    date: moment(),
+  });
 
   function renderBooking(bookingsInCell) {
     const bookingDateWithResourceRender = bookingsInCell.map(

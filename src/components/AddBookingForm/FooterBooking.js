@@ -27,8 +27,7 @@ export const StyledButton = styled.div`
   border: none;
   cursor: pointer;
   :hover {
-    background-color: ${props =>
-      !props.primary ? '#DCDCDC' : `${CES_ORANGE}`};
+    background-color: ${props => (props.primary ? `${CES_ORANGE}` : '#DCDCDC')};
     color: white;
     opacity: 1;
   }

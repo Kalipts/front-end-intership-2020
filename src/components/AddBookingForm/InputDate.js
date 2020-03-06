@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DayPickerInput from 'react-datepicker';
 import * as moment from 'moment';
+import PropTypes from 'prop-types';
 
 import Label from './Style/Label';
 import BottomLine from './Style/BottomLine';
@@ -22,34 +23,41 @@ const Date = styled.div`
 `;
 
 const InputDate = props => {
-  const [selectedDay, setSelectedDay] = useState(
-    moment().format('DD MMM, YYYY'),
-  );
-
+  const { day, label } = props;
+  const [selectedDay, setSelectedDay] = useState(moment(day.toString()));
+  const { handleChange } = props;
   useEffect(() => {
-    setSelectedDay(props.default.format('DD MMM, YYYY'));
-  }, []);
+    setSelectedDay(moment(day).format('DD MMM, YYYY'));
+  }, [day]);
 
   const handleChangeDay = date => {
-    date = moment(date).format('DD MMM, YYYY');
-    setSelectedDay(date);
+    const newDateFormat = moment(date.toString());
+    handleChange(newDateFormat);
+    setSelectedDay(newDateFormat.format('DD MMM, YYYY'));
   };
+
   return (
     <Wrapper>
-      <Label>{props.label}</Label>
+      <Label>{label}</Label>
       <Date>
         <DayPickerInput
           value={selectedDay}
-          name="startDate"
+          selected={moment(selectedDay.toString()).toDate()}
           className="ces-day-pick"
           onChange={handleChangeDay}
-          dateFormat="DD MMM, YYYY"
+          onSelect={handleChangeDay}
+          dateFormat="dd MMM, yyyy"
         />
         <img alt="" src={iconDate} />
       </Date>
       <BottomLine />
     </Wrapper>
   );
+};
+InputDate.propTypes = {
+  handleChange: PropTypes.func,
+  day: PropTypes.instanceOf(moment),
+  label: PropTypes.string,
 };
 
 export default InputDate;
