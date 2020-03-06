@@ -25,23 +25,18 @@ export default function useHeaderCalendar(startDay, endDay) {
     setDates([...initialDates]);
     return initialDates;
   }, [startDay, endDay]);
-  const createWeeks = useCallback(
-    () => () => {
-      const numberOfWeek = getNumberOfDay(startDay, endDay) / 7;
-      const initialWeeks = new Array(numberOfWeek)
-        .fill(0)
-        .map((week, index) => {
-          const weekInCell = moment(startDay.toString()).add(index * 7, 'days');
-          const weekNumber = weekInCell.week();
-          const year = weekInCell.year();
+  const createWeeks = useCallback(() => {
+    const numberOfWeek = getNumberOfDay(startDay, endDay) / 7;
+    const initialWeeks = new Array(numberOfWeek).fill(0).map((week, index) => {
+      const weekInCell = moment(startDay.toString()).add(index * 7, 'days');
+      const weekNumber = weekInCell.week();
+      const year = weekInCell.year();
 
-          return { weekNumber, year };
-        });
-      setWeeks([...initialWeeks]);
-      return initialWeeks;
-    },
-    [startDay, endDay],
-  );
+      return { weekNumber, year };
+    });
+    setWeeks([...initialWeeks]);
+    return initialWeeks;
+  }, [startDay, endDay]);
   useEffect(() => {
     createDates();
     createWeeks();

@@ -59,7 +59,7 @@ const AddBookingForm = props => {
       </BookingTime>
       <Utilization>
         <Label>Utilization</Label>
-        <input />
+        <input value="100" />
         <BottomLine />
       </Utilization>
       <TotalTime>

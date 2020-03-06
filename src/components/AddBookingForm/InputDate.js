@@ -31,7 +31,7 @@ const InputDate = props => {
   }, []);
 
   const handleChangeDay = date => {
-    date = moment(date).format();
+    date = moment(date).format('DD MMM, YYYY');
     setSelectedDay(date);
   };
   return (
@@ -39,8 +39,7 @@ const InputDate = props => {
       <Label>{props.label}</Label>
       <Date>
         <DayPickerInput
-          defaultValue={selectedDay}
-          // selected={selectedDay}
+          value={selectedDay}
           name="startDate"
           className="ces-day-pick"
           onChange={handleChangeDay}
