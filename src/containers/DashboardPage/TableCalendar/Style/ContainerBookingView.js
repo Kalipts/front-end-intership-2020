@@ -12,7 +12,6 @@ const ContainerBookingView = styled.div`
     ${props => props.numberOfDays},
     ${() => `${WIDTH_CELL_IN_TABLE_CALENDAR}px`}
   );
-  position: relative;
   z-index: 2;
   max-height: fit-content;
 `;
