@@ -15,11 +15,7 @@ import Sidebar from './ResourceBar/Sidebar';
 import { CalendarContext } from '../../context/Calendar';
 import Container from './TableCalendar/Style/Container';
 import './TableCalendar/Style/Hover.css';
-import {
-  beginSelection,
-  updateSelection,
-  endSelection,
-} from '../../utils/Hover';
+
 import BodyCalendar from './TableCalendar/Style/BodyCalendar';
 import useCellsInCalendar from './TableCalendar/useCellsInCalendar';
 import AddBookingForm from '../../components/AddBookingForm';
@@ -44,6 +40,36 @@ function TableCalendar() {
     bookingWithResource: [],
     date: moment(),
   });
+  const [start, setStart] = useState(0);
+  const [end, setEnd] = useState(0);
+  const [selecting, setSelecting] = useState(false);
+  const [resourceStart, setResourceStart] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const beginSelection = (i, j) => {
+    setSelecting(true);
+    setStart(i);
+    updateSelection(i);
+    setResourceStart(j);
+    console.log('start: ', start);
+  };
+
+  const endSelection = (i = end, j) => {
+    setSelecting(false);
+    updateSelection(i);
+    console.log('end: ', end);
+  };
+
+  let updateSelection = (i, j) => {
+    console.log("resouce: ", resourceStart);
+    console.log("index rescoure: ", j);
+    if (selecting) {
+      if(j == resourceStart) {
+        setEnd(i);
+      }
+
+    }
+  };
 
   function renderBooking(bookingsInCell) {
     const bookingDateWithResourceRender = bookingsInCell.map(
@@ -69,17 +95,22 @@ function TableCalendar() {
       const bookingDateWithResource = renderBooking(bookingsInCell);
 
       const cellValue = [dateInCell.toString(), indexResource];
+      console.log('end ngoai: ', end);
       return (
         <ContentBooking
           onClick={() => {
+            setStart(0);
+            setEnd(0);
             handleOnClick(dateInCell, moment(dateInCell));
             handleCloseModal();
           }}
-          onMouseDown={() => beginSelection(k + i)}
-          onMouseUp={() => endSelection(k + i)}
-          onMouseMove={() => updateSelection(k + i)}
+          onMouseDown={() => beginSelection(k + i, indexResource)}
+          onMouseUp={() => endSelection(k + i, indexResource)}
+          onMouseMove={() => updateSelection(k + i, indexResource)}
           value={cellValue}
-          className="cell"
+          inputColor={
+             ((end <= k + i && k + i <= start || (start<= k+i && k+i <= end) && (resourceStart == indexResource)) ? "#D8D8D8": "" )
+          }
           isWeekend={isWeekend}
           key={`${dateInCell} ${indexResource}`}
         >
