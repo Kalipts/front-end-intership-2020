@@ -44,11 +44,13 @@ function TableCalendar() {
   const [end, setEnd] = useState(0);
   const [selecting, setSelecting] = useState(false);
   const [resourceStart, setResourceStart] = useState(0);
+  const [first, setFirst] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const beginSelection = (i, j) => {
     setSelecting(true);
     setStart(i);
+    setFirst(true);
     updateSelection(i);
     setResourceStart(j);
   };
@@ -59,8 +61,6 @@ function TableCalendar() {
   };
 
   let updateSelection = (i, j) => {
-    console.log("resouce: ", resourceStart);
-    console.log("index rescoure: ", j);
     if (selecting) {
       if(j == resourceStart) {
         setEnd(i);
@@ -82,6 +82,7 @@ function TableCalendar() {
     );
     return bookingDateWithResourceRender;
   }
+
   const renderCellsInCalendar = (resource, row, indexResource) => {
     const handleOnClick = (bookingsInCell, date) => {
       setContent({ resource, bookingsInCell, date });
@@ -95,8 +96,8 @@ function TableCalendar() {
       return (
         <ContentBooking
           onClick={() => {
-            setStart(0);
-            setEnd(0);
+            setStart(k + i);
+            setEnd(k + i);
             handleOnClick(dateInCell, moment(dateInCell));
             handleCloseModal();
           }}
@@ -105,7 +106,7 @@ function TableCalendar() {
           onMouseMove={() => updateSelection(k + i, indexResource)}
           value={cellValue}
           inputColor={
-             ((end <= k + i && k + i <= start || (start<= k+i && k+i <= end) && (resourceStart == indexResource)) ? "#D8D8D8": "" )
+            ((first==true)&&(end <= k + i && k + i <= start || (start<= k+i && k+i <= end) && (resourceStart == indexResource) ) ? "#D8D8D8": "" )
           }
           isWeekend={isWeekend}
           key={`${dateInCell} ${indexResource}`}
