@@ -38,7 +38,8 @@ function TableCalendar() {
   const [content, setContent] = useState({
     resource: [],
     bookingWithResource: [],
-    date: moment(),
+    startDate: moment(),
+    endDate: moment(),
   });
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(0);
@@ -46,24 +47,30 @@ function TableCalendar() {
   const [resourceStart, setResourceStart] = useState(0);
   const [first, setFirst] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [startCellDay, setStartCellDay] = useState(moment());
+  const [lastDate, setLastDate] = useState(0);
 
-  const beginSelection = (i, j) => {
+
+  const beginSelection = (i, j, startDayInCell) => {
     setSelecting(true);
     setStart(i);
     setFirst(true);
     updateSelection(i);
     setResourceStart(j);
+    setStartCellDay(startDayInCell);
   };
 
-  const endSelection = (i = end, j) => {
+  const endSelection = (i = end, endDayInCell) => {
     setSelecting(false);
     updateSelection(i);
+    setLastDate(endDayInCell);
   };
 
-  let updateSelection = (i, j) => {
+  let updateSelection = (i, j, endDayInCell) => {
     if (selecting) {
       if(j == resourceStart) {
         setEnd(i);
+        setLastDate(endDayInCell);
       }
     }
   };
@@ -84,9 +91,10 @@ function TableCalendar() {
   }
 
   const renderCellsInCalendar = (resource, row, indexResource) => {
-    const handleOnClick = (bookingsInCell, date) => {
-      setContent({ resource, bookingsInCell, date });
+    const handleOnClick = (bookingsInCell, startDate, endDate) => {
+      setContent({ resource, bookingsInCell, startDate, endDate });
     };
+
     const k = numberOfDay * indexResource;
     const days = row.map((cell, i) => {
       const { dateInCell, isWeekend, bookingsInCell } = cell;
@@ -98,12 +106,18 @@ function TableCalendar() {
           onClick={() => {
             setStart(k + i);
             setEnd(k + i);
-            handleOnClick(dateInCell, moment(dateInCell));
+            handleOnClick(dateInCell, moment(dateInCell), moment(dateInCell));
             handleCloseModal();
           }}
-          onMouseDown={() => beginSelection(k + i, indexResource)}
-          onMouseUp={() => endSelection(k + i, indexResource)}
-          onMouseMove={() => updateSelection(k + i, indexResource)}
+          onMouseDown={() => {
+            beginSelection(k + i, indexResource, moment(moment(dateInCell).toString()));
+          }}
+          onMouseUp={() => {
+            endSelection(k + i, moment(moment(dateInCell).toString()));
+            handleOnClick(dateInCell, startCellDay, lastDate);
+            handleCloseModal();
+          }}
+          onMouseMove={() => updateSelection(k + i, indexResource, moment(moment(dateInCell).toString()))}
           value={cellValue}
           inputColor={
             ((first==true)&&(end <= k + i && k + i <= start || (start<= k+i && k+i <= end) && (resourceStart == indexResource) ) ? "#D8D8D8": "" )
