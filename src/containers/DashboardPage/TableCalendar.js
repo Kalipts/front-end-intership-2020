@@ -51,13 +51,11 @@ function TableCalendar() {
     setStart(i);
     updateSelection(i);
     setResourceStart(j);
-    console.log('start: ', start);
   };
 
   const endSelection = (i = end, j) => {
     setSelecting(false);
     updateSelection(i);
-    console.log('end: ', end);
   };
 
   let updateSelection = (i, j) => {
@@ -67,7 +65,6 @@ function TableCalendar() {
       if(j == resourceStart) {
         setEnd(i);
       }
-
     }
   };
 
@@ -95,7 +92,6 @@ function TableCalendar() {
       const bookingDateWithResource = renderBooking(bookingsInCell);
 
       const cellValue = [dateInCell.toString(), indexResource];
-      console.log('end ngoai: ', end);
       return (
         <ContentBooking
           onClick={() => {
