@@ -5,7 +5,6 @@ import ToolbarCalendar from './ToolbarCalendar';
 // eslint-disable-next-line import/no-named-as-default-member
 import TableCalendar from './TableCalendar';
 import { CalendarProvider } from '../../context/Calendar';
-
 function DashboardPage() {
   return (
     <div className="app_schedule">

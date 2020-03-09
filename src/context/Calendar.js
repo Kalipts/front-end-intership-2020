@@ -50,6 +50,7 @@ const CalendarProvider = props => {
     const bookingsConvert = result.map(booking => {
       const schedule = {
         ...booking,
+        project: booking.project,
         startDay: moment(booking.startDay),
         endDay: moment(booking.endDay),
       };
