@@ -1,5 +1,7 @@
 import moment from 'moment';
 import { getData, updateData, deleteData, addData } from './axiosService';
+import Booking from '../containers/DashboardPage/TableCalendar/Booking';
+import { seperateDayByWeekend } from '../utils/Date';
 
 const url = `${process.env.REACT_APP_API_URL}/api/booking`;
 
@@ -17,4 +19,21 @@ export const deleteBooking = data => {
 
 export const updateBooking = data => updateData({ url: `${url}`, data });
 
-export const addBooking = data => addData({ url: `${url}`, data });
+export const addBooking = newBooking => {
+  const bookings = seperateDayByWeekend(newBooking.startDay, newBooking.endDay);
+  try {
+    bookings.map(booking => {
+      addData({
+        url,
+        data: {
+          ...newBooking,
+          startDay: booking.startDay,
+          endDay: booking.endDay,
+        },
+      });
+      return booking;
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
