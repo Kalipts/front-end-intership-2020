@@ -36,7 +36,7 @@ const AddBookingForm = props => {
   const [startDay, setStartDay] = useState(moment());
   const [endDay, setEndDay] = useState(moment());
   const { inputs, handleInputChange, handleSubmit } = useBookingForm();
-  const { resource, bookingWithResource, date } = props.content;
+  const { resource, bookingWithResource, startDate, endDate } = props.content;
   const [person, setPerson] = useState([]);
   const [utilize, setUtilize] = useState(100);
   const { handleCloseModal, disabled, onDisabled } = useContext(
@@ -44,8 +44,8 @@ const AddBookingForm = props => {
   );
   useEffect(() => {
     setPerson(resource);
-    setStartDay(moment(date.toString()));
-    setEndDay(moment(date.toString()));
+    setStartDay(moment(startDate.toString()));
+    setEndDay(moment(endDate.toString()));
   }, [props]);
   const onClickCancle = () => handleCloseModal();
   const changeEndDay = newDate => {
