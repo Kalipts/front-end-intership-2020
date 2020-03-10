@@ -55,6 +55,8 @@ function TableCalendar() {
     setSelecting(true);
     setStart(i);
     setFirst(true);
+    setEnd(i);
+    setLastDate(startDayInCell);
     updateSelection(i);
     setResourceStart(j);
     setStartCellDay(startDayInCell);
@@ -103,12 +105,7 @@ function TableCalendar() {
       const cellValue = [dateInCell.toString(), indexResource];
       return (
         <ContentBooking
-          onClick={() => {
-            setStart(k + i);
-            setEnd(k + i);
-            handleOnClick(dateInCell, moment(dateInCell), moment(dateInCell));
-            handleCloseModal();
-          }}
+
           onMouseDown={() => {
             beginSelection(k + i, indexResource, moment(moment(dateInCell).toString()));
           }}
