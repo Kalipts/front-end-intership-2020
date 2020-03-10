@@ -1,12 +1,13 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const StyledSearch = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 15px;
   line-height: 18px;
   border-bottom: 2px solid #ced3d7;
-  width: ${props => (props.width ? props.width : "100px")};
+  width: ${props => (props.width ? props.width : '100px')};
   input {
     width: 90%;
     font-family: Muli;

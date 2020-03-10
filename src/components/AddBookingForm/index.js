@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 
-import { Input, InputAdornment, TextField } from '@material-ui/core';
 import Header from './HeaderBooking';
 import {
   BookingTime,
@@ -14,6 +13,7 @@ import {
   TimeRatio,
   TotalTime,
   Utilization,
+  InputDetail,
 } from './BodyBooking';
 import Label from './Style/Label';
 import BottomLine from './Style/BottomLine';
@@ -29,12 +29,10 @@ import './styles.css';
 import Modal from '../Dashboard/Modal';
 import { CalendarContext } from '../../context/Calendar';
 import { compareByDay } from '../../utils/Date';
-import UtilizeInput from './UtilizeInput';
-import { HOURS_IN_DAY } from '../../containers/App/constant';
 
 const AddBookingForm = props => {
-  const [startDay, setStartDay] = useState(moment());
-  const [endDay, setEndDay] = useState(moment());
+  const [startDay, setStartDay] = useState({});
+  const [endDay, setEndDay] = useState({});
   const { inputs, handleInputChange, handleSubmit } = useBookingForm();
   const { resource, bookingWithResource, startDate, endDate } = props.content;
   const [person, setPerson] = useState([]);
@@ -80,24 +78,11 @@ const AddBookingForm = props => {
       </BookingTime>
       <Utilization>
         <Label>Utilization</Label>
-        <TextField
-          value={utilize}
-          onChange={e => setUtilize(e.target.value)}
-          id="formatted-numberformat-input"
-          InputProps={{
-            inputComponent: UtilizeInput,
-          }}
-        />
+        <input value="100" />
         <BottomLine />
       </Utilization>
       <TotalTime>
-        <Label>
-          Total:{' '}
-          {(utilize / 100) *
-            (compareByDay(endDay, startDay) + 1) *
-            HOURS_IN_DAY}{' '}
-          hours
-        </Label>
+        <Label>Total: 24 hours</Label>
       </TotalTime>
       <SelectedItem title="Projects" src={require('../../images/bag.svg')}>
         <Item onDisabled={onDisabled} type="Project" makeIcon></Item>
@@ -105,7 +90,9 @@ const AddBookingForm = props => {
       <SelectedItem
         title="Details"
         src={require('../../images/files-and-folders.svg')}
-      ></SelectedItem>
+      >
+        <InputDetail />
+      </SelectedItem>
       <SelectedItem
         onDisabled={onDisabled}
         title="Resource"

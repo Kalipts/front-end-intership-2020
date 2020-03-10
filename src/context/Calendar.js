@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import { getResource } from '../api/resourceApi';
 import { getBooking } from '../api/bookingApi';
+import { getProject } from '../api/projectApi';
 import { HEIGHT_BOOKING } from '../containers/App/constant';
 import { compareByDay } from '../utils/Date';
 
@@ -13,6 +14,7 @@ const CalendarContext = createContext();
 const CalendarProvider = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [persons, setPersons] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [search, setSearch] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const [bookings, setBookings] = useState([]);
@@ -41,6 +43,13 @@ const CalendarProvider = props => {
     });
     setPersons(personsFilter);
     setSearchResult(personsFilter);
+    setIsLoading(false);
+  };
+  const fetchProject = async () => {
+    setIsLoading(true);
+    const res = await getProject();
+    const result = res.data.projects;
+    setProjects(result);
     setIsLoading(false);
   };
   const fetchBooking = useCallback(async () => {
@@ -122,6 +131,10 @@ const CalendarProvider = props => {
     return () => {};
   }, [fetchBooking]);
   useEffect(() => {
+    fetchProject();
+    return () => {};
+  }, []);
+  useEffect(() => {
     const filteredResults = persons.filter(
       item => item.name.toLowerCase().indexOf(search) !== -1,
     );
@@ -131,6 +144,7 @@ const CalendarProvider = props => {
     <CalendarContext.Provider
       value={{
         persons,
+        projects,
         search,
         searchResult,
         updateSearch,
