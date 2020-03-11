@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 
+import { Input, TextField } from '@material-ui/core';
 import Header from './HeaderBooking';
 import {
   BookingTime,
@@ -29,10 +30,12 @@ import './styles.css';
 import Modal from '../Dashboard/Modal';
 import { CalendarContext } from '../../context/Calendar';
 import { compareByDay } from '../../utils/Date';
+import UtilizeInput from './UtilizeInput';
+import { HOURS_IN_DAY } from '../../containers/App/constant';
 
 const AddBookingForm = props => {
-  const [startDay, setStartDay] = useState({});
-  const [endDay, setEndDay] = useState({});
+  const [startDay, setStartDay] = useState(moment());
+  const [endDay, setEndDay] = useState(moment());
   const { inputs, handleInputChange, handleSubmit } = useBookingForm();
   const { resource, bookingWithResource, startDate, endDate } = props.content;
   const [person, setPerson] = useState([]);
@@ -78,11 +81,24 @@ const AddBookingForm = props => {
       </BookingTime>
       <Utilization>
         <Label>Utilization</Label>
-        <input value="100" />
+        <TextField
+          value={utilize}
+          onChange={e => setUtilize(e.target.value)}
+          id="formatted-numberformat-input"
+          InputProps={{
+            inputComponent: UtilizeInput,
+          }}
+        />
         <BottomLine />
       </Utilization>
       <TotalTime>
-        <Label>Total: 24 hours</Label>
+        <Label>
+          Total:{' '}
+          {(utilize / 100) *
+            (compareByDay(endDay, startDay) + 1) *
+            HOURS_IN_DAY}{' '}
+          hours
+        </Label>
       </TotalTime>
       <SelectedItem title="Projects" src={require('../../images/bag.svg')}>
         <Item onDisabled={onDisabled} type="Project" makeIcon></Item>

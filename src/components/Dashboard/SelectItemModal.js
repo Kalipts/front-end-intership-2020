@@ -5,7 +5,6 @@ import Avatar from '@material-ui/core/Avatar';
 
 import Label from './Label';
 import Search from '../shared/Search';
-import RadioListItem from '../RadioListItem';
 import { CalendarContext } from '../../context/Calendar';
 
 const Wrapper = styled.div`
