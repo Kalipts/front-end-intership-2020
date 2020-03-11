@@ -64,6 +64,7 @@ function TableCalendar() {
     updateSelection(i);
     setResourceStart(j);
     setStartCellDay(startDayInCell);
+    setIsHover(false);
   };
 
   const endSelection = (i = end, endDayInCell) => {
@@ -73,7 +74,9 @@ function TableCalendar() {
   };
 
   let updateSelection = (i, j, endDayInCell) => {
+
     if (selecting) {
+      setIsHover(false);
       if(j == resourceStart) {
         setEnd(i);
         setLastDate(endDayInCell);
