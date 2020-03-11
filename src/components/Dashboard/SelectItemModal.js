@@ -110,9 +110,10 @@ const Color = styled.div`
 `;
 
 const SelectItemModal = props => {
-  const { type } = props;
+  const { type, onChangeItem } = props;
   const [onClose, setOnClose] = useState(false);
   const [item, setItem] = useState([]);
+  // const [selectedItem, setSelectedItem] = useState();
   const modal = React.createRef();
   const { onDisabled, persons, projects } = useContext(CalendarContext);
   const handdleToggleClose = () => {
@@ -160,6 +161,7 @@ const SelectItemModal = props => {
       }
     }
   }
+
   return (
     <>
       {!onClose && (
@@ -174,7 +176,12 @@ const SelectItemModal = props => {
               item.map(item => (
                 <li key={item._id}>
                   <label>
-                    <input type="radio" name="radio" />
+                    <input
+                      type="radio"
+                      name="radio"
+                      value={item._id}
+                      onChange={onChangeItem}
+                    />
                     {type === 'Resource' ? (
                       <Item>
                         <Avatar src={item.avatar} alt="icon-person" />
