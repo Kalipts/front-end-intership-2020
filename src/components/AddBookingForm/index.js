@@ -48,7 +48,7 @@ const AddBookingForm = props => {
     setStartDay(moment(startDate.toString()));
     setEndDay(moment(endDate.toString()));
   }, [props]);
-  const onClickCancle = () => handleCloseModal();
+  const onClickCancle = i => handleCloseModal(i);
   const changeEndDay = newDate => {
     if (compareByDay(newDate, startDay) < 0) {
       setStartDay(moment(newDate));
@@ -128,7 +128,7 @@ const AddBookingForm = props => {
           <Button primary>
             <span>Add Booking</span>
           </Button>
-          <Button onClick={onClickCancle}>
+          <Button onClick={()=>onClickCancle(false)}>
             <span>Cancle</span>
           </Button>
         </ContainButton>
