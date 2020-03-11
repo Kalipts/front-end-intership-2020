@@ -70,7 +70,7 @@ function TableCalendar() {
 
   let updateSelection = (i, j, endDayInCell) => {
     if (selecting) {
-      if(j == resourceStart) {
+      if (j == resourceStart) {
         setEnd(i);
         setLastDate(endDayInCell);
       }
@@ -117,7 +117,13 @@ function TableCalendar() {
           onMouseMove={() => updateSelection(k + i, indexResource, moment(moment(dateInCell).toString()))}
           value={cellValue}
           inputColor={
-            ((first==true)&&(end <= k + i && k + i <= start || (start<= k+i && k+i <= end) && (resourceStart == indexResource) ) ? "#D8D8D8": "" )
+            first == true &&
+            ((end <= k + i && k + i <= start) ||
+              (start <= k + i &&
+                k + i <= end &&
+                resourceStart == indexResource))
+              ? '#D8D8D8'
+              : ''
           }
           isWeekend={isWeekend}
           key={`${dateInCell} ${indexResource}`}
