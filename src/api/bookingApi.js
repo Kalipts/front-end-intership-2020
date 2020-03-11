@@ -20,17 +20,11 @@ export const addBooking = newBooking => {
   const bookings = seperateDayByWeekend(newBooking.startDay, newBooking.endDay);
   try {
     bookings.map(booking => {
-      console.log(...newBooking, booking.startDay, booking.endDay);
-      debugger;
-      const req = addData({
-        url: `${url}`,
-        data: {
-          ...newBooking,
-          startDay: booking.startDay,
-          endDay: booking.endDay,
-        },
+      addData(`${url}`, {
+        ...newBooking,
+        startDay: booking.startDay,
+        endDay: booking.endDay,
       });
-      console.log(req);
       return booking;
     });
   } catch (error) {
