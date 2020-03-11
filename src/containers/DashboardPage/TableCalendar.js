@@ -118,6 +118,7 @@ function TableCalendar() {
           value={cellValue}
           inputColor={
             ((first==true)&&(end <= k + i && k + i <= start || (start<= k+i && k+i <= end) && (resourceStart == indexResource) ) ? "#D8D8D8": "" )
+
           }
           isWeekend={isWeekend}
           key={`${dateInCell} ${indexResource}`}
