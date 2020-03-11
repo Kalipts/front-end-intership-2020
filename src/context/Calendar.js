@@ -4,8 +4,8 @@ import React, { useState, useEffect, createContext, useCallback } from 'react';
 import moment from 'moment';
 
 import { getResource } from '../api/resourceApi';
-import { getBooking } from '../api/bookingApi';
 import { getProject } from '../api/projectApi';
+import { getBooking, deleteBooking } from '../api/bookingApi';
 import { HEIGHT_BOOKING } from '../containers/App/constant';
 import { compareByDay } from '../utils/Date';
 
@@ -68,6 +68,12 @@ const CalendarProvider = props => {
     setBookings([...bookingsConvert]);
     setIsLoading(false);
   }, [startDay, endDay]);
+  const removeBooking = async id => {
+    const updateBooking = bookings.filter(booking => booking._id !== id);
+    await deleteBooking(id);
+    setBookings([...updateBooking]);
+  };
+
   const updateSearch = event => {
     setSearch(event.target.value.toLowerCase());
   };
@@ -161,6 +167,7 @@ const CalendarProvider = props => {
         endDay,
         disabled,
         onDisabled,
+        removeBooking,
       }}
     >
       {props.children}
