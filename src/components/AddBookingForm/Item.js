@@ -12,10 +12,10 @@ const Body = styled.div`
 `;
 
 const Color = styled.div`
-  height: 75%;
-  width: 4px;
+  height: 17px;
+  width: 5px;
   border-radius: 1px;
-  background-color: ${props => props.color || '#F8465C'};
+  background-color: ${props => props.color || 'none'};
   margin-right: 5px;
 `;
 
@@ -30,7 +30,7 @@ const Name = styled.div`
 
 const Item = props => {
   const { onDisabled, disabled } = useContext(CalendarContext);
-  const { src, type } = props;
+  const { src, type, onChangeItem } = props;
   return (
     <Body onClick={onDisabled}>
       {props.makeIcon ? (
@@ -39,7 +39,7 @@ const Item = props => {
         <Avatar alt="icon-person" src={src} />
       )}
       <Name>{props.children}</Name>
-      {disabled && <SelecteItemModal type={type} />}
+      {disabled && <SelecteItemModal onChangeItem={onChangeItem} type={type} />}
     </Body>
   );
 };
