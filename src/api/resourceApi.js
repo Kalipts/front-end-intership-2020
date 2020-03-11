@@ -10,7 +10,4 @@ export const deleteResource = data => {
 
 export const updateResource = data => updateData({ url: `${url}`, data });
 
-export const addResource = data => {
-  const resourceId = data;
-  return addData({ url: `${url}/${resourceId}`, resourceId });
-};
+export const addResource = data => addData({ url: `${url}`, data });

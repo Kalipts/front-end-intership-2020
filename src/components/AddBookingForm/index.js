@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 
-import { Input, InputAdornment, TextField } from '@material-ui/core';
+import { Input, TextField } from '@material-ui/core';
 import Header from './HeaderBooking';
 import {
   BookingTime,
@@ -14,6 +14,7 @@ import {
   TimeRatio,
   TotalTime,
   Utilization,
+  InputDetail,
 } from './BodyBooking';
 import Label from './Style/Label';
 import BottomLine from './Style/BottomLine';
@@ -31,17 +32,24 @@ import { CalendarContext } from '../../context/Calendar';
 import { compareByDay } from '../../utils/Date';
 import UtilizeInput from './UtilizeInput';
 import { HOURS_IN_DAY } from '../../containers/App/constant';
+import { addBooking } from '../../api/bookingApi';
 
 const AddBookingForm = props => {
   const [startDay, setStartDay] = useState(moment());
   const [endDay, setEndDay] = useState(moment());
   const { inputs, handleInputChange, handleSubmit } = useBookingForm();
   const { resource, bookingWithResource, startDate, endDate } = props.content;
+  const [details, setDetails] = useState([]);
   const [person, setPerson] = useState([]);
   const [utilize, setUtilize] = useState(100);
-  const { handleCloseModal, disabled, onDisabled } = useContext(
-    CalendarContext,
-  );
+  const [project, setProject] = useState([]);
+  const {
+    handleCloseModal,
+    disabled,
+    onDisabled,
+    persons,
+    projects,
+  } = useContext(CalendarContext);
   useEffect(() => {
     setPerson(resource);
     setStartDay(moment(startDate.toString()));
@@ -59,6 +67,37 @@ const AddBookingForm = props => {
       setEndDay(newDate);
     }
     setStartDay(newDate);
+  };
+
+  const hours = (utilize, end, start) =>
+    (utilize / 100) * (compareByDay(end, start) + 1) * HOURS_IN_DAY;
+  const onChangeDetail = e => {
+    setDetails(e.target.value);
+  };
+
+  const onChangePerson = e => {
+    const _id = e.target.value;
+    const selectedPerson = persons.find(e => e._id === _id);
+    setPerson(selectedPerson);
+  };
+
+  const onChangeProject = e => {
+    const _id = e.target.value;
+    const selectedProject = projects.find(e => e._id === _id);
+    setProject(selectedProject);
+  };
+
+  const addNewBooking = async () => {
+    const newBooking = {
+      utilize,
+      hour: hours(utilize, startDay, endDay),
+      startDay,
+      endDay,
+      details,
+      resourceId: person._id,
+      project: project._id,
+    };
+    await addBooking(newBooking);
   };
 
   return (
@@ -91,21 +130,25 @@ const AddBookingForm = props => {
         <BottomLine />
       </Utilization>
       <TotalTime>
-        <Label>
-          Total:{' '}
-          {(utilize / 100) *
-            (compareByDay(endDay, startDay) + 1) *
-            HOURS_IN_DAY}{' '}
-          hours
-        </Label>
+        <Label>Total: {hours(utilize, endDay, startDay)} hours</Label>
       </TotalTime>
       <SelectedItem title="Projects" src={require('../../images/bag.svg')}>
-        <Item onDisabled={onDisabled} type="Project" makeIcon></Item>
+        <Item
+          onDisabled={onDisabled}
+          type="Project"
+          makeIcon
+          src={project ? project.color : ''}
+          onChangeItem={onChangeProject}
+        >
+          {project && project.name}
+        </Item>
       </SelectedItem>
       <SelectedItem
         title="Details"
         src={require('../../images/files-and-folders.svg')}
-      ></SelectedItem>
+      >
+        <InputDetail onChange={onChangeDetail} />
+      </SelectedItem>
       <SelectedItem
         onDisabled={onDisabled}
         title="Resource"
@@ -115,6 +158,7 @@ const AddBookingForm = props => {
           onDisabled={onDisabled}
           type="Resource"
           src={person ? person.avatar : ''}
+          onChangeItem={onChangePerson}
         >
           {person ? person.name : ''}
         </Item>
@@ -122,7 +166,7 @@ const AddBookingForm = props => {
 
       <FooterBooking>
         <ContainButton>
-          <Button primary>
+          <Button primary onClick={addNewBooking}>
             <span>Add Booking</span>
           </Button>
           <Button onClick={onClickCancle}>
