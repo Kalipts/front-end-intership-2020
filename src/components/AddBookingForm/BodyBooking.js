@@ -86,3 +86,8 @@ export const TotalTime = styled.div`
   margin-top: 15px;
   padding: 5px auto;
 `;
+
+export const InputDetail = styled.input`
+  border: none;
+  outline: none;
+`;

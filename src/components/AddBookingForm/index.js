@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 
-import { Input, InputAdornment, TextField } from '@material-ui/core';
+import { Input, TextField } from '@material-ui/core';
 import Header from './HeaderBooking';
 import {
   BookingTime,
@@ -14,6 +14,7 @@ import {
   TimeRatio,
   TotalTime,
   Utilization,
+  InputDetail,
 } from './BodyBooking';
 import Label from './Style/Label';
 import BottomLine from './Style/BottomLine';
@@ -105,7 +106,9 @@ const AddBookingForm = props => {
       <SelectedItem
         title="Details"
         src={require('../../images/files-and-folders.svg')}
-      ></SelectedItem>
+      >
+        <InputDetail />
+      </SelectedItem>
       <SelectedItem
         onDisabled={onDisabled}
         title="Resource"

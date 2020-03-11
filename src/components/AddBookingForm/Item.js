@@ -33,7 +33,11 @@ const Item = props => {
   const { src, type } = props;
   return (
     <Body onClick={onDisabled}>
-      {props.makeIcon ? <Color /> : <Avatar alt="icon-person" src={src} />}
+      {props.makeIcon ? (
+        <Color color={src} />
+      ) : (
+        <Avatar alt="icon-person" src={src} />
+      )}
       <Name>{props.children}</Name>
       {disabled && <SelecteItemModal type={type} />}
     </Body>

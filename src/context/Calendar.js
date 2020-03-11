@@ -4,7 +4,8 @@ import React, { useState, useEffect, createContext, useCallback } from 'react';
 import moment from 'moment';
 
 import { getResource } from '../api/resourceApi';
-import { getBooking } from '../api/bookingApi';
+import { getProject } from '../api/projectApi';
+import { getBooking, deleteBooking } from '../api/bookingApi';
 import { HEIGHT_BOOKING } from '../containers/App/constant';
 import { compareByDay } from '../utils/Date';
 
@@ -13,6 +14,7 @@ const CalendarContext = createContext();
 const CalendarProvider = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [persons, setPersons] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [search, setSearch] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const [bookings, setBookings] = useState([]);
@@ -43,6 +45,13 @@ const CalendarProvider = props => {
     setSearchResult(personsFilter);
     setIsLoading(false);
   };
+  const fetchProject = async () => {
+    setIsLoading(true);
+    const res = await getProject();
+    const result = res.data.projects;
+    setProjects(result);
+    setIsLoading(false);
+  };
   const fetchBooking = useCallback(async () => {
     setIsLoading(true);
     const res = await getBooking(startDay, endDay);
@@ -59,6 +68,12 @@ const CalendarProvider = props => {
     setBookings([...bookingsConvert]);
     setIsLoading(false);
   }, [startDay, endDay]);
+  const removeBooking = async id => {
+    const updateBooking = bookings.filter(booking => booking._id !== id);
+    await deleteBooking(id);
+    setBookings([...updateBooking]);
+  };
+
   const updateSearch = event => {
     setSearch(event.target.value.toLowerCase());
   };
@@ -122,6 +137,10 @@ const CalendarProvider = props => {
     return () => {};
   }, [fetchBooking]);
   useEffect(() => {
+    fetchProject();
+    return () => {};
+  }, []);
+  useEffect(() => {
     const filteredResults = persons.filter(
       item => item.name.toLowerCase().indexOf(search) !== -1,
     );
@@ -131,6 +150,7 @@ const CalendarProvider = props => {
     <CalendarContext.Provider
       value={{
         persons,
+        projects,
         search,
         searchResult,
         updateSearch,
@@ -147,6 +167,7 @@ const CalendarProvider = props => {
         endDay,
         disabled,
         onDisabled,
+        removeBooking,
       }}
     >
       {props.children}

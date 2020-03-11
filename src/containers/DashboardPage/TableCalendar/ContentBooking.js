@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
 import styled from 'styled-components';
-import BookingModal from '../../../components/Dashboard/BookingModal';
 import {
   WIDTH_CELL_IN_TABLE_CALENDAR,
   BORDER_CELL_IN_TABLE_CALENDAR,
