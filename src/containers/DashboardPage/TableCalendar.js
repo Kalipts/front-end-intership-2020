@@ -19,6 +19,7 @@ import './TableCalendar/Style/Hover.css';
 import BodyCalendar from './TableCalendar/Style/BodyCalendar';
 import useCellsInCalendar from './TableCalendar/useCellsInCalendar';
 import AddBookingForm from '../../components/AddBookingForm';
+import {CES_ORANGE_HOVER} from "../../constants/colorTypes";
 
 function TableCalendar() {
   const [size] = useWindowSize();
@@ -49,7 +50,10 @@ function TableCalendar() {
   const [isOpen, setIsOpen] = useState(false);
   const [startCellDay, setStartCellDay] = useState(moment());
   const [lastDate, setLastDate] = useState(0);
-
+  const [isHover, setIsHover] = useState(false);
+  const [firstHover, setFirstHover] = useState(0);
+  const [lastHover, setLastHover] = useState(0);
+  const [numOfSelecting, setNumOfSelecting] = useState(0);
 
   const beginSelection = (i, j, startDayInCell) => {
     setSelecting(true);
@@ -74,6 +78,19 @@ function TableCalendar() {
         setEnd(i);
         setLastDate(endDayInCell);
       }
+    }
+  };
+
+  const enterSelection = (i, firstHover_, lastHover_) => {
+    setIsHover(true);
+    setFirstHover(firstHover_);
+    setLastHover(lastHover_);
+    setNumOfSelecting(i);
+  };
+
+  const leaveSelection = i => {
+    if (i === numOfSelecting) {
+      setIsHover(false);
     }
   };
 
@@ -119,6 +136,15 @@ function TableCalendar() {
           inputColor={
             ((first==true)&&(end <= k + i && k + i <= start || (start<= k+i && k+i <= end) && (resourceStart == indexResource) ) ? "#D8D8D8": "" )
           }
+          hoverColor={
+            ((isHover===true) && (k+i >= firstHover) && (k+i < lastHover) ? CES_ORANGE_HOVER : "")
+          }
+          onMouseEnter={()=> {
+            enterSelection(k+i,numberOfDay*indexResource, numberOfDay*(indexResource+1))
+          }}
+          onMouseLeave={()=>{
+            leaveSelection(k+i);
+          }}
           isWeekend={isWeekend}
           key={`${dateInCell} ${indexResource}`}
         >

@@ -20,7 +20,7 @@ const ContentBooking = styled.div`
     props.isWeekend
       ? props.theme.color.weekendBackground
       : props.theme.color.background};*/
-  background-color: ${props => props.inputColor || 'white'};
+  background-color: ${props => props.inputColor || props.hoverColor || 'white'};
 `;
 
 export default ContentBooking;
