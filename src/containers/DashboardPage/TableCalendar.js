@@ -19,7 +19,7 @@ import './TableCalendar/Style/Hover.css';
 import BodyCalendar from './TableCalendar/Style/BodyCalendar';
 import useCellsInCalendar from './TableCalendar/useCellsInCalendar';
 import AddBookingForm from '../../components/AddBookingForm';
-import {CES_ORANGE_HOVER} from "../../constants/colorTypes";
+import { CES_ORANGE_HOVER } from '../../constants/colorTypes';
 
 function TableCalendar() {
   const [size] = useWindowSize();
@@ -31,6 +31,8 @@ function TableCalendar() {
     setStartDay,
     setEndDay,
     handleCloseModal,
+    hoverWorking,
+    setBegin,
   } = calendarContext;
   const ref = useRef({ current: { scrollTop: 0 } });
   const [scrollTop, setScrollTop] = useState(0);
@@ -54,6 +56,7 @@ function TableCalendar() {
   const [firstHover, setFirstHover] = useState(0);
   const [lastHover, setLastHover] = useState(0);
   const [numOfSelecting, setNumOfSelecting] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
 
   const beginSelection = (i, j, startDayInCell) => {
     setSelecting(true);
@@ -65,12 +68,14 @@ function TableCalendar() {
     setResourceStart(j);
     setStartCellDay(startDayInCell);
     setIsHover(false);
+    setBegin();
   };
 
   const endSelection = (i = end, endDayInCell) => {
     setSelecting(false);
     updateSelection(i);
     setLastDate(endDayInCell);
+
   };
 
   let updateSelection = (i, j, endDayInCell) => {
@@ -127,17 +132,20 @@ function TableCalendar() {
         <ContentBooking
 
           onMouseDown={() => {
+
             beginSelection(k + i, indexResource, moment(moment(dateInCell).toString()));
           }}
           onMouseUp={() => {
+
             endSelection(k + i, moment(moment(dateInCell).toString()));
             handleOnClick(dateInCell, startCellDay, lastDate);
-            handleCloseModal();
+            setIsOpen(true);
+            handleCloseModal(true);
           }}
           onMouseMove={() => updateSelection(k + i, indexResource, moment(moment(dateInCell).toString()))}
           value={cellValue}
           inputColor={
-            first == true &&
+            (hoverWorking() ==true)&&(first == true) &&
             ((end <= k + i && k + i <= start) ||
               (start <= k + i &&
                 k + i <= end &&

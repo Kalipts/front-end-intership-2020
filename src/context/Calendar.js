@@ -22,10 +22,23 @@ const CalendarProvider = props => {
   const [startDay, setStartDay] = useState(moment('2019-12-30', 'YYYY-MM-DD'));
   const [endDay, setEndDay] = useState(moment('2020-02-03', 'YYYY-MM-DD'));
   const [disabled, setDisabled] = useState(false);
+  const [isHoverWorking, setIsHoverWorking] = useState(true);
 
+
+
+  const setBegin = () => {
+    setIsHoverWorking(true);
+  };
   const handleCloseModal = key => {
     setIsModalOpen(!isModalOpen);
+    if(key == false)
+    setIsHoverWorking(false);
+    else setIsHoverWorking(true);
   };
+  const hoverWorking = () => {
+    return isHoverWorking;
+  };
+
   const onDisabled = () => {
     setDisabled(true);
   };
@@ -168,6 +181,8 @@ const CalendarProvider = props => {
         disabled,
         onDisabled,
         removeBooking,
+        hoverWorking,
+        setBegin,
       }}
     >
       {props.children}
