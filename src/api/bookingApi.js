@@ -28,7 +28,6 @@ export const addBooking = newBooking => {
       return booking;
     });
   } catch (error) {
-    console.log(error);
     alert("Don't add booking", error);
   }
 };

@@ -125,7 +125,6 @@ function TableCalendar() {
       const cellValue = [dateInCell.toString(), indexResource];
       return (
         <ContentBooking
-
           onMouseDown={() => {
             beginSelection(k + i, indexResource, moment(moment(dateInCell).toString()));
           }}
