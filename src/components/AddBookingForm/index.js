@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 
-import { Input, TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import Header from './HeaderBooking';
 import {
   BookingTime,
@@ -39,7 +39,7 @@ const AddBookingForm = props => {
   const [endDay, setEndDay] = useState(moment());
   const { inputs, handleInputChange, handleSubmit } = useBookingForm();
   const { resource, bookingWithResource, startDate, endDate } = props.content;
-  const [details, setDetails] = useState([]);
+  const [details, setDetails] = useState();
   const [person, setPerson] = useState([]);
   const [utilize, setUtilize] = useState(100);
   const [project, setProject] = useState([]);
@@ -49,6 +49,7 @@ const AddBookingForm = props => {
     onDisabled,
     persons,
     projects,
+    fetchBooking,
   } = useContext(CalendarContext);
   useEffect(() => {
     setPerson(resource);
@@ -71,17 +72,17 @@ const AddBookingForm = props => {
 
   const hours = (utilize, end, start) =>
     (utilize / 100) * (compareByDay(end, start) + 1) * HOURS_IN_DAY;
-  const onChangeDetail = e => {
+  const handleChangeDetail = e => {
     setDetails(e.target.value);
   };
 
-  const onChangePerson = e => {
+  const handleChangePerson = e => {
     const _id = e.target.value;
     const selectedPerson = persons.find(e => e._id === _id);
     setPerson(selectedPerson);
   };
 
-  const onChangeProject = e => {
+  const handleChangeProject = e => {
     const _id = e.target.value;
     const selectedProject = projects.find(e => e._id === _id);
     setProject(selectedProject);
@@ -98,6 +99,8 @@ const AddBookingForm = props => {
       project: project._id,
     };
     await addBooking(newBooking);
+    fetchBooking();
+    onClickCancle();
   };
 
   return (
@@ -138,7 +141,7 @@ const AddBookingForm = props => {
           type="Project"
           makeIcon
           src={project ? project.color : ''}
-          onChangeItem={onChangeProject}
+          onChangeItem={handleChangeProject}
         >
           {project && project.name}
         </Item>
@@ -147,7 +150,7 @@ const AddBookingForm = props => {
         title="Details"
         src={require('../../images/files-and-folders.svg')}
       >
-        <InputDetail onChange={onChangeDetail} />
+        <InputDetail onChange={handleChangeDetail} />
       </SelectedItem>
       <SelectedItem
         onDisabled={onDisabled}
@@ -158,7 +161,7 @@ const AddBookingForm = props => {
           onDisabled={onDisabled}
           type="Resource"
           src={person ? person.avatar : ''}
-          onChangeItem={onChangePerson}
+          onChangeItem={handleChangePerson}
         >
           {person ? person.name : ''}
         </Item>
@@ -169,7 +172,7 @@ const AddBookingForm = props => {
           <Button primary onClick={addNewBooking}>
             <span>Add Booking</span>
           </Button>
-          <Button onClick={()=>onClickCancle(false)}>
+          <Button onClick={() => onClickCancle(false)}>
             <span>Cancle</span>
           </Button>
         </ContainButton>

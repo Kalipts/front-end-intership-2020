@@ -23,6 +23,12 @@ const Wrapper = styled.div`
   outline-offset: 0.5px;
   justify-content: center;
   align-items: center;
+  /* &&& {
+    opacity: 0.25;
+  }
+  && {
+    opacity: 1;
+  } */
 `;
 
 const ListItem = styled.ul`
