@@ -24,20 +24,15 @@ const CalendarProvider = props => {
   const [disabled, setDisabled] = useState(false);
   const [isHoverWorking, setIsHoverWorking] = useState(true);
 
-
-
   const setBegin = () => {
     setIsHoverWorking(true);
   };
   const handleCloseModal = key => {
     setIsModalOpen(!isModalOpen);
-    if(key == false)
-    setIsHoverWorking(false);
+    if (key == false) setIsHoverWorking(false);
     else setIsHoverWorking(true);
   };
-  const hoverWorking = () => {
-    return isHoverWorking;
-  };
+  const hoverWorking = () => isHoverWorking;
 
   const onDisabled = () => {
     setDisabled(true);
@@ -169,6 +164,7 @@ const CalendarProvider = props => {
         updateSearch,
         bookings,
         setBookings,
+        fetchBooking,
         getMaxTotalOverlapBooking,
         getBookingWithResource,
         getMarginTopBooking,
