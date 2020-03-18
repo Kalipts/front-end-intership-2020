@@ -1,5 +1,8 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { useDrop } from 'react-dnd';
+
+import moment from 'moment';
 import ItemTypes from './ItemTypes';
 import ContentBooking from './ContentBooking';
 import { CalendarContext } from '../../../context/Calendar';
@@ -10,7 +13,7 @@ export default function DropTargerCell(props) {
     onMouseDown,
     onMouseUp,
     onMouseMove,
-    cellValue,
+    value,
     inputColor,
     hoverColor,
     onMouseEnter,
@@ -21,7 +24,7 @@ export default function DropTargerCell(props) {
   } = props;
   const calendarContext = useContext(CalendarContext);
   const { updateOnDidDragBooking } = calendarContext;
-  const [{}, drop] = useDrop({
+  const [, drop] = useDrop({
     accept: ItemTypes.BOOKING,
     drop: (item, monitor) => {
       const booking = monitor.getItem();
@@ -45,7 +48,7 @@ export default function DropTargerCell(props) {
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseMove={onMouseMove}
-      value={cellValue}
+      value={value}
       inputColor={inputColor}
       hoverColor={hoverColor}
       onMouseEnter={onMouseEnter}
@@ -56,3 +59,17 @@ export default function DropTargerCell(props) {
     </ContentBooking>
   );
 }
+DropTargerCell.propTypes = {
+  onMouseDown: PropTypes.func,
+  onMouseUp: PropTypes.func,
+  onMouseMove: PropTypes.func,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  inputColor: PropTypes.string,
+  hoverColor: PropTypes.string,
+  onMouseEnter: PropTypes.func,
+  onMouseLeave: PropTypes.func,
+  isWeekend: PropTypes.bool,
+  resourceId: PropTypes.string,
+  date: PropTypes.instanceOf(moment),
+  children: PropTypes.node,
+};

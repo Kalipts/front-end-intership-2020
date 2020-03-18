@@ -77,9 +77,9 @@ const CalendarProvider = props => {
     setIsLoading(false);
   }, [startDay, endDay]);
   const removeBooking = async id => {
-    const updateBooking = bookings.filter(booking => booking._id !== id);
+    const newBookings = bookings.filter(booking => booking._id !== id);
     await deleteBooking(id);
-    setBookings([...updateBooking]);
+    setBookings([...newBookings]);
   };
 
   const updateSearch = event => {
@@ -182,6 +182,7 @@ const CalendarProvider = props => {
         updateSearch,
         bookings,
         setBookings,
+        fetchBooking,
         getMaxTotalOverlapBooking,
         getBookingWithResource,
         getMarginTopBooking,

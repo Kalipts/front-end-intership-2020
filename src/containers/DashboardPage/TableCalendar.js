@@ -1,16 +1,13 @@
 import React, { useContext, useRef, useState } from 'react';
 import moment from 'moment';
 
-import { useDrop } from 'react-dnd';
 import { getNumberOfDay } from '../../utils/Date';
 import { useWindowSize } from '../../utils/Window';
-import ItemTypes from './TableCalendar/ItemTypes';
 
 import Booking from './TableCalendar/Booking';
 import ContainerBookingView from './TableCalendar/Style/ContainerBookingView';
 import RowBookingView from './TableCalendar/Style/RowBookingView';
 // eslint-disable-next-line import/no-cycle
-import ContentBooking from './TableCalendar/ContentBooking';
 import DateBooking from './TableCalendar/Style/DateBooking';
 import HeaderCalendar from './TableCalendar/HeaderCalendar';
 import Sidebar from './ResourceBar/Sidebar';
@@ -52,24 +49,13 @@ function TableCalendar() {
   const [selecting, setSelecting] = useState(false);
   const [resourceStart, setResourceStart] = useState(0);
   const [first, setFirst] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [, setIsOpen] = useState(false);
   const [startCellDay, setStartCellDay] = useState(moment());
   const [lastDate, setLastDate] = useState(0);
   const [isHover, setIsHover] = useState(false);
   const [firstHover, setFirstHover] = useState(0);
   const [lastHover, setLastHover] = useState(0);
   const [numOfSelecting, setNumOfSelecting] = useState(0);
-  const [isHovering, setIsHovering] = useState(false);
-  const [{ canDrop, isOver }, drop] = useDrop({
-    accept: ItemTypes.RESOURCE,
-    drop(item, monitor) {
-      console.log('abc');
-    },
-    collect: monitor => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
-  });
 
   const beginSelection = (i, j, startDayInCell) => {
     setSelecting(true);
@@ -93,7 +79,7 @@ function TableCalendar() {
   let updateSelection = (i, j, endDayInCell) => {
     if (selecting) {
       setIsHover(false);
-      if (j == resourceStart) {
+      if (j === resourceStart) {
         setEnd(i);
         setLastDate(endDayInCell);
       }
@@ -163,12 +149,12 @@ function TableCalendar() {
           }
           value={cellValue}
           inputColor={
-            hoverWorking() == true &&
-            first == true &&
+            hoverWorking() === true &&
+            first === true &&
             ((end <= k + i && k + i <= start) ||
               (start <= k + i &&
                 k + i <= end &&
-                resourceStart == indexResource))
+                resourceStart === indexResource))
               ? '#D8D8D8'
               : ''
           }
@@ -245,7 +231,7 @@ function TableCalendar() {
           </ContainerBookingView>
         </BodyCalendar>
       </DateBooking>
-      <AddBookingForm content={content} />
+      <AddBookingForm content={content} disabled="true" />
     </Container>
   );
 }

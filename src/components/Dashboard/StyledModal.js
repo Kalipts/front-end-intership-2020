@@ -15,9 +15,7 @@ const StyledModal = styled.div`
   outline-offset: 0.5px;
   justify-content: center;
   align-items: center;
-  :disabled {
-    opacity: 0.25;
-  }
+  /* pointer-events: ${props => (props.disabled ? 'none' : 'all')}; */
 `;
 
 export default StyledModal;

@@ -28,7 +28,5 @@ export const addBooking = newBooking => {
       });
       return booking;
     });
-  } catch (error) {
-    alert("Don't add booking", error);
-  }
+  } catch (error) {}
 };
