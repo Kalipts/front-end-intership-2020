@@ -1,27 +1,26 @@
 import { useState, useRef, useEffect } from 'react';
 
-export function useHover() {
+export function useHover({ drag }) {
   const [value, setValue] = useState(false);
-
-  const ref = useRef(null);
 
   const handleMouseEnter = () => setValue(true);
   const handleMouseLeave = () => setValue(false);
 
   useEffect(
     () => {
-      const node = ref.current;
+      const node = drag.current;
+
       if (node) {
-        node.addEventListener('mouseenter', handleMouseEnter);
-        node.addEventListener('mouseleave', handleMouseLeave);
+        drag.current.addEventListener('mouseenter', handleMouseEnter);
+        drag.current.addEventListener('mouseleave', handleMouseLeave);
         return () => {
-          node.removeEventListener('mouseenter', handleMouseEnter);
-          node.removeEventListener('mouseleave', handleMouseLeave);
+          drag.current.removeEventListener('mouseenter', handleMouseEnter);
+          drag.current.removeEventListener('mouseleave', handleMouseLeave);
         };
       }
     },
-    [ref.current], // Recall only if ref changes
+    [drag.current], // Recall only if ref changes
   );
 
-  return [ref, value];
+  return [drag, value];
 }

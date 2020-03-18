@@ -14,7 +14,8 @@ export const getBooking = (startDay, endDay) => {
 export const deleteBooking = bookingId =>
   deleteData({ url: `${url}/${bookingId}`, bookingId });
 
-export const updateBooking = data => updateData({ url: `${url}`, data });
+export const updateBooking = booking =>
+  updateData({ url: `${url}/${booking._id}`, data: booking });
 
 export const addBooking = newBooking => {
   const bookings = seperateDayByWeekend(newBooking.startDay, newBooking.endDay);

@@ -1,8 +1,10 @@
 import React, { useContext, useRef, useState } from 'react';
 import moment from 'moment';
 
+import { useDrop } from 'react-dnd';
 import { getNumberOfDay } from '../../utils/Date';
 import { useWindowSize } from '../../utils/Window';
+import ItemTypes from './TableCalendar/ItemTypes';
 
 import Booking from './TableCalendar/Booking';
 import ContainerBookingView from './TableCalendar/Style/ContainerBookingView';
@@ -20,6 +22,7 @@ import BodyCalendar from './TableCalendar/Style/BodyCalendar';
 import useCellsInCalendar from './TableCalendar/useCellsInCalendar';
 import AddBookingForm from '../../components/AddBookingForm';
 import { CES_ORANGE_HOVER } from '../../constants/colorTypes';
+import DropTargerCell from './TableCalendar/DropTargerCell';
 
 function TableCalendar() {
   const [size] = useWindowSize();
@@ -57,6 +60,16 @@ function TableCalendar() {
   const [lastHover, setLastHover] = useState(0);
   const [numOfSelecting, setNumOfSelecting] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
+  const [{ canDrop, isOver }, drop] = useDrop({
+    accept: ItemTypes.RESOURCE,
+    drop(item, monitor) {
+      console.log('abc');
+    },
+    collect: monitor => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  });
 
   const beginSelection = (i, j, startDayInCell) => {
     setSelecting(true);
@@ -75,14 +88,12 @@ function TableCalendar() {
     setSelecting(false);
     updateSelection(i);
     setLastDate(endDayInCell);
-
   };
 
   let updateSelection = (i, j, endDayInCell) => {
-
     if (selecting) {
       setIsHover(false);
-      if(j == resourceStart) {
+      if (j == resourceStart) {
         setEnd(i);
         setLastDate(endDayInCell);
       }
@@ -129,22 +140,31 @@ function TableCalendar() {
 
       const cellValue = [dateInCell.toString(), indexResource];
       return (
-        <ContentBooking
+        <DropTargerCell
           onMouseDown={() => {
-
-            beginSelection(k + i, indexResource, moment(moment(dateInCell).toString()));
+            beginSelection(
+              k + i,
+              indexResource,
+              moment(moment(dateInCell).toString()),
+            );
           }}
           onMouseUp={() => {
-
             endSelection(k + i, moment(moment(dateInCell).toString()));
             handleOnClick(dateInCell, startCellDay, lastDate);
             setIsOpen(true);
             handleCloseModal(true);
           }}
-          onMouseMove={() => updateSelection(k + i, indexResource, moment(moment(dateInCell).toString()))}
+          onMouseMove={() =>
+            updateSelection(
+              k + i,
+              indexResource,
+              moment(moment(dateInCell).toString()),
+            )
+          }
           value={cellValue}
           inputColor={
-            (hoverWorking() ==true)&&(first == true) &&
+            hoverWorking() == true &&
+            first == true &&
             ((end <= k + i && k + i <= start) ||
               (start <= k + i &&
                 k + i <= end &&
@@ -153,19 +173,27 @@ function TableCalendar() {
               : ''
           }
           hoverColor={
-            ((isHover===true) && (k+i >= firstHover) && (k+i < lastHover) ? CES_ORANGE_HOVER : "")
+            isHover === true && k + i >= firstHover && k + i < lastHover
+              ? CES_ORANGE_HOVER
+              : ''
           }
-          onMouseEnter={()=> {
-            enterSelection(k+i,numberOfDay*indexResource, numberOfDay*(indexResource+1))
+          onMouseEnter={() => {
+            enterSelection(
+              k + i,
+              numberOfDay * indexResource,
+              numberOfDay * (indexResource + 1),
+            );
           }}
-          onMouseLeave={()=>{
-            leaveSelection(k+i);
+          onMouseLeave={() => {
+            leaveSelection(k + i);
           }}
           isWeekend={isWeekend}
-          key={`${dateInCell} ${indexResource}`}
+          key={`${dateInCell} ${resource._id}`}
+          resourceId={resource._id}
+          date={dateInCell}
         >
           {bookingDateWithResource}
-        </ContentBooking>
+        </DropTargerCell>
       );
     });
     return days;
