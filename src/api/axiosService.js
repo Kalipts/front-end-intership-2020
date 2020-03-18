@@ -22,7 +22,7 @@ export function addData(url, data = {}) {
 export function updateData({ url, data = {} }) {
   return axiosInstance({
     url,
-    method: 'PATCH',
+    method: 'PUT',
     data,
   });
 }

@@ -14,22 +14,19 @@ export const getBooking = (startDay, endDay) => {
 export const deleteBooking = bookingId =>
   deleteData({ url: `${url}/${bookingId}`, bookingId });
 
-export const updateBooking = data => updateData({ url: `${url}`, data });
+export const updateBooking = booking =>
+  updateData({ url: `${url}/${booking._id}`, data: booking });
 
 export const addBooking = newBooking => {
   const bookings = seperateDayByWeekend(newBooking.startDay, newBooking.endDay);
   try {
     bookings.map(booking => {
-      console.log(newBooking);
-      const req = addData(`${url}`, {
+      addData(`${url}`, {
         ...newBooking,
         startDay: booking.startDay,
         endDay: booking.endDay,
       });
-      console.log(req);
       return booking;
     });
-  } catch (error) {
-    alert("Don't add booking", error);
-  }
+  } catch (error) {}
 };

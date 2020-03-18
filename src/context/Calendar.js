@@ -5,14 +5,14 @@ import moment from 'moment';
 
 import { getResource } from '../api/resourceApi';
 import { getProject } from '../api/projectApi';
-import { getBooking, deleteBooking } from '../api/bookingApi';
+import { getBooking, deleteBooking, updateBooking } from '../api/bookingApi';
 import { HEIGHT_BOOKING } from '../containers/App/constant';
-import { compareByDay } from '../utils/Date';
+import { compareByDay, getNumberOfDay } from '../utils/Date';
 
 const CalendarContext = createContext();
 
 const CalendarProvider = props => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [persons, setPersons] = useState([]);
   const [projects, setProjects] = useState([]);
   const [search, setSearch] = useState('');
@@ -29,7 +29,7 @@ const CalendarProvider = props => {
   };
   const handleCloseModal = key => {
     setIsModalOpen(!isModalOpen);
-    if (key == false) setIsHoverWorking(false);
+    if (key === false) setIsHoverWorking(false);
     else setIsHoverWorking(true);
   };
   const hoverWorking = () => isHoverWorking;
@@ -77,13 +77,30 @@ const CalendarProvider = props => {
     setIsLoading(false);
   }, [startDay, endDay]);
   const removeBooking = async id => {
-    const updateBooking = bookings.filter(booking => booking._id !== id);
+    const newBookings = bookings.filter(booking => booking._id !== id);
     await deleteBooking(id);
-    setBookings([...updateBooking]);
+    setBookings([...newBookings]);
   };
-
   const updateSearch = event => {
     setSearch(event.target.value.toLowerCase());
+  };
+  const updateOnDidDragBooking = async (booking, resourceId, newStartDay) => {
+    const distanceStartDay = getNumberOfDay(booking.startDay, newStartDay);
+    const newBooking = {
+      ...booking,
+      resourceId,
+      startDay: booking.startDay.add(distanceStartDay, 'days'),
+      endDay: booking.endDay.add(distanceStartDay, 'days'),
+    };
+    const newBookings = bookings.map(schedule => {
+      if (schedule._id === booking._id) {
+        return newBooking;
+      }
+      return schedule;
+    });
+    await updateBooking(newBooking);
+    setBookings([...newBookings]);
+    return newBookings;
   };
   const getMarginTopBooking = schedule => {
     let numberBookingOverlap = 0;
@@ -179,6 +196,7 @@ const CalendarProvider = props => {
         removeBooking,
         hoverWorking,
         setBegin,
+        updateOnDidDragBooking,
       }}
     >
       {props.children}
