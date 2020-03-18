@@ -8,7 +8,6 @@ import Booking from './TableCalendar/Booking';
 import ContainerBookingView from './TableCalendar/Style/ContainerBookingView';
 import RowBookingView from './TableCalendar/Style/RowBookingView';
 // eslint-disable-next-line import/no-cycle
-import ContentBooking from './TableCalendar/ContentBooking';
 import DateBooking from './TableCalendar/Style/DateBooking';
 import HeaderCalendar from './TableCalendar/HeaderCalendar';
 import Sidebar from './ResourceBar/Sidebar';
@@ -20,6 +19,7 @@ import BodyCalendar from './TableCalendar/Style/BodyCalendar';
 import useCellsInCalendar from './TableCalendar/useCellsInCalendar';
 import AddBookingForm from '../../components/AddBookingForm';
 import { CES_ORANGE_HOVER } from '../../constants/colorTypes';
+import DropTargerCell from './TableCalendar/DropTargerCell';
 
 function TableCalendar() {
   const [size] = useWindowSize();
@@ -49,7 +49,7 @@ function TableCalendar() {
   const [selecting, setSelecting] = useState(false);
   const [resourceStart, setResourceStart] = useState(0);
   const [first, setFirst] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [, setIsOpen] = useState(false);
   const [startCellDay, setStartCellDay] = useState(moment());
   const [lastDate, setLastDate] = useState(0);
   const [isHover, setIsHover] = useState(false);
@@ -126,7 +126,7 @@ function TableCalendar() {
 
       const cellValue = [dateInCell.toString(), indexResource];
       return (
-        <ContentBooking
+        <DropTargerCell
           onMouseDown={() => {
             beginSelection(
               k + i,
@@ -174,10 +174,12 @@ function TableCalendar() {
             leaveSelection(k + i);
           }}
           isWeekend={isWeekend}
-          key={`${dateInCell} ${indexResource}`}
+          key={`${dateInCell} ${resource._id}`}
+          resourceId={resource._id}
+          date={dateInCell}
         >
           {bookingDateWithResource}
-        </ContentBooking>
+        </DropTargerCell>
       );
     });
     return days;

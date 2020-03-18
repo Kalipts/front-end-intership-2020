@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import {
   WIDTH_CELL_IN_TABLE_CALENDAR,
   BORDER_CELL_IN_TABLE_CALENDAR,
@@ -14,11 +15,10 @@ const ContentBooking = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
-  /*background-color: ${props =>
+  background-color: ${props =>
     props.isWeekend
       ? props.theme.color.weekendBackground
-      : props.theme.color.background};*/
+      : props.theme.color.background};
   background-color: ${props => props.inputColor || props.hoverColor || 'white'};
 `;
-
 export default ContentBooking;
