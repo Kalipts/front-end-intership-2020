@@ -15,7 +15,9 @@ const StyledModal = styled.div`
   outline-offset: 0.5px;
   justify-content: center;
   align-items: center;
-  /* pointer-events: ${props => (props.disabled ? 'none' : 'all')}; */
+  &:focus {
+    outline: 0;
+  }
 `;
 
 export default StyledModal;
