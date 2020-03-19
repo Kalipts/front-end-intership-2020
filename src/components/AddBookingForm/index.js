@@ -50,6 +50,8 @@ const AddBookingForm = props => {
     persons,
     projects,
     fetchBooking,
+    addBookingStatus,
+    setAddBookingStatus,
   } = useContext(CalendarContext);
   useEffect(() => {
     setPerson(resource);
@@ -100,6 +102,7 @@ const AddBookingForm = props => {
     };
     await addBooking(newBooking);
     fetchBooking();
+    setAddBookingStatus(false);
     onClickCancle();
   };
 
