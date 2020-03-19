@@ -1,14 +1,13 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useDrop } from 'react-dnd';
-
 import moment from 'moment';
 import ItemTypes from './ItemTypes';
 import ContentBooking from './ContentBooking';
 import { CalendarContext } from '../../../context/Calendar';
 import { WIDTH_CELL_IN_TABLE_CALENDAR } from '../../App/constant';
 
-export default function DropTargerCell(props) {
+export default function DropTargetCell(props) {
   const {
     onMouseDown,
     onMouseUp,
@@ -59,7 +58,7 @@ export default function DropTargerCell(props) {
     </ContentBooking>
   );
 }
-DropTargerCell.propTypes = {
+DropTargetCell.propTypes = {
   onMouseDown: PropTypes.func,
   onMouseUp: PropTypes.func,
   onMouseMove: PropTypes.func,
