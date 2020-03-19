@@ -135,7 +135,7 @@ const SelectItemModal = props => {
     document.addEventListener('click', handleOutsideClick, false);
     handleChildVisible(true);
     if (type === 'Resource') setItem(persons);
-    setItem(projects);
+    else setItem(projects);
     return () => {
       document.removeEventListener('keyup', handleKeyUp, false);
       document.removeEventListener('click', handleOutsideClick, false);

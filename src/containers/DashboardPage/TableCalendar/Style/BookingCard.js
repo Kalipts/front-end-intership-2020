@@ -10,5 +10,6 @@ const BookingCard = styled.div`
   position: relative;
   margin-top: ${props => props.top};
   opacity: ${props => props.opacity || 1};
+  cursor: pointer;
 `;
 export default BookingCard;
