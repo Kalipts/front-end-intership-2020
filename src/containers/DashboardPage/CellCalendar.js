@@ -38,11 +38,14 @@ const CellInCalendar = props => {
     setNumOfSelecting,
     addBookingStatus,
     setAddBookingStatus,
+    formIsOpening,
+    setFormIsOpening,
   } = calendarContext;
 
   const numberOfDay = getNumberOfDay(startDay, endDay);
 
   const beginSelection = (indexCell, indexResource, startDayInCell) => {
+    if (formIsOpening) return;
     setSelecting(true);
     setStart(indexCell);
     setFirst(true);
@@ -54,6 +57,7 @@ const CellInCalendar = props => {
     setIsHover(false);
     setBegin();
     setAddBookingStatus(true);
+    setFormIsOpening(true);
   };
 
   const endSelection = (indexCell = end, indexResource, endDayInCell) => {
@@ -108,9 +112,9 @@ const CellInCalendar = props => {
   const days = row.map((cell, cellIndex) => {
     const { dateInCell, isWeekend, bookingsInCell } = cell;
     const bookingDateWithResource = renderBooking(bookingsInCell);
-    const cellValue = [dateInCell.toString(), indexResource];
 
     const hoverCellColor = () =>
+      formIsOpening === true &&
       addBookingStatus === true &&
       hoverWorking() === true &&
       first === true &&
@@ -138,12 +142,17 @@ const CellInCalendar = props => {
           );
         }}
         onMouseUp={() => {
+          if (startCellDay > lastDate) {
+            handleOnClick(dateInCell, lastDate, startCellDay);
+          } else {
+            handleOnClick(dateInCell, startCellDay, lastDate);
+          }
           endSelection(
             indexCellRow + cellIndex,
             indexResource,
             moment(moment(dateInCell).toString()),
           );
-          handleOnClick(dateInCell, startCellDay, lastDate);
+
           handleCloseModal(true);
         }}
         onMouseMove={() =>
@@ -153,7 +162,6 @@ const CellInCalendar = props => {
             moment(moment(dateInCell).toString()),
           )
         }
-        value={cellValue}
         inputColor={hoverCellColor()}
         hoverColor={hoverRowColor()}
         onMouseEnter={() => {

@@ -31,7 +31,6 @@ const CalendarProvider = props => {
     startDate: moment(),
     endDate: moment(),
   });
-
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(0);
   const [selecting, setSelecting] = useState(false);
@@ -43,7 +42,7 @@ const CalendarProvider = props => {
   const [firstHover, setFirstHover] = useState(0);
   const [lastHover, setLastHover] = useState(0);
   const [numOfSelecting, setNumOfSelecting] = useState(0);
-
+  const [formIsOpening, setFormIsOpening] = useState(false);
   const contentGlobal = () => content;
   const setContentGlobal = newContent => {
     setContent(newContent);
@@ -56,9 +55,11 @@ const CalendarProvider = props => {
     if (isModalOpen) {
       setIsModalOpen(true);
     }
+
     if (isChildVisible) {
       return;
     }
+    setFormIsOpening(!isModalOpen);
     setIsModalOpen(!isModalOpen);
     if (key === false) setIsHoverWorking(false);
     else setIsHoverWorking(true);
@@ -257,6 +258,8 @@ const CalendarProvider = props => {
         setAddBookingStatus,
         isChildVisible,
         setIsChildVisible,
+        formIsOpening,
+        setFormIsOpening,
       }}
     >
       {props.children}
