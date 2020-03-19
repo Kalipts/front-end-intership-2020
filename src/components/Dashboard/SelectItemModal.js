@@ -55,36 +55,29 @@ const ListItem = styled.ul`
     width: 100%;
     display: flex;
     align-items: center;
-    /* border-bottom: 1px solid #333; */
   }
   li:hover label {
     color: #ffffff;
   }
-  li:hover div {
-    /* border: 3px solid #ffffff; */
-  }
   input[type='radio'] {
-    /* opacity: 0; */
     cursor: pointer;
   }
-  input[type='radio']:checked #radio {
-    border: 5px solid #0dff92;
-  }
-  input[type='radio']:checked & > div::before {
-    background: #0dff92;
+  input[type='radio']:checked ~ #radio {
+    border: 5px solid #008000;
   }
 `;
 const CustomRadio = styled.div`
   position: absolute;
   top: 10px;
-  left: 0;
+  left: 1px;
   display: block;
-  border: 5px solid #aaaaaa;
+  border: 5px solid #eeeeee;
+  background-color: #ffffff;
   border-radius: 100%;
-  height: 13px;
-  width: 13px;
+  height: 10px;
+  width: 10px;
   z-index: 5;
-  transition: border 0.25s linear;
+  transition: border 0.1s linear;
   ::before {
     display: block;
     position: absolute;
@@ -95,7 +88,6 @@ const CustomRadio = styled.div`
     top: 5px;
     left: 5px;
     margin: auto;
-    /* transition: background 0.25s linear; */
   }
 `;
 
