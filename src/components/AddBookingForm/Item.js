@@ -30,7 +30,7 @@ const Name = styled.div`
 
 const Item = props => {
   const { onDisabled, disabled } = useContext(CalendarContext);
-  const { src, type, onChangeItem } = props;
+  const { src, type, onChangeItem, handleChildVisible } = props;
   return (
     <Body onClick={onDisabled}>
       {props.makeIcon ? (
@@ -39,7 +39,13 @@ const Item = props => {
         <Avatar alt="icon-person" src={src} />
       )}
       <Name>{props.children}</Name>
-      {disabled && <SelecteItemModal onChangeItem={onChangeItem} type={type} />}
+      {disabled && (
+        <SelecteItemModal
+          handleChildVisible={handleChildVisible}
+          onChangeItem={onChangeItem}
+          type={type}
+        />
+      )}
     </Body>
   );
 };

@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import styled from 'styled-components';
 import isNil from 'lodash/isNil';
 import Avatar from '@material-ui/core/Avatar';
+import { ESC_KEY } from '../../constants/keyTypes';
 
 import Label from './Label';
 import Search from '../shared/Search';
@@ -116,11 +117,10 @@ const Color = styled.div`
 `;
 
 const SelectItemModal = props => {
-  const { type, onChangeItem } = props;
+  const { type, onChangeItem, handleChildVisible } = props;
   const [onClose, setOnClose] = useState(false);
   const [item, setItem] = useState([]);
-  // const [selectedItem, setSelectedItem] = useState();
-  const modal = React.createRef();
+  const modal = useRef(null);
   const { onDisabled, persons, projects } = useContext(CalendarContext);
   const handdleToggleClose = () => {
     setOnClose(!onClose);
@@ -131,26 +131,23 @@ const SelectItemModal = props => {
   };
 
   useEffect(() => {
-    window.addEventListener('keyup', handleKeyUp, false);
+    document.addEventListener('keyup', handleKeyUp, false);
     document.addEventListener('click', handleOutsideClick, false);
+    handleChildVisible(true);
     if (type === 'Resource') setItem(persons);
-    else setItem(projects);
-  }, []);
-  useEffect(
-    () => () => {
-      window.removeEventListener('keyup', handleKeyUp, false);
+    setItem(projects);
+    return () => {
+      document.removeEventListener('keyup', handleKeyUp, false);
       document.removeEventListener('click', handleOutsideClick, false);
-    },
-    [],
-  );
+    };
+  }, [modal]);
 
   function handleKeyUp(e) {
-    const keys = {
-      27: () => {
-        e.preventDefault();
-        handdleToggleClose();
-        window.removeEventListener('keyup', handleKeyUp, false);
-      },
+    const keys = {};
+    keys[`${ESC_KEY}`] = () => {
+      e.preventDefault();
+      handdleToggleClose();
+      handleChildVisible(false);
     };
 
     if (keys[e.keyCode]) {
@@ -159,12 +156,11 @@ const SelectItemModal = props => {
   }
 
   function handleOutsideClick(e) {
-    if (!isNil(modal)) {
-      const { current } = modal;
-      if (current && !current.contains(e.target)) {
-        handdleToggleClose();
-        document.removeEventListener('click', handleOutsideClick, false);
-      }
+    const { current } = modal;
+    if (current && !current.contains(e.target)) {
+      handdleToggleClose();
+      handleChildVisible(false);
+      document.removeEventListener('click', handleOutsideClick, false);
     }
   }
 

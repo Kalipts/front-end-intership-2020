@@ -12,7 +12,7 @@ import { compareByDay, getNumberOfDay } from '../utils/Date';
 const CalendarContext = createContext();
 
 const CalendarProvider = props => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [persons, setPersons] = useState([]);
   const [projects, setProjects] = useState([]);
   const [search, setSearch] = useState('');
@@ -23,6 +23,8 @@ const CalendarProvider = props => {
   const [endDay, setEndDay] = useState(moment('2020-02-03', 'YYYY-MM-DD'));
   const [disabled, setDisabled] = useState(false);
   const [isHoverWorking, setIsHoverWorking] = useState(true);
+  const [isChildVisible, setIsChildVisible] = useState(false);
+  const [addBookingStatus, setAddBookingStatus] = useState(true);
   const [content, setContent] = useState({
     resource: [],
     bookingWithResource: [],
@@ -51,14 +53,17 @@ const CalendarProvider = props => {
     setIsHoverWorking(true);
   };
   const handleCloseModal = key => {
+    if (isModalOpen) {
+      setIsModalOpen(true);
+    }
+    if (isChildVisible) {
+      return;
+    }
     setIsModalOpen(!isModalOpen);
-    if(key == false)
-    setIsHoverWorking(false);
+    if (key === false) setIsHoverWorking(false);
     else setIsHoverWorking(true);
   };
-  const hoverWorking = () => {
-    return isHoverWorking;
-  };
+  const hoverWorking = () => isHoverWorking;
 
   const onDisabled = () => {
     setDisabled(true);
@@ -248,6 +253,10 @@ const CalendarProvider = props => {
         setLastHover,
         numOfSelecting,
         setNumOfSelecting,
+        addBookingStatus,
+        setAddBookingStatus,
+        isChildVisible,
+        setIsChildVisible,
       }}
     >
       {props.children}

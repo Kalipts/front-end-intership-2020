@@ -36,6 +36,8 @@ const CellInCalendar = props => {
     setLastHover,
     numOfSelecting,
     setNumOfSelecting,
+    addBookingStatus,
+    setAddBookingStatus,
   } = calendarContext;
 
   const numberOfDay = getNumberOfDay(startDay, endDay);
@@ -51,6 +53,7 @@ const CellInCalendar = props => {
     setStartCellDay(startDayInCell);
     setIsHover(false);
     setBegin();
+    setAddBookingStatus(true);
   };
 
   const endSelection = (indexCell = end, indexResource, endDayInCell) => {
@@ -108,6 +111,7 @@ const CellInCalendar = props => {
     const cellValue = [dateInCell.toString(), indexResource];
 
     const hoverCellColor = () =>
+      addBookingStatus === true &&
       hoverWorking() === true &&
       first === true &&
       ((end <= indexCellRow + cellIndex && indexCellRow + cellIndex <= start) ||
