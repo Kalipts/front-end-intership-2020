@@ -81,7 +81,6 @@ const CalendarProvider = props => {
     await deleteBooking(id);
     setBookings([...newBookings]);
   };
-
   const updateSearch = event => {
     setSearch(event.target.value.toLowerCase());
   };
