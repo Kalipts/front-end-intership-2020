@@ -51,6 +51,8 @@ const AddBookingForm = props => {
     projects,
     fetchBooking,
     addBookingStatus,
+    isChildVisible,
+    setIsChildVisible,
     setAddBookingStatus,
   } = useContext(CalendarContext);
   useEffect(() => {
@@ -107,7 +109,7 @@ const AddBookingForm = props => {
   };
 
   return (
-    <Modal disabled={disabled}>
+    <Modal isChildVisible={isChildVisible} disabled={disabled}>
       <Header />
       <TimeRatio>
         <Percentage>
@@ -140,6 +142,7 @@ const AddBookingForm = props => {
       </TotalTime>
       <SelectedItem title="Projects" src={require('../../images/bag.svg')}>
         <Item
+          handleChildVisible={setIsChildVisible}
           onDisabled={onDisabled}
           type="Project"
           makeIcon
@@ -161,6 +164,7 @@ const AddBookingForm = props => {
         src={require('../../images/resource.svg')}
       >
         <Item
+          handleChildVisible={setIsChildVisible}
           onDisabled={onDisabled}
           type="Resource"
           src={person ? person.avatar : ''}
