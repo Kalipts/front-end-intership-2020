@@ -40,8 +40,11 @@ export default function Booking(props) {
   const handleClick = () => {
     removeBooking(_id);
   };
+  let opacity = 1;
+  if (isDragging) opacity = 0.2;
   return (
     <BookingCard
+      opacity={opacity}
       length={length}
       color={color}
       top={top}
