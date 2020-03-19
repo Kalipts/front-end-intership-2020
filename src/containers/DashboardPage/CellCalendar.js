@@ -91,6 +91,13 @@ const CellInCalendar = props => {
   function renderBooking(bookingsInCell) {
     return bookingsInCell.map((booking, index) => (
       <Booking
+        onClick={() => {
+          setContentGlobal({
+            resource,
+            booking,
+          });
+          handleCloseModal(true);
+        }}
         key={booking._id}
         color="green"
         isDuration
