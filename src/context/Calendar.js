@@ -12,7 +12,7 @@ import { compareByDay, getNumberOfDay } from '../utils/Date';
 const CalendarContext = createContext();
 
 const CalendarProvider = props => {
-  const [, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [persons, setPersons] = useState([]);
   const [projects, setProjects] = useState([]);
   const [search, setSearch] = useState('');
@@ -23,16 +23,42 @@ const CalendarProvider = props => {
   const [endDay, setEndDay] = useState(moment('2020-02-03', 'YYYY-MM-DD'));
   const [disabled, setDisabled] = useState(false);
   const [isHoverWorking, setIsHoverWorking] = useState(true);
+  const [content, setContent] = useState({
+    resource: [],
+    bookingWithResource: [],
+    startDate: moment(),
+    endDate: moment(),
+  });
+
+  const [start, setStart] = useState(0);
+  const [end, setEnd] = useState(0);
+  const [selecting, setSelecting] = useState(false);
+  const [resourceStart, setResourceStart] = useState(0);
+  const [first, setFirst] = useState(false);
+  const [startCellDay, setStartCellDay] = useState(moment());
+  const [lastDate, setLastDate] = useState(0);
+  const [isHover, setIsHover] = useState(false);
+  const [firstHover, setFirstHover] = useState(0);
+  const [lastHover, setLastHover] = useState(0);
+  const [numOfSelecting, setNumOfSelecting] = useState(0);
+
+  const contentGlobal = () => content;
+  const setContentGlobal = newContent => {
+    setContent(newContent);
+  };
 
   const setBegin = () => {
     setIsHoverWorking(true);
   };
   const handleCloseModal = key => {
     setIsModalOpen(!isModalOpen);
-    if (key === false) setIsHoverWorking(false);
+    if(key == false)
+    setIsHoverWorking(false);
     else setIsHoverWorking(true);
   };
-  const hoverWorking = () => isHoverWorking;
+  const hoverWorking = () => {
+    return isHoverWorking;
+  };
 
   const onDisabled = () => {
     setDisabled(true);
@@ -81,6 +107,7 @@ const CalendarProvider = props => {
     await deleteBooking(id);
     setBookings([...newBookings]);
   };
+
   const updateSearch = event => {
     setSearch(event.target.value.toLowerCase());
   };
@@ -197,6 +224,30 @@ const CalendarProvider = props => {
         hoverWorking,
         setBegin,
         updateOnDidDragBooking,
+        contentGlobal,
+        setContentGlobal,
+        start,
+        setStart,
+        end,
+        setEnd,
+        selecting,
+        setSelecting,
+        resourceStart,
+        setResourceStart,
+        first,
+        setFirst,
+        startCellDay,
+        setStartCellDay,
+        lastDate,
+        setLastDate,
+        isHover,
+        setIsHover,
+        firstHover,
+        setFirstHover,
+        lastHover,
+        setLastHover,
+        numOfSelecting,
+        setNumOfSelecting,
       }}
     >
       {props.children}
