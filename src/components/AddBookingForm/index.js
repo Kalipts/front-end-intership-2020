@@ -25,24 +25,24 @@ import InputDate from './InputDate';
 import Button from './Button';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import useBookingForm from './CustomHooks';
 import './styles.css';
 import Modal from '../Dashboard/Modal';
 import { CalendarContext } from '../../context/Calendar';
 import { compareByDay } from '../../utils/Date';
 import UtilizeInput from './UtilizeInput';
 import { HOURS_IN_DAY } from '../../containers/App/constant';
-import { addBooking } from '../../api/bookingApi';
+import { addBooking, updateBooking } from '../../api/bookingApi';
 
 const AddBookingForm = props => {
   const [startDay, setStartDay] = useState(moment());
   const [endDay, setEndDay] = useState(moment());
-  const { inputs, handleInputChange, handleSubmit } = useBookingForm();
-  const { resource, bookingWithResource, startDate, endDate } = props.content;
+  const { resource, booking, startDate, endDate } = props.content;
   const [details, setDetails] = useState();
   const [person, setPerson] = useState([]);
-  const [utilize, setUtilize] = useState(100);
+  const [utilize, setUtilize] = useState([]);
   const [project, setProject] = useState([]);
+  const [isModify, setIsModify] = useState(false);
+  const [onEdit, setOnEdit] = useState(false);
   const {
     handleCloseModal,
     disabled,
@@ -57,9 +57,23 @@ const AddBookingForm = props => {
   } = useContext(CalendarContext);
   useEffect(() => {
     setPerson(resource);
-    setStartDay(moment(startDate.toString()));
-    setEndDay(moment(endDate.toString()));
+    if (booking) {
+      setProject(booking.project);
+      setDetails(booking.details);
+      setUtilize(booking.utilize);
+      setStartDay(moment(booking.startDay));
+      setEndDay(moment(booking.endDay));
+      setIsModify(true);
+    } else {
+      setStartDay(moment(startDate.toString()));
+      setEndDay(moment(endDate.toString()));
+      setIsModify(false);
+    }
+    setOnEdit(false);
   }, [props]);
+  useEffect(() => {
+    setOnEdit(true);
+  }, [details, person, utilize, project, startDay, endDay]);
   const onClickCancle = i => handleCloseModal(i);
   const changeEndDay = newDate => {
     if (compareByDay(newDate, startDay) < 0) {
@@ -92,7 +106,15 @@ const AddBookingForm = props => {
     setProject(selectedProject);
   };
 
-  const addNewBooking = async () => {
+  const handleSummit = async () => {
+    if (!isModify) await addNewBooking();
+    else await editBooking();
+    fetchBooking();
+    onClickCancle();
+  };
+
+  const addNewBooking = () => {
+    console.log(startDay);
     const newBooking = {
       utilize,
       hour: hours(utilize, startDay, endDay),
@@ -102,10 +124,21 @@ const AddBookingForm = props => {
       resourceId: person._id,
       project: project._id,
     };
-    await addBooking(newBooking);
-    fetchBooking();
-    setAddBookingStatus(false);
-    onClickCancle();
+    addBooking(newBooking);
+  };
+
+  const editBooking = () => {
+    const newBooking = {
+      _id: booking._id,
+      utilize,
+      hour: hours(utilize, startDay, endDay),
+      startDay,
+      endDay,
+      details,
+      resourceId: person._id,
+      project: project._id,
+    };
+    updateBooking(newBooking);
   };
 
   return (
@@ -156,7 +189,7 @@ const AddBookingForm = props => {
         title="Details"
         src={require('../../images/files-and-folders.svg')}
       >
-        <InputDetail onChange={handleChangeDetail} />
+        <InputDetail onChange={handleChangeDetail} value={details} />
       </SelectedItem>
       <SelectedItem
         onDisabled={onDisabled}
@@ -170,14 +203,14 @@ const AddBookingForm = props => {
           src={person ? person.avatar : ''}
           onChangeItem={handleChangePerson}
         >
-          {person ? person.name : ''}
+          {person && person.name}
         </Item>
       </SelectedItem>
 
       <FooterBooking>
         <ContainButton>
-          <Button primary onClick={addNewBooking}>
-            <span>Add Booking</span>
+          <Button primary onClick={handleSummit}>
+            <span>{isModify ? 'Save Booking' : 'Add Booking'}</span>
           </Button>
           <Button onClick={() => onClickCancle(false)}>
             <span>Cancle</span>

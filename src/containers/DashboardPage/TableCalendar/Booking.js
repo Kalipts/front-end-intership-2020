@@ -14,7 +14,7 @@ import Close from './Style/Close';
 import ItemTypes from './ItemTypes';
 
 export default function Booking(props) {
-  const { booking, isFirst } = props;
+  const { booking, isFirst, onClick } = props;
   const { startDay, endDay, hour, isDuration, utilize, project, _id } = booking;
   const [{ isDragging }, drag] = useDrag({
     item: { type: ItemTypes.BOOKING },
@@ -49,10 +49,7 @@ export default function Booking(props) {
       color={color}
       top={top}
       ref={drag}
-      onClick={e => {
-        e.stopPropagation();
-        e.nativeEvent.stopImmediatePropagation();
-      }}
+      onClick={onClick}
       onMouseDown={e => {
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
