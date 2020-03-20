@@ -22,7 +22,6 @@ const Modal = props => {
       document.removeEventListener('click', handleOutsideClick, false);
     };
   }, [modal]);
-
   // Handle the key press event.
   function handleKeyUp(e) {
     const keys = {};
