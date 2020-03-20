@@ -153,7 +153,7 @@ const AddBookingForm = props => {
     return !!(val === undefined || val == null || val.length <= 0);
   }
   function getProject() {
-    if (isModify) {
+    if (isModify && isEmpty(project)) {
       return isEmpty(booking) ? null : booking.project;
     }
     return isEmpty(project) ? null : project;
