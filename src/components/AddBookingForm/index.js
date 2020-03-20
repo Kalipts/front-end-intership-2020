@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useLayoutEffect,
+  useCallback,
+} from 'react';
 import moment from 'moment';
 
 import { TextField } from '@material-ui/core';
@@ -30,17 +36,17 @@ import Modal from '../Dashboard/Modal';
 import { CalendarContext } from '../../context/Calendar';
 import { compareByDay } from '../../utils/Date';
 import UtilizeInput from './UtilizeInput';
-import { HOURS_IN_DAY } from '../../containers/App/constant';
+import { HOURS_IN_DAY, MAX_UTILIZE } from '../../containers/App/constant';
 import { addBooking, updateBooking } from '../../api/bookingApi';
 
 const AddBookingForm = props => {
   const [startDay, setStartDay] = useState(moment());
   const [endDay, setEndDay] = useState(moment());
   const { resource, booking, startDate, endDate } = props.content;
-  const [details, setDetails] = useState();
-  const [person, setPerson] = useState([]);
-  const [utilize, setUtilize] = useState([]);
-  const [project, setProject] = useState([]);
+  const [details, setDetails] = useState('');
+  const [person, setPerson] = useState(null);
+  const [utilize, setUtilize] = useState(MAX_UTILIZE);
+  const [project, setProject] = useState(null);
   const [isModify, setIsModify] = useState(false);
   const [onEdit, setOnEdit] = useState(false);
   const {
@@ -56,24 +62,22 @@ const AddBookingForm = props => {
     setAddBookingStatus,
   } = useContext(CalendarContext);
   useEffect(() => {
-    setPerson(resource);
     if (booking) {
-      setProject(booking.project);
       setDetails(booking.details);
       setUtilize(booking.utilize);
       setStartDay(moment(booking.startDay));
       setEndDay(moment(booking.endDay));
       setIsModify(true);
+      setDetails(booking.details);
     } else {
       setStartDay(moment(startDate.toString()));
       setEndDay(moment(endDate.toString()));
       setIsModify(false);
+      setUtilize(MAX_UTILIZE);
     }
     setOnEdit(false);
-  }, [props]);
-  useEffect(() => {
-    setOnEdit(true);
-  }, [details, person, utilize, project, startDay, endDay]);
+  }, [resource, booking, startDate, endDate]);
+
   const onClickCancle = i => handleCloseModal(i);
   const changeEndDay = newDate => {
     if (compareByDay(newDate, startDay) < 0) {
@@ -88,8 +92,9 @@ const AddBookingForm = props => {
     setStartDay(newDate);
   };
 
-  const hours = (utilize, end, start) =>
-    (utilize / 100) * (compareByDay(end, start) + 1) * HOURS_IN_DAY;
+  const hours = (start, end) =>
+    (utilize / MAX_UTILIZE) * (compareByDay(start, end) + 1) * HOURS_IN_DAY;
+
   const handleChangeDetail = e => {
     setDetails(e.target.value);
   };
@@ -114,32 +119,45 @@ const AddBookingForm = props => {
   };
 
   const addNewBooking = () => {
-    console.log(startDay);
+    const selectedPerson = person || resource;
     const newBooking = {
       utilize,
-      hour: hours(utilize, startDay, endDay),
+      hour: hours(startDay, endDay),
       startDay,
       endDay,
       details,
-      resourceId: person._id,
+      resourceId: selectedPerson._id,
       project: project._id,
     };
     addBooking(newBooking);
   };
 
   const editBooking = () => {
+    const selectedPerson = person || resource;
+    const selectedProject = project || booking.project;
+
     const newBooking = {
+      // eslint-disable-next-line react/prop-types
       _id: booking._id,
       utilize,
-      hour: hours(utilize, startDay, endDay),
+      hour: hours(startDay, endDay),
       startDay,
       endDay,
       details,
-      resourceId: person._id,
-      project: project._id,
+      resourceId: selectedPerson._id,
+      project: selectedProject._id,
     };
     updateBooking(newBooking);
   };
+  function isEmpty(val) {
+    return !!(val === undefined || val == null || val.length <= 0);
+  }
+  function getProject() {
+    if (isModify) {
+      return isEmpty(booking) ? null : booking.project;
+    }
+    return isEmpty(project) ? null : project;
+  }
 
   return (
     <Modal isChildVisible={isChildVisible} disabled={disabled}>
@@ -171,7 +189,7 @@ const AddBookingForm = props => {
         <BottomLine />
       </Utilization>
       <TotalTime>
-        <Label>Total: {hours(utilize, endDay, startDay)} hours</Label>
+        <Label>Total: {hours(endDay, startDay)} hours</Label>
       </TotalTime>
       <SelectedItem title="Projects" src={require('../../images/bag.svg')}>
         <Item
@@ -179,10 +197,10 @@ const AddBookingForm = props => {
           onDisabled={onDisabled}
           type="Project"
           makeIcon
-          src={project ? project.color : ''}
+          src={getProject() !== null ? getProject().color : ''}
           onChangeItem={handleChangeProject}
         >
-          {project && project.name}
+          {getProject() !== null ? getProject().name : ''}
         </Item>
       </SelectedItem>
       <SelectedItem
@@ -200,10 +218,10 @@ const AddBookingForm = props => {
           handleChildVisible={setIsChildVisible}
           onDisabled={onDisabled}
           type="Resource"
-          src={person ? person.avatar : ''}
+          src={person == null ? resource.image : person.image}
           onChangeItem={handleChangePerson}
         >
-          {person && person.name}
+          {person == null ? resource.name : person.name}
         </Item>
       </SelectedItem>
 
