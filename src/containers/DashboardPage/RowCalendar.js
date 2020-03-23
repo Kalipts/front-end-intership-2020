@@ -21,7 +21,6 @@ const RenderRowsInCalendar = () => {
       contentResource,
       indexResource,
     );
-
     return (
       <RowBookingView
         key={resource._id}

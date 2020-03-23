@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-
+import RowBookingView from './Style/RowBookingView';
 import {
   WIDTH_CELL_IN_TABLE_CALENDAR,
   BORDER_CELL_IN_TABLE_CALENDAR,
 } from '../../App/constant';
+import {CES_ORANGE_HOVER, CES_WHITE} from "../../../constants/colorTypes";
 
 const ContentBooking = styled.div`
   padding-bottom: 9px;
@@ -16,9 +17,14 @@ const ContentBooking = styled.div`
   align-items: flex-start;
   flex-direction: column;
   background-color: ${props =>
-    props.isWeekend
-      ? props.theme.color.weekendBackground
-      : props.theme.color.background};
-  background-color: ${props => props.inputColor || props.hoverColor || 'white'};
+    props.isWeekend ? props.theme.color.weekendBackground : CES_WHITE};
+  background-color: ${props => props.inputColor}!important;
+
+  ${RowBookingView}:hover & {
+    background-color: ${CES_ORANGE_HOVER};
+  }
+  ${RowBookingView}:active & {
+    background-color: ${CES_WHITE};
+  }
 `;
 export default ContentBooking;

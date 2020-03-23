@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React, { useContext } from 'react';
-import { CES_GREY_HOVER, CES_ORANGE_HOVER } from '../../constants/colorTypes';
+import { CES_GREY_HOVER } from '../../constants/colorTypes';
 import { CalendarContext } from '../../context/Calendar';
 import { getNumberOfDay } from '../../utils/Date';
 import Booking from './TableCalendar/Booking';
@@ -28,14 +28,7 @@ const CellInCalendar = props => {
     setStartCellDay,
     lastDate,
     setLastDate,
-    isHover,
     setIsHover,
-    firstHover,
-    setFirstHover,
-    lastHover,
-    setLastHover,
-    numOfSelecting,
-    setNumOfSelecting,
     addBookingStatus,
     setAddBookingStatus,
     formIsOpening,
@@ -73,18 +66,6 @@ const CellInCalendar = props => {
         setEnd(indexCell);
         setLastDate(endDayInCell);
       }
-    }
-  };
-
-  const enterSelection = (indexCell, firstHover_, lastHover_) => {
-    setIsHover(true);
-    setFirstHover(firstHover_);
-    setLastHover(lastHover_);
-    setNumOfSelecting(indexCell);
-  };
-  const leaveSelection = indexCell => {
-    if (indexCell === numOfSelecting) {
-      setIsHover(false);
     }
   };
 
@@ -131,14 +112,6 @@ const CellInCalendar = props => {
           resourceStart === indexResource))
         ? CES_GREY_HOVER
         : '';
-
-    const hoverRowColor = () =>
-      isHover === true &&
-      indexCellRow + cellIndex >= firstHover &&
-      indexCellRow + cellIndex < lastHover
-        ? CES_ORANGE_HOVER
-        : '';
-
     return (
       <DropTargetCell
         onMouseDown={() => {
@@ -170,17 +143,6 @@ const CellInCalendar = props => {
           )
         }
         inputColor={hoverCellColor()}
-        hoverColor={hoverRowColor()}
-        onMouseEnter={() => {
-          enterSelection(
-            indexCellRow + cellIndex,
-            numberOfDay * indexResource,
-            numberOfDay * (indexResource + 1),
-          );
-        }}
-        onMouseLeave={() => {
-          leaveSelection(indexCellRow + cellIndex);
-        }}
         isWeekend={isWeekend}
         key={`${dateInCell} ${resource._id}`}
         resourceId={resource._id}
