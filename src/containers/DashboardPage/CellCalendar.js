@@ -11,59 +11,47 @@ const CellInCalendar = props => {
     startDay,
     endDay,
     handleCloseModal,
-    hoverWorking,
     setBegin,
     setContentGlobal,
-    start,
-    setStart,
-    end,
-    setEnd,
-    selecting,
-    setSelecting,
-    resourceStart,
-    setResourceStart,
-    first,
-    setFirst,
-    startCellDay,
-    setStartCellDay,
-    lastDate,
     setLastDate,
     setIsHover,
-    addBookingStatus,
-    setAddBookingStatus,
-    formIsOpening,
-    setFormIsOpening,
+    hoverObject,
+    hoverSetObject,
   } = calendarContext;
 
   const numberOfDay = getNumberOfDay(startDay, endDay);
 
   const beginSelection = (indexCell, indexResource, startDayInCell) => {
-    if (formIsOpening) return;
-    setSelecting(true);
-    setStart(indexCell);
-    setFirst(true);
-    setEnd(indexCell);
-    setLastDate(startDayInCell);
-    updateSelection(indexCell, indexResource, startDayInCell, true);
-    setResourceStart(indexResource);
-    setStartCellDay(startDayInCell);
-    setIsHover(false);
+    if (hoverObject.formIsOpening) return;
+    hoverSetObject.setSelecting(true);
+    hoverSetObject.setStart(indexCell);
+    hoverSetObject.setFirst(true);
+    hoverSetObject.setEnd(indexCell);
+    hoverSetObject.setLastDate(startDayInCell);
+    hoverSetObject.setResourceStart(indexResource);
+    hoverSetObject.setStartCellDay(startDayInCell);
+    hoverSetObject.setIsHover(false);
+    hoverSetObject.setAddBookingStatus(true);
+    hoverSetObject.setFormIsOpening(true);
     setBegin();
-    setAddBookingStatus(true);
-    setFormIsOpening(true);
+    updateSelection(indexCell, indexResource, startDayInCell, true);
   };
 
-  const endSelection = (indexCell = end, indexResource, endDayInCell) => {
-    setSelecting(false);
+  const endSelection = (
+    indexCell = hoverObject.end,
+    indexResource,
+    endDayInCell,
+  ) => {
+    hoverSetObject.setSelecting(false);
     updateSelection(indexCell, indexResource, endDayInCell, true);
     setLastDate(endDayInCell);
   };
 
   const updateSelection = (indexCell, indexResource, endDayInCell, force) => {
-    if (selecting || force) {
+    if (hoverObject.selecting || force) {
       setIsHover(false);
-      if (indexResource === resourceStart) {
-        setEnd(indexCell);
+      if (indexResource === hoverObject.resourceStart) {
+        hoverSetObject.setEnd(indexCell);
         setLastDate(endDayInCell);
       }
     }
@@ -88,9 +76,7 @@ const CellInCalendar = props => {
     ));
   }
 
-  const { resource } = props;
-  const { row } = props;
-  const { indexResource } = props;
+  const { resource, row, indexResource } = props;
 
   const handleOnClick = (bookingsInCell, startDate, endDate) => {
     setContentGlobal({ resource, bookingsInCell, startDate, endDate });
@@ -102,46 +88,60 @@ const CellInCalendar = props => {
     const bookingDateWithResource = renderBooking(bookingsInCell);
 
     const hoverCellColor = () =>
-      formIsOpening === true &&
-      addBookingStatus === true &&
-      hoverWorking() === true &&
-      first === true &&
-      ((end <= indexCellRow + cellIndex && indexCellRow + cellIndex <= start) ||
-        (start <= indexCellRow + cellIndex &&
-          indexCellRow + cellIndex <= end &&
-          resourceStart === indexResource))
+      hoverObject.formIsOpening &&
+      hoverObject.addBookingStatus &&
+      hoverObject.isHoverWorking &&
+      hoverObject.first &&
+      ((hoverObject.end <= indexCellRow + cellIndex &&
+        indexCellRow + cellIndex <= hoverObject.start) ||
+        (hoverObject.start <= indexCellRow + cellIndex &&
+          indexCellRow + cellIndex <= hoverObject.end &&
+          hoverObject.resourceStart === indexResource))
         ? CES_GREY_HOVER
         : '';
+    const totalIndex = indexCellRow + cellIndex;
+    const handleMouseDown = () => {
+      beginSelection(
+        totalIndex,
+        indexResource,
+        moment(moment(dateInCell).toString()),
+      );
+    };
+
+    const handleMouseUp = () => {
+      if (hoverObject.startCellDay > hoverObject.lastDate) {
+        handleOnClick(
+          dateInCell,
+          hoverObject.lastDate,
+          hoverObject.startCellDay,
+        );
+      } else {
+        handleOnClick(
+          dateInCell,
+          hoverObject.startCellDay,
+          hoverObject.lastDate,
+        );
+      }
+      endSelection(
+        totalIndex,
+        indexResource,
+        moment(moment(dateInCell).toString()),
+      );
+      handleCloseModal(true);
+    };
+
+    const handleMouseMove = () => {
+      updateSelection(
+        totalIndex,
+        indexResource,
+        moment(moment(dateInCell).toString()),
+      );
+    };
     return (
       <DropTargetCell
-        onMouseDown={() => {
-          beginSelection(
-            indexCellRow + cellIndex,
-            indexResource,
-            moment(moment(dateInCell).toString()),
-          );
-        }}
-        onMouseUp={() => {
-          if (startCellDay > lastDate) {
-            handleOnClick(dateInCell, lastDate, startCellDay);
-          } else {
-            handleOnClick(dateInCell, startCellDay, lastDate);
-          }
-          endSelection(
-            indexCellRow + cellIndex,
-            indexResource,
-            moment(moment(dateInCell).toString()),
-          );
-
-          handleCloseModal(true);
-        }}
-        onMouseMove={() =>
-          updateSelection(
-            indexCellRow + cellIndex,
-            indexResource,
-            moment(moment(dateInCell).toString()),
-          )
-        }
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
         inputColor={hoverCellColor()}
         isWeekend={isWeekend}
         key={`${dateInCell} ${resource._id}`}
