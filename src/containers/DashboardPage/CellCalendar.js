@@ -171,16 +171,6 @@ const CellInCalendar = props => {
         }
         inputColor={hoverCellColor()}
         hoverColor={hoverRowColor()}
-        onMouseEnter={() => {
-          enterSelection(
-            indexCellRow + cellIndex,
-            numberOfDay * indexResource,
-            numberOfDay * (indexResource + 1),
-          );
-        }}
-        onMouseLeave={() => {
-          leaveSelection(indexCellRow + cellIndex);
-        }}
         isWeekend={isWeekend}
         key={`${dateInCell} ${resource._id}`}
         resourceId={resource._id}
