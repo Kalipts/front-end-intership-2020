@@ -45,6 +45,33 @@ const CalendarProvider = props => {
     setContent(newContent);
   };
 
+  const hoverObject = {
+    start,
+    end,
+    selecting,
+    resourceStart,
+    first,
+    startCellDay,
+    lastDate,
+    isHover,
+    formIsOpening,
+    isHoverWorking,
+    addBookingStatus,
+  };
+  const hoverSetObject = {
+    setStart,
+    setEnd,
+    setSelecting,
+    setResourceStart,
+    setFirst,
+    setStartCellDay,
+    setLastDate,
+    setIsHover,
+    setFormIsOpening,
+    setIsHoverWorking,
+    setAddBookingStatus,
+  };
+
   const setBegin = () => {
     setIsHoverWorking(true);
   };
@@ -61,7 +88,6 @@ const CalendarProvider = props => {
     if (key === false) setIsHoverWorking(false);
     else setIsHoverWorking(true);
   };
-  const hoverWorking = () => isHoverWorking;
 
   const onDisabled = () => {
     setDisabled(true);
@@ -177,6 +203,7 @@ const CalendarProvider = props => {
         return isBookingBelongResource;
       })
       .sort(
+        // eslint-disable-next-line no-shadow
         (first, second) =>
           compareByDay(first.startDay, first.endDay) -
           compareByDay(second.startDay, second.endDay),
@@ -224,7 +251,6 @@ const CalendarProvider = props => {
         disabled,
         onDisabled,
         removeBooking,
-        hoverWorking,
         setBegin,
         updateOnDidDragBooking,
         contentGlobal,
@@ -251,6 +277,8 @@ const CalendarProvider = props => {
         setIsChildVisible,
         formIsOpening,
         setFormIsOpening,
+        hoverObject,
+        hoverSetObject,
       }}
     >
       {props.children}
