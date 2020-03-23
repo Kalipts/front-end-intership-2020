@@ -39,9 +39,6 @@ const CalendarProvider = props => {
   const [startCellDay, setStartCellDay] = useState(moment());
   const [lastDate, setLastDate] = useState(0);
   const [isHover, setIsHover] = useState(false);
-  const [firstHover, setFirstHover] = useState(0);
-  const [lastHover, setLastHover] = useState(0);
-  const [numOfSelecting, setNumOfSelecting] = useState(0);
   const [formIsOpening, setFormIsOpening] = useState(false);
   const contentGlobal = () => content;
   const setContentGlobal = newContent => {
@@ -248,12 +245,6 @@ const CalendarProvider = props => {
         setLastDate,
         isHover,
         setIsHover,
-        firstHover,
-        setFirstHover,
-        lastHover,
-        setLastHover,
-        numOfSelecting,
-        setNumOfSelecting,
         addBookingStatus,
         setAddBookingStatus,
         isChildVisible,
