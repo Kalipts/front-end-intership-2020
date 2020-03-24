@@ -7,8 +7,9 @@ import BookingText from './Style/BookingContent';
 import BookingTime from './Style/BookingTime';
 import { HOURS_IN_DAY } from '../../App/constant';
 import { CalendarContext } from '../../../context/Calendar';
-import { compareByDay } from '../../../utils/Date';
+import { compareByDay, isWeekend } from '../../../utils/Date';
 import IconButton from '../../../components/shared/IconButton';
+import moment from 'moment';
 
 import Close from './Style/Close';
 import ItemTypes from './ItemTypes';
@@ -31,7 +32,10 @@ export default function Booking(props) {
   const calendarContext = useContext(CalendarContext);
   const { getMarginTopBooking, removeBooking } = calendarContext;
   const length = compareByDay(endDay, startDay) + 1;
-  const percentageHour = (length * utilize * HOURS_IN_DAY) / 100;
+  let percentageHour = (length * utilize * HOURS_IN_DAY) / 100;
+  if (isWeekend(startDay, endDay)) {
+    percentageHour -= 16;
+  }
 
   let top = 0;
   if (isFirst) {

@@ -12,9 +12,7 @@ export default function DropTargetCell(props) {
     onMouseDown,
     onMouseUp,
     onMouseMove,
-    value,
     inputColor,
-    hoverColor,
     onMouseEnter,
     onMouseLeave,
     isWeekend,
@@ -47,9 +45,7 @@ export default function DropTargetCell(props) {
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseMove={onMouseMove}
-      value={value}
       inputColor={inputColor}
-      hoverColor={hoverColor}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       isWeekend={isWeekend}
@@ -62,9 +58,7 @@ DropTargetCell.propTypes = {
   onMouseDown: PropTypes.func,
   onMouseUp: PropTypes.func,
   onMouseMove: PropTypes.func,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   inputColor: PropTypes.string,
-  hoverColor: PropTypes.string,
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
   isWeekend: PropTypes.bool,

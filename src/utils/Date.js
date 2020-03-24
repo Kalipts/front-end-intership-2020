@@ -1,8 +1,11 @@
 import moment from 'moment';
 import { HOURS_IN_DAY, MAX_UTILIZE } from '../containers/App/constant';
 export const getTotalHour = (start, end, utilize) => {
-  const totalHour =
+  let totalHour =
     (utilize / MAX_UTILIZE) * (compareByDay(start, end) + 1) * HOURS_IN_DAY;
+  if (isWeekend(end, start)) {
+    totalHour -= 16;
+  }
   return Math.round(totalHour * 2) / 2;
 };
 export const getNumberOfDay = (startDay, endDay) => {
@@ -70,3 +73,22 @@ export const seperateDayByWeekend = (firstDay, endDay) => {
   }
   return bookings;
 };
+
+export function isWeekend(startDate, endDate) {
+  const startDateClone = startDate.format('MMM DD, YYYY');
+  const endDateClone = endDate.format('MMM DD, YYYY');
+
+  const startDateNew = new Date(startDateClone);
+  const endDateNew = new Date(endDateClone);
+  let isWeekendCheck = false;
+
+  while (startDateNew < endDateNew) {
+    const day = startDateNew.getDay();
+    isWeekendCheck = day === 6 || day === 0;
+    if (isWeekendCheck) {
+      return true;
+    }
+    startDateNew.setDate(startDateNew.getDate() + 1);
+  }
+  return false;
+}
