@@ -16,9 +16,9 @@ const Wrapper = styled.div`
     width: 20px;
     height: 20px;
   }
-  :hover {
+  /* :hover {
     border: 1px solid ${props => props.theme.color.primary};
-  }
+  } */
 `;
 
 const Title = styled.div`
@@ -37,7 +37,7 @@ const ProjectSpan = styled.span`
 `;
 
 const SelectedItem = props => {
-  const [isShowItem, setIsShowItem] = useState(false);
+  const [isShowItem, setIsShowItem] = useState(true);
 
   const toggleShowItem = () => {
     setIsShowItem(!isShowItem);
@@ -57,6 +57,7 @@ const SelectedItem = props => {
 SelectedItem.propTypes = {
   title: PropTypes.string,
   src: PropTypes.string,
+  children: PropTypes.node,
 };
 
 export default SelectedItem;

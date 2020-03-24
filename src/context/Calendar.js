@@ -27,7 +27,7 @@ const CalendarProvider = props => {
   const [addBookingStatus, setAddBookingStatus] = useState(true);
   const [content, setContent] = useState({
     resource: [],
-    booking: [],
+    booking: undefined,
     startDate: moment(),
     endDate: moment(),
   });
