@@ -1,6 +1,5 @@
 import moment from 'moment';
 import { getData, updateData, deleteData, addData } from './axiosService';
-import { seperateDayByWeekend } from '../utils/Date';
 
 const url = `${process.env.REACT_APP_API_URL}/api/booking`;
 
@@ -18,7 +17,8 @@ export const updateBooking = booking =>
   updateData({ url: `${url}/${booking._id}`, data: booking });
 
 export const addBooking = newBooking => {
-  const bookings = seperateDayByWeekend(newBooking.startDay, newBooking.endDay);
+  const bookings = [];
+  bookings.push(newBooking);
   try {
     bookings.map(booking => {
       addData(`${url}`, {

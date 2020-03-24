@@ -34,7 +34,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './styles.css';
 import Modal from '../Dashboard/Modal';
 import { CalendarContext } from '../../context/Calendar';
-import { compareByDay } from '../../utils/Date';
+import { compareByDay, isWeekend, isWeekend2 } from '../../utils/Date';
 import UtilizeInput from './UtilizeInput';
 import { HOURS_IN_DAY, MAX_UTILIZE } from '../../containers/App/constant';
 import { addBooking, updateBooking } from '../../api/bookingApi';
@@ -92,8 +92,20 @@ const AddBookingForm = props => {
     setStartDay(newDate);
   };
 
-  const hours = (start, end) =>
-    (utilize / MAX_UTILIZE) * (compareByDay(start, end) + 1) * HOURS_IN_DAY;
+  const hours = (start, end) => {
+    if (isWeekend(end, start)) {
+      return (
+        (utilize / MAX_UTILIZE) *
+          (compareByDay(start, end) + 1) *
+          HOURS_IN_DAY -
+        16
+      );
+    }
+
+    return (
+      (utilize / MAX_UTILIZE) * (compareByDay(start, end) + 1) * HOURS_IN_DAY
+    );
+  };
 
   const handleChangeDetail = e => {
     setDetails(e.target.value);
