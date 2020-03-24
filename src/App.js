@@ -1,5 +1,4 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { ThemeProvider } from 'styled-components';
@@ -9,20 +8,17 @@ import { theme } from './containers/common/AppStyle';
 
 import './App.css';
 import './containers/Header/Header.css';
-import store from './store/store';
 
 function App() {
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <Router>
-          <Header />
-          <Switch>
-            <Route path="/dashboard" component={Dashboard} />
-          </Switch>
-        </Router>
-      </ThemeProvider>
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Header />
+        <Switch>
+          <Route path="/dashboard" component={Dashboard} />
+        </Switch>
+      </Router>
+    </ThemeProvider>
   );
 }
 

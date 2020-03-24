@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  useLayoutEffect,
-  useCallback,
-} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
@@ -43,14 +37,15 @@ const AddBookingForm = props => {
   const {
     resource,
     booking = {
-      project: { name: 'Add project', color: '' },
+      _id: undefined,
+      project: { name: '', color: '' },
       utilize: MAX_UTILIZE,
     },
     startDate,
     endDate,
   } = props.content;
-  const [startDay, setStartDay] = useState(startDate);
-  const [endDay, setEndDay] = useState(endDate);
+  const [startDay, setStartDay] = useState(moment());
+  const [endDay, setEndDay] = useState(moment());
   const [details, setDetails] = useState();
   const [person, setPerson] = useState(resource);
   const [utilize, setUtilize] = useState(booking.utilize);
@@ -59,7 +54,6 @@ const AddBookingForm = props => {
   const [onEdit, setOnEdit] = useState(false);
   const {
     handleCloseModal,
-    disabled,
     onDisabled,
     persons,
     projects,
@@ -68,7 +62,7 @@ const AddBookingForm = props => {
   } = useContext(CalendarContext);
   useEffect(() => {
     setPerson(resource);
-    if (booking) {
+    if (booking._id) {
       setProject(booking.project);
       setDetails(booking.details);
       setUtilize(booking.utilize);
@@ -77,6 +71,8 @@ const AddBookingForm = props => {
       setIsModify(true);
       setDetails(booking.details);
     } else {
+      setStartDay(moment(startDate.toString()));
+      setEndDay(moment(endDate.toString()));
       setIsModify(false);
     }
     setOnEdit(false);
@@ -84,32 +80,30 @@ const AddBookingForm = props => {
 
   const onClickCancle = i => handleCloseModal(i);
   const changeEndDay = newDate => {
-    if (compareByDay(newDate, startDay) < 0) {
-      setStartDay(moment(newDate));
-    } else setEndDay(newDate);
+    if (compareByDay(newDate, startDay) < 0) setStartDay(moment(newDate));
+    setEndDay(newDate);
   };
   const changeStartDay = newDate => {
-    if (compareByDay(newDate, endDay) > 0) {
-      setEndDay(newDate);
-    } else setStartDay(newDate);
+    if (compareByDay(newDate, endDay) > 0) setEndDay(newDate);
+    setStartDay(newDate);
   };
 
-  const handleChangeUtilize = e => {
-    setUtilize(e.target.value);
+  const handleChangeUtilize = event => {
+    setUtilize(event.target.value);
   };
-  const handleChangeDetail = e => {
-    setDetails(e.target.value);
+  const handleChangeDetail = event => {
+    setDetails(event.target.value);
   };
 
-  const handleChangePerson = e => {
-    const _id = e.target.value;
+  const handleChangePerson = event => {
+    const _id = event.target.value;
     const selectedPerson = persons.find(e => e._id === _id);
     setPerson(selectedPerson);
     return selectedPerson;
   };
 
-  const handleChangeProject = e => {
-    const _id = e.target.value;
+  const handleChangeProject = event => {
+    const _id = event.target.value;
     const selectedProject = projects.find(e => e._id === _id);
     setProject(selectedProject);
     return selectedProject;
@@ -210,7 +204,7 @@ const AddBookingForm = props => {
 
 AddBookingForm.propTypes = {
   content: PropTypes.shape({
-    resource: PropTypes.object,
+    resource: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     booking: PropTypes.object,
     startDate: PropTypes.instanceOf(moment),
     endDate: PropTypes.instanceOf(moment),

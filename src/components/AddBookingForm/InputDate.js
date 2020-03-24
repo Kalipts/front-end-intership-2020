@@ -23,9 +23,8 @@ const Date = styled.div`
 `;
 
 const InputDate = props => {
-  const { day, label } = props;
+  const { day, label, handleChange } = props;
   const [selectedDay, setSelectedDay] = useState(moment(day.toString()));
-  const { handleChange } = props;
   useEffect(() => {
     setSelectedDay(moment(day).format('DD MMM, YYYY'));
   }, [day]);
