@@ -34,7 +34,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './styles.css';
 import Modal from '../Dashboard/Modal';
 import { CalendarContext } from '../../context/Calendar';
-import { compareByDay, isWeekend, isWeekend2 } from '../../utils/Date';
 import { compareByDay, getTotalHour } from '../../utils/Date';
 import UtilizeInput from './UtilizeInput';
 import { MAX_UTILIZE } from '../../containers/App/constant';
@@ -87,8 +86,7 @@ const AddBookingForm = props => {
   const changeEndDay = newDate => {
     if (compareByDay(newDate, startDay) < 0) {
       setStartDay(moment(newDate));
-    }
-    setEndDay(newDate);
+    } else setEndDay(newDate);
   };
   const changeStartDay = newDate => {
     if (compareByDay(newDate, endDay) > 0) {
@@ -96,21 +94,9 @@ const AddBookingForm = props => {
     } else setStartDay(newDate);
   };
 
-  const hours = (start, end) => {
-    if (isWeekend(end, start)) {
-      return (
-        (utilize / MAX_UTILIZE) *
-          (compareByDay(start, end) + 1) *
-          HOURS_IN_DAY -
-        16
-      );
-    }
-
-    return (
-      (utilize / MAX_UTILIZE) * (compareByDay(start, end) + 1) * HOURS_IN_DAY
-    );
+  const handleChangeUtilize = e => {
+    setUtilize(e.target.value);
   };
-
   const handleChangeDetail = e => {
     setDetails(e.target.value);
   };
@@ -137,7 +123,6 @@ const AddBookingForm = props => {
   };
 
   const addNewBooking = () => {
-    const selectedPerson = person || resource;
     const newBooking = {
       utilize,
       hour: getTotalHour(startDay, endDay, utilize),
