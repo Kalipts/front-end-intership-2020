@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar';
+import PropTypes from 'prop-types';
 import SelecteItemModal from '../Dashboard/SelectItemModal';
-import { CalendarContext } from '../../context/Calendar';
 
 const Body = styled.div`
   display: flex;
@@ -21,27 +21,34 @@ const Color = styled.div`
 
 const Name = styled.div`
   height: 18px;
-  min-width: 150px;
   color: black;
   font-size: 15px;
   margin-left: 5px;
   font-family: Muli;
+  padding: 5px 8px;
+  :hover {
+    background-color: #e6e6e6;
+    border-radius: 8px;
+  }
 `;
 
 const Item = props => {
-  const { onDisabled, disabled } = useContext(CalendarContext);
-  const { src, type, onChangeItem, handleChildVisible } = props;
+  const { src, type, onChangeItem } = props;
+  const [onShow, setOnShow] = useState(false);
+  const handleOnShow = () => {
+    setOnShow(!onShow);
+  };
   return (
-    <Body onClick={onDisabled}>
+    <Body>
       {props.makeIcon ? (
         <Color color={src} />
       ) : (
         <Avatar alt="icon-person" src={src} />
       )}
-      <Name>{props.children}</Name>
-      {disabled && (
+      <Name onClick={handleOnShow}>{props.children}</Name>
+      {onShow && (
         <SelecteItemModal
-          handleChildVisible={handleChildVisible}
+          onShow={handleOnShow}
           onChangeItem={onChangeItem}
           type={type}
         />
@@ -50,4 +57,9 @@ const Item = props => {
   );
 };
 
+Item.propTypes = {
+  src: PropTypes.string,
+  type: PropTypes.string,
+  onChangeItem: PropTypes.func.isRequired,
+};
 export default Item;

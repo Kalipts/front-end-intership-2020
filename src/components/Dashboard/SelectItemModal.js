@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import styled from 'styled-components';
-import isNil from 'lodash/isNil';
 import Avatar from '@material-ui/core/Avatar';
+import PropTypes from 'prop-types';
 import { ESC_KEY } from '../../constants/keyTypes';
 
 import Label from './Label';
@@ -109,12 +109,13 @@ const Color = styled.div`
 `;
 
 const SelectItemModal = props => {
-  const { type, onChangeItem, handleChildVisible } = props;
+  const { type, onChangeItem, onShow } = props;
   const [onClose, setOnClose] = useState(false);
   const [item, setItem] = useState([]);
   const modal = useRef(null);
-  const { onDisabled, persons, projects } = useContext(CalendarContext);
-  const handdleToggleClose = () => {
+  const { persons, projects } = useContext(CalendarContext);
+  const toggleClose = () => {
+    onShow();
     setOnClose(!onClose);
   };
 
@@ -125,7 +126,6 @@ const SelectItemModal = props => {
   useEffect(() => {
     document.addEventListener('keyup', handleKeyUp, false);
     document.addEventListener('click', handleOutsideClick, false);
-    handleChildVisible(true);
     if (type === 'Resource') setItem(persons);
     else setItem(projects);
     return () => {
@@ -138,8 +138,7 @@ const SelectItemModal = props => {
     const keys = {};
     keys[`${ESC_KEY}`] = () => {
       e.preventDefault();
-      handdleToggleClose();
-      handleChildVisible(false);
+      toggleClose();
     };
 
     if (keys[e.keyCode]) {
@@ -150,8 +149,7 @@ const SelectItemModal = props => {
   function handleOutsideClick(e) {
     const { current } = modal;
     if (current && !current.contains(e.target)) {
-      handdleToggleClose();
-      handleChildVisible(false);
+      toggleClose();
       document.removeEventListener('click', handleOutsideClick, false);
     }
   }
@@ -159,7 +157,7 @@ const SelectItemModal = props => {
   return (
     <>
       {!onClose && (
-        <Wrapper onBlur={onDisabled} ref={modal}>
+        <Wrapper ref={modal}>
           <Label label={type} />
           <Search
             onFilterItem={onFilterItem}
@@ -197,4 +195,10 @@ const SelectItemModal = props => {
     </>
   );
 };
+SelectItemModal.propTypes = {
+  type: PropTypes.string.isRequired,
+  onChangeItem: PropTypes.func.isRequired,
+  onShow: PropTypes.func.isRequired,
+};
+
 export default SelectItemModal;
