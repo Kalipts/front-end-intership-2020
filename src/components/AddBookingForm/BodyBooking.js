@@ -87,7 +87,15 @@ export const TotalTime = styled.div`
   padding: 5px auto;
 `;
 
-export const InputDetail = styled.input`
-  border: none;
+export const InputDetail = styled.textarea`
+  display: block;
+  border-width: 0 0 1px;
   outline: none;
+  box-sizing: border-box;
+  border-bottom-color: rgba(0, 0, 0, 0.25);
+  resize: none;
+  overflow: hidden;
+  &:focus {
+    border-bottom-color: #8e44ad;
+  }
 `;

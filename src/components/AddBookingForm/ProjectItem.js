@@ -5,7 +5,7 @@ import SelectedItem from './SelectedItem';
 import Item from './Item';
 import icon from '../../images/bag.svg';
 const ProjectItem = props => {
-  const { onDisabled, src, onChangeItem, onAdd } = props;
+  const { onDisabled, src, onChangeItem } = props;
   return (
     <SelectedItem title="Project" src={icon}>
       <Item
@@ -22,11 +22,10 @@ const ProjectItem = props => {
 };
 
 ProjectItem.propTypes = {
-  onDisabled: PropTypes.bool,
+  onDisabled: PropTypes.func,
   src: PropTypes.string,
   onChangeItem: PropTypes.func,
-  onAdd: PropTypes.bool,
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
 };
 
 export default ProjectItem;

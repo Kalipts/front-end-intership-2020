@@ -24,12 +24,6 @@ const Wrapper = styled.div`
   outline-offset: 0.5px;
   justify-content: center;
   align-items: center;
-  /* &&& {
-    opacity: 0.25;
-  }
-  && {
-    opacity: 1;
-  } */
 `;
 
 const ListItem = styled.ul`
@@ -95,17 +89,23 @@ const Item = styled.div`
   height: 40px;
   color: black;
   font-size: 15px;
-  margin-left: 5px;
   font-family: Muli;
   display: flex;
   align-items: center;
+`;
+const SmallAvatar = styled(Avatar)`
+  && {
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+  }
 `;
 const Color = styled.div`
   height: 60%;
   width: 5px;
   border-radius: 1px;
   background-color: ${props => props.color || '#F8465C'};
-  margin-right: 5px;
+  margin: 0 10px;
 `;
 
 const SelectItemModal = props => {
@@ -176,7 +176,7 @@ const SelectItemModal = props => {
                     />
                     {type === 'Resource' ? (
                       <Item>
-                        <Avatar src={item.avatar} alt="icon-person" />
+                        <SmallAvatar src={item.avatar} alt="icon-person" />
                         {item.name}
                       </Item>
                     ) : (

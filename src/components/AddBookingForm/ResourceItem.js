@@ -21,10 +21,10 @@ const ResourceItem = props => {
 };
 
 ResourceItem.propTypes = {
-  onDisabled: PropTypes.bool,
+  onDisabled: PropTypes.func,
   src: PropTypes.string,
   onChangeItem: PropTypes.func,
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
 };
 
 export default ResourceItem;

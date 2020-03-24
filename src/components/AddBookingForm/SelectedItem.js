@@ -12,10 +12,6 @@ const Wrapper = styled.div`
   background-color: #ffffff;
   padding: 5px 15px;
   margin-bottom: 5px;
-  img {
-    width: 20px;
-    height: 20px;
-  }
   /* :hover {
     border: 1px solid ${props => props.theme.color.primary};
   } */
@@ -25,6 +21,10 @@ const Title = styled.div`
   display: flex;
   flex-direction: row;
   cursor: pointer;
+  img {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 const ProjectSpan = styled.span`
