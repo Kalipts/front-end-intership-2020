@@ -51,12 +51,7 @@ const Modal = props => {
   return (
     <>
       {isModalOpen && (
-        <StyledModal
-          disabled={props.disabled}
-          tabIndex="0"
-          onBlur={handdleToggleClose}
-          ref={modal}
-        >
+        <StyledModal tabIndex="0" onBlur={handdleToggleClose} ref={modal}>
           {props.children}
         </StyledModal>
       )}
@@ -65,7 +60,6 @@ const Modal = props => {
 };
 Modal.propTypes = {
   isChildVisible: PropTypes.bool,
-  disabled: PropTypes.bool,
   children: PropTypes.node,
 };
 
