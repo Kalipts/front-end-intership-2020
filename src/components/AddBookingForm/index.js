@@ -138,7 +138,7 @@ const AddBookingForm = props => {
       endDay,
       details,
       resourceId: person._id,
-      project: project._id,
+      project: project,
     };
     updateBooking(newBooking);
   };
