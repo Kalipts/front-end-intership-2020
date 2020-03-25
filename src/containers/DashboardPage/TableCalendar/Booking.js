@@ -5,67 +5,58 @@ import { useDrag } from 'react-dnd';
 import BookingCard from './Style/BookingCard';
 import BookingText from './Style/BookingContent';
 import BookingTime from './Style/BookingTime';
-import { HOURS_IN_DAY } from '../../App/constant';
 import { CalendarContext } from '../../../context/Calendar';
-import { compareByDay, isWeekend } from '../../../utils/Date';
+import { compareByDay } from '../../../utils/Date';
 import IconButton from '../../../components/shared/IconButton';
-import moment from 'moment';
 
 import Close from './Style/Close';
 import ItemTypes from './ItemTypes';
+import { getHoursFromUtilize } from '../../../utils/Utilize';
 
 export default function Booking(props) {
   const { booking, isFirst, onClick } = props;
   const { startDay, endDay, hour, isDuration, utilize, project, _id } = booking;
+  const { color, name } = project;
+  const calendarContext = useContext(CalendarContext);
+  const {
+    getMarginTopBooking,
+    removeBooking,
+    updateOnDidDragBooking,
+  } = calendarContext;
   const [{ isDragging }, drag] = useDrag({
-    item: { type: ItemTypes.BOOKING },
-    begin: () => booking,
+    item: { type: ItemTypes.BOOKING, booking },
+    end: async (item, monitor) => {
+      const { resource, date } = monitor.getDropResult();
+      await updateOnDidDragBooking(booking, resource, date);
+    },
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
       opacity: 1,
     }),
   });
   const [isHover, setIsHover] = useState(false);
-
-  const { color, name } = project;
-
-  const calendarContext = useContext(CalendarContext);
-  const { getMarginTopBooking, removeBooking } = calendarContext;
   const length = compareByDay(endDay, startDay) + 1;
-  let percentageHour = (length * utilize * HOURS_IN_DAY) / 100;
-  if (isWeekend(startDay, endDay)) {
-    percentageHour -= 16;
-  }
+  const percentageHour = getHoursFromUtilize(startDay, endDay, utilize);
+  const top = isFirst ? getMarginTopBooking(booking) : 0;
 
-  let top = 0;
-  if (isFirst) {
-    top = getMarginTopBooking(booking);
-  }
   const handleClick = () => {
     removeBooking(_id);
   };
-  let opacity = 1;
-  if (isDragging) opacity = 0.2;
+
   return (
     <BookingCard
-      opacity={opacity}
+      isDragging={isDragging}
       length={length}
       color={color}
       top={top}
       ref={drag}
       onClick={onClick}
-      onMouseDown={e => {
-        e.stopPropagation();
-        e.nativeEvent.stopImmediatePropagation();
-        setIsHover(false);
-      }}
       onMouseUp={e => {
         e.stopPropagation();
-        e.nativeEvent.stopImmediatePropagation();
       }}
-      onMouseMove={e => {
+      onMouseDown={e => {
+        setIsHover(false);
         e.stopPropagation();
-        e.nativeEvent.stopImmediatePropagation();
       }}
       onMouseEnter={() => {
         if (isDragging) {

@@ -35,8 +35,8 @@ export const seperateDayByWeekend = (firstDay, endDay) => {
   let next = first.clone();
 
   while (compareByDay(next, end) <= 0) {
-    const isWeekend = next.day() === 0 || next.day() === 6;
-    if (isWeekend) {
+    const checkWeekend = next.day() === 0 || next.day() === 6;
+    if (checkWeekend) {
       end = end.add(2, 'days');
       const businessDayFromFirst = compareByDay(next, first);
       const isLargerOrEqualEndDay =
@@ -91,4 +91,15 @@ export function isWeekend(startDate, endDate) {
     startDateNew.setDate(startDateNew.getDate() + 1);
   }
   return false;
+}
+export function getNumberOfWeekends(startDay, endDay) {
+  const current = startDay.clone();
+  let number = 0;
+  if (compareByDay(startDay, endDay) > 0) {
+    return 0;
+  }
+  while (current.day(7).isBefore(endDay)) {
+    number += 1;
+  }
+  return number;
 }

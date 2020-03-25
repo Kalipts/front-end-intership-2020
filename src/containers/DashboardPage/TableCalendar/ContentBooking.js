@@ -4,7 +4,7 @@ import {
   WIDTH_CELL_IN_TABLE_CALENDAR,
   BORDER_CELL_IN_TABLE_CALENDAR,
 } from '../../App/constant';
-import {CES_ORANGE_HOVER, CES_WHITE} from "../../../constants/colorTypes";
+import { CES_ORANGE_HOVER, CES_WHITE } from '../../../constants/colorTypes';
 
 const ContentBooking = styled.div`
   padding-bottom: 9px;
