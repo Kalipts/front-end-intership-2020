@@ -141,8 +141,7 @@ const CalendarProvider = props => {
     setSearch(event.target.value.toLowerCase());
   };
   const updateOnDidDragBooking = async (booking, resourceId, newStartDay) => {
-      console.log('start new day: ', newStartDay.toString());
-      const checkWeekend = isWeekend(booking.startDay, booking.endDay);
+    const checkWeekend = isWeekend(booking.startDay, booking.endDay);
 
     const length = compareByDay(booking.endDay, booking.startDay) + 1;
     const startDayFormat = moment(newStartDay)
@@ -153,17 +152,18 @@ const CalendarProvider = props => {
       .format('ddd')
       .toString();
     let newBooking;
-    console.log('start day format: ', startDayFormat)
     if (length === 1 && (startDayFormat === 'Sat' || startDayFormat === 'Sun'))
       return;
-    if(checkWeekend && (startDayFormat === 'Sat' || startDayFormat === 'Sun') ) {
-        console.log('start day format va check weekend dang chay ...');
-        return;
-
+    if (
+      checkWeekend &&
+      (startDayFormat === 'Sat' || startDayFormat === 'Sun')
+    ) {
+      return;
     }
-    else if (checkWeekend) {
-        console.log('start', startDayFormat);
-        console.log("check weekend dang chay....");
+    if (checkWeekend) {
+      if (isWeekend(newStartDay, newEndDay)) {
+        return;
+      }
       newBooking = {
         ...booking,
         resourceId,
@@ -203,20 +203,20 @@ const CalendarProvider = props => {
         };
       }
     } else if (endDayFormat === 'Sat' || endDayFormat === 'Sun') {
-        if(endDayFormat === 'Sat')
+      if (endDayFormat === 'Sat')
         newBooking = {
-            ...booking,
-            resourceId,
-            startDay: newStartDay.clone().add(-1, 'days'),
-            endDay: newEndDay.clone().add(-1, 'days'),
+          ...booking,
+          resourceId,
+          startDay: newStartDay.clone().add(-1, 'days'),
+          endDay: newEndDay.clone().add(-1, 'days'),
         };
-        else
-            newBooking = {
-                ...booking,
-                resourceId,
-                startDay: newStartDay.clone().add(-2, 'days'),
-                endDay: newEndDay.clone().add(-2, 'days'),
-            };
+      else
+        newBooking = {
+          ...booking,
+          resourceId,
+          startDay: newStartDay.clone().add(-2, 'days'),
+          endDay: newEndDay.clone().add(-2, 'days'),
+        };
     } else {
       const distanceStartDay = getNumberOfDay(booking.startDay, newStartDay);
       newBooking = {
