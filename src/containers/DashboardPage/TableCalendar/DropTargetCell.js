@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useDrop } from 'react-dnd';
 import moment from 'moment';
 import ItemTypes from './ItemTypes';
 import ContentBooking from './ContentBooking';
-import { CalendarContext } from '../../../context/Calendar';
 import { WIDTH_CELL_IN_TABLE_CALENDAR } from '../../App/constant';
 import {compareByDay} from "../../../utils/Date";
 
@@ -20,23 +19,19 @@ export default function DropTargetCell(props) {
     resourceId,
     date,
   } = props;
-  const calendarContext = useContext(CalendarContext);
-  const { updateOnDidDragBooking } = calendarContext;
   const [, drop] = useDrop({
     accept: ItemTypes.BOOKING,
     drop: (item, monitor) => {
-      const booking = monitor.getItem();
       const coorPointer = monitor.getClientOffset();
       const coorDragSource = monitor.getSourceClientOffset();
       const distanceOfPointerAndDrag = Math.floor(
         (coorPointer.x - coorDragSource.x) / WIDTH_CELL_IN_TABLE_CALENDAR,
       );
       const newStartDate = date.clone().add(-distanceOfPointerAndDrag, 'days');
-      updateOnDidDragBooking(booking, resourceId, newStartDate);
+      return { resource: resourceId, date: newStartDate };
     },
     collect: monitor => ({
-      isOver: monitor.isOver({ swallow: true }),
-      canDrop: monitor.canDrop(),
+      isOver: monitor.isOver({ swallow: false }),
     }),
   });
 

@@ -9,7 +9,7 @@ const BookingCard = styled.div`
   align-items: center;
   position: relative;
   margin-top: ${props => props.top};
-  opacity: ${props => props.opacity || 1};
+  opacity: ${props => (props.isDragging ? 0.2 : 1)};
   cursor: pointer;
 `;
 export default BookingCard;
