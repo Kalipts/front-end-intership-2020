@@ -142,7 +142,6 @@ const CalendarProvider = props => {
   };
   const updateOnDidDragBooking = async (booking, resourceId, newStartDay) => {
     const checkWeekend = isWeekend(booking.startDay, booking.endDay);
-
     const length = compareByDay(booking.endDay, booking.startDay) + 1;
     const startDayFormat = moment(newStartDay)
       .format('ddd')
@@ -152,77 +151,61 @@ const CalendarProvider = props => {
       .format('ddd')
       .toString();
     let newBooking;
-    if (length === 1 && (startDayFormat === 'Sat' || startDayFormat === 'Sun'))
-      return;
-    if (
-      checkWeekend &&
-      (startDayFormat === 'Sat' || startDayFormat === 'Sun')
-    ) {
+    const compareWeekend = startDayFormat === 'Sat' || startDayFormat === 'Sun';
+    const objectBooking = (startDay_, endDay_) => {
+      newBooking = {
+        ...booking,
+        resourceId,
+        startDay: startDay_,
+        endDay: endDay_,
+      };
+      return newBooking;
+    };
+    if (length === 1 && compareWeekend) return;
+    if (checkWeekend && compareWeekend) {
       return;
     }
     if (checkWeekend) {
       if (isWeekend(newStartDay, newEndDay)) {
-        newBooking = {
-          ...booking,
-          resourceId,
-          startDay: newStartDay,
-          endDay: newEndDay,
-        };
+        newBooking = objectBooking(newStartDay, newEndDay);
       } else {
-        newBooking = {
-          ...booking,
-          resourceId,
-          startDay: newStartDay,
-          endDay: newEndDay.clone().add(-2, 'days'),
-        };
+        newBooking = objectBooking(
+          newStartDay,
+          newEndDay.clone().add(-2, 'days'),
+        );
       }
     } else if (startDayFormat === 'Sun') {
       if (length === 2) {
-        newBooking = {
-          ...booking,
-          resourceId,
-          startDay: newStartDay.clone().add(-2, 'days'),
-          endDay: newEndDay.clone().add(0, 'days'),
-        };
+        newBooking = objectBooking(
+          newStartDay.clone().add(-2, 'days'),
+          newEndDay.clone().add(0, 'days'),
+        );
       } else {
-        newBooking = {
-          ...booking,
-          resourceId,
-          startDay: newStartDay.clone().add(-2, 'days'),
-          endDay: newEndDay.clone().add(0, 'days'),
-        };
+        newBooking = objectBooking(
+          newStartDay.clone().add(-2, 'days'),
+          newEndDay.clone().add(0, 'days'),
+        );
       }
     } else if (startDayFormat === 'Sat') {
       if (length === 2) {
-        newBooking = {
-          ...booking,
-          resourceId,
-          startDay: newStartDay.clone().add(-1, 'days'),
-          endDay: newEndDay.clone().add(1, 'days'),
-        };
-      } else {
-        newBooking = {
-          ...booking,
-          resourceId,
-          startDay: newStartDay.clone().add(-2, 'days'),
-          endDay: newEndDay.clone().add(0, 'days'),
-        };
+        newBooking = objectBooking(newStartDay.clone().add(-1, 'days'), newEndDay.clone().add(1, 'days'))
+      }  else {
+          newBooking = objectBooking(newStartDay.clone().add(2, 'days'), newEndDay.clone().add(0, 'days'))
+
       }
-    } else if (endDayFormat === 'Sat' || endDayFormat === 'Sun') {
-      if (endDayFormat === 'Sat')
-        newBooking = {
-          ...booking,
-          resourceId,
-          startDay: newStartDay.clone().add(-1, 'days'),
-          endDay: newEndDay.clone().add(-1, 'days'),
-        };
-      else
-        newBooking = {
-          ...booking,
-          resourceId,
-          startDay: newStartDay.clone().add(-2, 'days'),
-          endDay: newEndDay.clone().add(-2, 'days'),
-        };
+    } else if (compareWeekend) {
+      if (endDayFormat === 'Sat') {
+          newBooking = objectBooking(
+              newStartDay.clone().add(1, 'days'),
+          newEndDay.clone().add(-1, 'days')
+        );
+      } else {
+        newBooking = objectBooking(
+          newStartDay.clone().add(2, 'days'),
+          newEndDay.clone().add(-2, 'days'),
+        );
+      }
+
     } else {
       const distanceStartDay = getNumberOfDay(booking.startDay, newStartDay);
       newBooking = {
