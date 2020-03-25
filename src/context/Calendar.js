@@ -196,12 +196,12 @@ const CalendarProvider = props => {
     } else if (compareWeekend) {
       if (endDayFormat === 'Sat') {
           newBooking = objectBooking(
-              newStartDay.clone().add(1, 'days'),
+              newStartDay.clone().add(-1, 'days'),
           newEndDay.clone().add(-1, 'days')
         );
       } else {
         newBooking = objectBooking(
-          newStartDay.clone().add(2, 'days'),
+          newStartDay.clone().add(-2, 'days'),
           newEndDay.clone().add(-2, 'days'),
         );
       }
