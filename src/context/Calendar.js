@@ -162,14 +162,20 @@ const CalendarProvider = props => {
     }
     if (checkWeekend) {
       if (isWeekend(newStartDay, newEndDay)) {
-        return;
+        newBooking = {
+          ...booking,
+          resourceId,
+          startDay: newStartDay,
+          endDay: newEndDay,
+        };
+      } else {
+        newBooking = {
+          ...booking,
+          resourceId,
+          startDay: newStartDay,
+          endDay: newEndDay.clone().add(-2, 'days'),
+        };
       }
-      newBooking = {
-        ...booking,
-        resourceId,
-        startDay: newStartDay,
-        endDay: newEndDay.clone().add(-2, 'days'),
-      };
     } else if (startDayFormat === 'Sun') {
       if (length === 2) {
         newBooking = {
