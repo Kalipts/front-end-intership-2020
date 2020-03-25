@@ -9,7 +9,7 @@ import { HOURS_IN_DAY } from '../../App/constant';
 import { CalendarContext } from '../../../context/Calendar';
 import { compareByDay, isWeekend } from '../../../utils/Date';
 import IconButton from '../../../components/shared/IconButton';
-import moment from 'moment';
+
 
 import Close from './Style/Close';
 import ItemTypes from './ItemTypes';

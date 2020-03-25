@@ -7,7 +7,7 @@ import { getResource } from '../api/resourceApi';
 import { getProject } from '../api/projectApi';
 import { getBooking, deleteBooking, updateBooking } from '../api/bookingApi';
 import { HEIGHT_BOOKING } from '../containers/App/constant';
-import { compareByDay, getNumberOfDay } from '../utils/Date';
+import { compareByDay, getNumberOfDay, isWeekend } from '../utils/Date';
 
 const CalendarContext = createContext();
 
@@ -141,13 +141,92 @@ const CalendarProvider = props => {
     setSearch(event.target.value.toLowerCase());
   };
   const updateOnDidDragBooking = async (booking, resourceId, newStartDay) => {
-    const distanceStartDay = getNumberOfDay(booking.startDay, newStartDay);
-    const newBooking = {
-      ...booking,
-      resourceId,
-      startDay: booking.startDay.add(distanceStartDay, 'days'),
-      endDay: booking.endDay.add(distanceStartDay, 'days'),
-    };
+      console.log('start new day: ', newStartDay.toString());
+      const checkWeekend = isWeekend(booking.startDay, booking.endDay);
+
+    const length = compareByDay(booking.endDay, booking.startDay) + 1;
+    const startDayFormat = moment(newStartDay)
+      .format('ddd')
+      .toString();
+    const newEndDay = moment(newStartDay).add(length - 1, 'days');
+    const endDayFormat = moment(newEndDay)
+      .format('ddd')
+      .toString();
+    let newBooking;
+    console.log('start day format: ', startDayFormat)
+    if (length === 1 && (startDayFormat === 'Sat' || startDayFormat === 'Sun'))
+      return;
+    if(checkWeekend && (startDayFormat === 'Sat' || startDayFormat === 'Sun') ) {
+        console.log('start day format va check weekend dang chay ...');
+        return;
+
+    }
+    else if (checkWeekend) {
+        console.log('start', startDayFormat);
+        console.log("check weekend dang chay....");
+      newBooking = {
+        ...booking,
+        resourceId,
+        startDay: newStartDay,
+        endDay: newEndDay.clone().add(-2, 'days'),
+      };
+    } else if (startDayFormat === 'Sun') {
+      if (length === 2) {
+        newBooking = {
+          ...booking,
+          resourceId,
+          startDay: newStartDay.clone().add(-2, 'days'),
+          endDay: newEndDay.clone().add(0, 'days'),
+        };
+      } else {
+        newBooking = {
+          ...booking,
+          resourceId,
+          startDay: newStartDay.clone().add(-2, 'days'),
+          endDay: newEndDay.clone().add(0, 'days'),
+        };
+      }
+    } else if (startDayFormat === 'Sat') {
+      if (length === 2) {
+        newBooking = {
+          ...booking,
+          resourceId,
+          startDay: newStartDay.clone().add(-1, 'days'),
+          endDay: newEndDay.clone().add(1, 'days'),
+        };
+      } else {
+        newBooking = {
+          ...booking,
+          resourceId,
+          startDay: newStartDay.clone().add(-2, 'days'),
+          endDay: newEndDay.clone().add(0, 'days'),
+        };
+      }
+    } else if (endDayFormat === 'Sat' || endDayFormat === 'Sun') {
+        if(endDayFormat === 'Sat')
+        newBooking = {
+            ...booking,
+            resourceId,
+            startDay: newStartDay.clone().add(-1, 'days'),
+            endDay: newEndDay.clone().add(-1, 'days'),
+        };
+        else
+            newBooking = {
+                ...booking,
+                resourceId,
+                startDay: newStartDay.clone().add(-2, 'days'),
+                endDay: newEndDay.clone().add(-2, 'days'),
+            };
+    } else {
+      const distanceStartDay = getNumberOfDay(booking.startDay, newStartDay);
+      newBooking = {
+        ...booking,
+        resourceId,
+        startDay: booking.startDay.add(distanceStartDay, 'days'),
+        endDay: booking.endDay.add(distanceStartDay, 'days'),
+      };
+    }
+
     const newBookings = bookings.map(schedule => {
       if (schedule._id === booking._id) {
         return newBooking;

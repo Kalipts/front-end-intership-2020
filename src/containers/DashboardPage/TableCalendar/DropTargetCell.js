@@ -6,6 +6,7 @@ import ItemTypes from './ItemTypes';
 import ContentBooking from './ContentBooking';
 import { CalendarContext } from '../../../context/Calendar';
 import { WIDTH_CELL_IN_TABLE_CALENDAR } from '../../App/constant';
+import {compareByDay} from "../../../utils/Date";
 
 export default function DropTargetCell(props) {
   const {
