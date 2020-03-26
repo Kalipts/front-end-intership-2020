@@ -56,7 +56,7 @@ const InputDate = props => {
         <AlertInput
           open={errors !== undefined}
           message={errors}
-          anchorEl={inputRef}
+          anchor={inputRef.current}
         ></AlertInput>
       )}
       <BottomLine />

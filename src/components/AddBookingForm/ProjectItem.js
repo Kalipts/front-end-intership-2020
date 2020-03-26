@@ -3,28 +3,22 @@ import PropTypes from 'prop-types';
 
 import SelectedItem from './SelectedItem';
 import Item from './Item';
-import AlertInput from './AlertInput';
+import AlertProject from './Style/AlertProject';
 import icon from '../../images/bag.svg';
 const ProjectItem = props => {
   const { src, onChangeItem, errors } = props;
-  const inputRef = useRef();
   return (
-    <SelectedItem ref={inputRef} title="Project" src={icon}>
+    <SelectedItem title="Project" src={icon}>
       <Item type="Project" makeIcon src={src} onChangeItem={onChangeItem}>
         {props.children}
       </Item>
-      {errors && (
-        <AlertInput
-          open={errors !== undefined}
-          message={errors}
-          anchorEl={inputRef}
-        />
-      )}
+      {errors && <AlertProject>! {errors}</AlertProject>}
     </SelectedItem>
   );
 };
 
 ProjectItem.propTypes = {
+  errors: PropTypes.string,
   src: PropTypes.string,
   onChangeItem: PropTypes.func,
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),

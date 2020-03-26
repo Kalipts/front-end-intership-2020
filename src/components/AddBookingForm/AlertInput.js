@@ -1,40 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
-const Error = styled.div`
+const ErrrorTypography = styled(Typography)`
   background-color: #582f62;
   color: white;
-  font-size: 14px;
+  padding: 5px 10px;
+  width: 180px;
   border-radius: 5px;
-  justify-content: center;
 `;
 
 const AlertInput = props => {
-  const { open, message, anchorEl } = props;
-  console.log(anchorEl);
+  const { message, anchor } = props;
+  const [anchorEl, setAnchorEl] = useState(anchor);
+  const handleClose = () => {
+    setAnchorEl(undefined);
+  };
+  const open = Boolean(anchorEl);
   return (
-    <>
-      <Error>{message}</Error>
-      {/* <Popover
-        id="111"
-        open={open}
-        anchorEl={anchorEl.current}
-        // onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-      >
-        <Typography>{message}</Typography>
-      </Popover> */}
-    </>
+    <Popover
+      open={open}
+      anchorEl={anchorEl}
+      onClose={handleClose}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+      }}
+      transformOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
+    >
+      <ErrrorTypography>{message}</ErrrorTypography>
+    </Popover>
   );
+};
+
+AlertInput.propTypes = {
+  message: PropTypes.string,
+  anchor: PropTypes.object,
 };
 
 export default AlertInput;

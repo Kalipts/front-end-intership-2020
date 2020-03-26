@@ -117,7 +117,6 @@ const SelectItemModal = props => {
   const toggleClose = () => {
     onShow();
     onDisabled();
-    console.log(123);
     setOnClose(!onClose);
   };
 

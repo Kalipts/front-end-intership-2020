@@ -4,7 +4,6 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 
 import { TextField } from '@material-ui/core';
-import AlertInput from './AlertInput';
 import Header from './HeaderBooking';
 import {
   BookingTime,
@@ -49,7 +48,7 @@ const AddBookingForm = props => {
   } = props.content;
   const [startDay, setStartDay] = useState(moment());
   const [endDay, setEndDay] = useState(moment());
-  const [details, setDetails] = useState();
+  const [details, setDetails] = useState('');
   const [person, setPerson] = useState(resource);
   const [utilize, setUtilize] = useState(booking.utilize);
   const [project, setProject] = useState(booking.project);
@@ -72,6 +71,8 @@ const AddBookingForm = props => {
     } else {
       setStartDay(moment(startDate.toString()));
       setEndDay(moment(endDate.toString()));
+      setDetails('');
+      setProject(booking.project);
       setIsModify(false);
     }
     setOnEdit(false);
@@ -105,6 +106,7 @@ const AddBookingForm = props => {
     const _id = event.target.value;
     const selectedProject = projects.find(e => e._id === _id);
     setProject(selectedProject);
+    setErrors({});
     return selectedProject;
   };
 
@@ -115,6 +117,7 @@ const AddBookingForm = props => {
       startDay,
       endDay,
       details,
+      isDuration: true,
       resourceId: person._id,
       project: project._id,
     };
@@ -123,9 +126,11 @@ const AddBookingForm = props => {
       setErrors(err);
       return;
     }
-    setProject(booking.project);
     if (!isModify) await addBooking(newBooking);
-    else await updateBooking(newBooking);
+    else {
+      newBooking._id = booking._id;
+      await updateBooking(newBooking);
+    }
     fetchBooking();
     onClickCancle();
   };

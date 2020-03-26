@@ -5,9 +5,9 @@ const isWeekend = day => {
 export const validate = (startDay, endDay, project) => {
   const errors = {};
   if (isWeekend(startDay)) {
-    errors.startDay = `Non-working day. Please change the date.`;
+    errors.startDay = `Non-working day. Please change the date`;
   } else if (isWeekend(endDay)) {
-    errors.endDay = `Non-working day. Please change the date.`;
+    errors.endDay = `Non-working day. Please change the date`;
   }
   if (project.name === '') {
     errors.project = `Required Project`;

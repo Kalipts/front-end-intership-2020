@@ -188,7 +188,9 @@ const CalendarProvider = props => {
           newEndDay.clone().add(1, 'days'),
         );
       } else {
-        newBooking = objectBooking(newStartDay.clone().add(2, 'days'), newEndDay.clone().add(0, 'days'))
+        newBooking = objectBooking(
+          newStartDay.clone().add(2, 'days'),
+          newEndDay.clone().add(0, 'days'),
         );
       }
     } else if (endDayFormat === 'Sat' || endDayFormat === 'Sun') {
