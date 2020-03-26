@@ -15,6 +15,9 @@ const StyledModal = styled.div`
   outline-offset: 0.5px;
   justify-content: center;
   align-items: center;
+  /* & > div {
+    opacity: ${props => (props.disabled === true ? 0.5 : 1)};
+  } */
   &:focus {
     outline: 0;
   }

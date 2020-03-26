@@ -67,6 +67,6 @@ Item.propTypes = {
   type: PropTypes.string,
   onChangeItem: PropTypes.func.isRequired,
   makeIcon: PropTypes.bool,
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
 };
 export default Item;

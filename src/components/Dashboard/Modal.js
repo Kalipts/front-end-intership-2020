@@ -6,13 +6,10 @@ import { CalendarContext } from '../../context/Calendar';
 import { ESC_KEY } from '../../constants/keyTypes';
 
 const Modal = props => {
-  const { isChildVisible } = props;
-  const [onClose, setOnClose] = useState(false);
   const modal = useRef();
   const calendarContext = useContext(CalendarContext);
-  const { handleCloseModal, isModalOpen } = calendarContext;
-
-  const handdleToggleClose = () => setOnClose(!onClose);
+  const { handleCloseModal, isModalOpen, disabled } = calendarContext;
+  console.log(disabled);
 
   useEffect(() => {
     window.addEventListener('keyup', handleKeyUp, false);
@@ -38,7 +35,7 @@ const Modal = props => {
   // Handle the mouse click on browser window.
   function handleOutsideClick(e) {
     e.preventDefault();
-    const isNotClose = isNil(modal) || isChildVisible;
+    const isNotClose = isNil(modal);
     if (isNotClose) {
       return;
     }
@@ -51,7 +48,7 @@ const Modal = props => {
   return (
     <>
       {isModalOpen && (
-        <StyledModal tabIndex="0" onBlur={handdleToggleClose} ref={modal}>
+        <StyledModal ref={modal} disabled={disabled}>
           {props.children}
         </StyledModal>
       )}
@@ -59,7 +56,6 @@ const Modal = props => {
   );
 };
 Modal.propTypes = {
-  isChildVisible: PropTypes.bool,
   children: PropTypes.node,
 };
 

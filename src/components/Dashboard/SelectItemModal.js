@@ -113,9 +113,11 @@ const SelectItemModal = props => {
   const [onClose, setOnClose] = useState(false);
   const [item, setItem] = useState([]);
   const modal = useRef(null);
-  const { persons, projects } = useContext(CalendarContext);
+  const { persons, projects, onDisabled } = useContext(CalendarContext);
   const toggleClose = () => {
     onShow();
+    onDisabled();
+    console.log(123);
     setOnClose(!onClose);
   };
 
@@ -124,6 +126,7 @@ const SelectItemModal = props => {
   };
 
   useEffect(() => {
+    onDisabled();
     document.addEventListener('keyup', handleKeyUp, false);
     document.addEventListener('click', handleOutsideClick, false);
     if (type === 'Resource') setItem(persons);
@@ -157,7 +160,7 @@ const SelectItemModal = props => {
   return (
     <>
       {!onClose && (
-        <Wrapper ref={modal}>
+        <Wrapper ref={modal} disabled>
           <Label label={type} />
           <Search
             onFilterItem={onFilterItem}
