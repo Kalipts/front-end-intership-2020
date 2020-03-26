@@ -152,6 +152,7 @@ const CalendarProvider = props => {
       .toString();
     let newBooking;
     const compareWeekend = startDayFormat === 'Sat' || startDayFormat === 'Sun';
+    const compareEndDayWeekend = endDayFormat === 'Sat' || endDayFormat === 'Sun';
     const objectBooking = (startDay_, endDay_) => {
       newBooking = {
         ...booking,
@@ -162,10 +163,11 @@ const CalendarProvider = props => {
       return newBooking;
     };
     if (length === 1 && compareWeekend) return;
-    if (checkWeekend && compareWeekend) {
+    if (checkWeekend && (compareWeekend || compareEndDayWeekend)) {
       return;
     }
-    if (checkWeekend) {
+    else if (checkWeekend) {
+
       if (isWeekend(newStartDay, newEndDay)) {
         newBooking = objectBooking(newStartDay, newEndDay);
       } else {
@@ -175,8 +177,11 @@ const CalendarProvider = props => {
         );
       }
     } else if (startDayFormat === 'Sun') {
+
       if (length === 2) {
-        newBooking = objectBooking(
+
+
+          newBooking = objectBooking(
           newStartDay.clone().add(-2, 'days'),
           newEndDay.clone().add(0, 'days'),
         );
@@ -187,6 +192,7 @@ const CalendarProvider = props => {
         );
       }
     } else if (startDayFormat === 'Sat') {
+
       if (length === 2) {
         newBooking = objectBooking(newStartDay.clone().add(-1, 'days'), newEndDay.clone().add(1, 'days'))
       }  else {
@@ -194,6 +200,7 @@ const CalendarProvider = props => {
 
       }
     } else if (endDayFormat === 'Sat' || endDayFormat === 'Sun') {
+
       if (endDayFormat === 'Sat') {
           newBooking = objectBooking(
               newStartDay.clone().add(-1, 'days'),
