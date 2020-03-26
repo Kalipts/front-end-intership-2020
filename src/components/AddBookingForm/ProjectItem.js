@@ -1,28 +1,24 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import SelectedItem from './SelectedItem';
 import Item from './Item';
+import AlertProject from './Style/AlertProject';
 import icon from '../../images/bag.svg';
 const ProjectItem = props => {
-  const { onDisabled, src, onChangeItem } = props;
+  const { src, onChangeItem, errors } = props;
   return (
     <SelectedItem title="Project" src={icon}>
-      <Item
-        onDisabled={onDisabled}
-        type="Project"
-        makeIcon
-        src={src}
-        onChangeItem={onChangeItem}
-      >
+      <Item type="Project" makeIcon src={src} onChangeItem={onChangeItem}>
         {props.children}
       </Item>
+      {errors && <AlertProject>! {errors}</AlertProject>}
     </SelectedItem>
   );
 };
 
 ProjectItem.propTypes = {
-  onDisabled: PropTypes.func,
+  errors: PropTypes.string,
   src: PropTypes.string,
   onChangeItem: PropTypes.func,
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),

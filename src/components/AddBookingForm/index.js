@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import moment from 'moment';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 
 import { TextField } from '@material-ui/core';
@@ -31,6 +32,7 @@ import { CalendarContext } from '../../context/Calendar';
 import { compareByDay, getTotalHour } from '../../utils/Date';
 import UtilizeInput from './UtilizeInput';
 import { MAX_UTILIZE } from '../../containers/App/constant';
+import { validate } from './validate';
 import { addBooking, updateBooking } from '../../api/bookingApi';
 
 const AddBookingForm = props => {
@@ -46,20 +48,16 @@ const AddBookingForm = props => {
   } = props.content;
   const [startDay, setStartDay] = useState(moment());
   const [endDay, setEndDay] = useState(moment());
-  const [details, setDetails] = useState();
+  const [details, setDetails] = useState('');
   const [person, setPerson] = useState(resource);
   const [utilize, setUtilize] = useState(booking.utilize);
   const [project, setProject] = useState(booking.project);
   const [isModify, setIsModify] = useState(false);
+  const [errors, setErrors] = useState({});
   const [onEdit, setOnEdit] = useState(false);
-  const {
-    handleCloseModal,
-    onDisabled,
-    persons,
-    projects,
-    fetchBooking,
-    isChildVisible,
-  } = useContext(CalendarContext);
+  const { handleCloseModal, persons, projects, fetchBooking } = useContext(
+    CalendarContext,
+  );
   useEffect(() => {
     setPerson(resource);
     if (booking._id) {
@@ -73,6 +71,8 @@ const AddBookingForm = props => {
     } else {
       setStartDay(moment(startDate.toString()));
       setEndDay(moment(endDate.toString()));
+      setDetails('');
+      setProject(booking.project);
       setIsModify(false);
     }
     setOnEdit(false);
@@ -106,45 +106,37 @@ const AddBookingForm = props => {
     const _id = event.target.value;
     const selectedProject = projects.find(e => e._id === _id);
     setProject(selectedProject);
+    setErrors({});
     return selectedProject;
   };
 
   const handleSummit = async () => {
-    if (!isModify) await addNewBooking();
-    else await editBooking();
+    const newBooking = {
+      utilize,
+      hour: getTotalHour(startDay, endDay, utilize),
+      startDay,
+      endDay,
+      details,
+      isDuration: true,
+      resourceId: person._id,
+      project: project._id,
+    };
+    const err = validate(startDay, endDay, project);
+    if (!_.isEmpty(err)) {
+      setErrors(err);
+      return;
+    }
+    if (!isModify) await addBooking(newBooking);
+    else {
+      newBooking._id = booking._id;
+      await updateBooking(newBooking);
+    }
     fetchBooking();
     onClickCancle();
   };
 
-  const addNewBooking = () => {
-    const newBooking = {
-      utilize,
-      hour: getTotalHour(startDay, endDay, utilize),
-      startDay,
-      endDay,
-      details,
-      resourceId: person._id,
-      project: project._id,
-    };
-    addBooking(newBooking);
-  };
-
-  const editBooking = () => {
-    const newBooking = {
-      _id: booking._id,
-      utilize,
-      hour: getTotalHour(startDay, endDay, utilize),
-      startDay,
-      endDay,
-      details,
-      resourceId: person._id,
-      project: project,
-    };
-    updateBooking(newBooking);
-  };
-
   return (
-    <Modal isChildVisible={isChildVisible}>
+    <Modal>
       <Header />
       <TimeRatio>
         <Percentage>
@@ -153,8 +145,18 @@ const AddBookingForm = props => {
         </Percentage>
       </TimeRatio>
       <BookingTime>
-        <InputDate label="Start" handleChange={changeStartDay} day={startDay} />
-        <InputDate label="End" handleChange={changeEndDay} day={endDay} />
+        <InputDate
+          label="Start"
+          handleChange={changeStartDay}
+          day={startDay}
+          errors={errors.startDay}
+        ></InputDate>
+        <InputDate
+          label="End"
+          handleChange={changeEndDay}
+          day={endDay}
+          errors={errors.endDay}
+        ></InputDate>
       </BookingTime>
       <Utilization>
         <Label>Utilization</Label>
@@ -172,20 +174,16 @@ const AddBookingForm = props => {
         <Label>Total: {getTotalHour(endDay, startDay, utilize)} hours</Label>
       </TotalTime>
       <ProjectItem
-        onDisabled={onDisabled}
         src={project.color}
         onChangeItem={handleChangeProject}
+        errors={errors.project}
       >
         {project.name}
       </ProjectItem>
       <SelectedItem title="Details" src={iconDetail}>
         <InputDetail onChange={handleChangeDetail} value={details} />
       </SelectedItem>
-      <ResourceItem
-        onDisabled={onDisabled}
-        src={person.avatar}
-        onChangeItem={handleChangePerson}
-      >
+      <ResourceItem src={person.avatar} onChangeItem={handleChangePerson}>
         {person.name}
       </ResourceItem>
       <FooterBooking>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import DayPickerInput from 'react-datepicker';
 import * as moment from 'moment';
@@ -6,9 +6,11 @@ import PropTypes from 'prop-types';
 
 import Label from './Style/Label';
 import BottomLine from './Style/BottomLine';
+import AlertInput from './AlertInput';
 import iconDate from '../../images/calendar.svg';
 
 const Wrapper = styled.div`
+  position: relative;
   width: 140px;
   display: flex;
   flex-direction: column;
@@ -23,8 +25,9 @@ const Date = styled.div`
 `;
 
 const InputDate = props => {
-  const { day, label, handleChange } = props;
+  const { day, label, handleChange, errors } = props;
   const [selectedDay, setSelectedDay] = useState(moment(day.toString()));
+  const inputRef = useRef();
   useEffect(() => {
     setSelectedDay(moment(day).format('DD MMM, YYYY'));
   }, [day]);
@@ -36,7 +39,7 @@ const InputDate = props => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper ref={inputRef}>
       <Label>{label}</Label>
       <Date>
         <DayPickerInput
@@ -49,6 +52,13 @@ const InputDate = props => {
         />
         <img alt="" src={iconDate} />
       </Date>
+      {errors && (
+        <AlertInput
+          open={errors !== undefined}
+          message={errors}
+          anchor={inputRef.current}
+        ></AlertInput>
+      )}
       <BottomLine />
     </Wrapper>
   );

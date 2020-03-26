@@ -5,15 +5,10 @@ import SelectedItem from './SelectedItem';
 import Item from './Item';
 import icon from '../../images/bag.svg';
 const ResourceItem = props => {
-  const { onDisabled, src, onChangeItem } = props;
+  const { src, onChangeItem } = props;
   return (
     <SelectedItem title="Resource" src={icon}>
-      <Item
-        onDisabled={onDisabled}
-        type="Resource"
-        src={src}
-        onChangeItem={onChangeItem}
-      >
+      <Item type="Resource" src={src} onChangeItem={onChangeItem}>
         {props.children}
       </Item>
     </SelectedItem>
@@ -21,7 +16,6 @@ const ResourceItem = props => {
 };
 
 ResourceItem.propTypes = {
-  onDisabled: PropTypes.func,
   src: PropTypes.string,
   onChangeItem: PropTypes.func,
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),

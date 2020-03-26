@@ -5,7 +5,7 @@ import moment from 'moment';
 import ItemTypes from './ItemTypes';
 import ContentBooking from './ContentBooking';
 import { WIDTH_CELL_IN_TABLE_CALENDAR } from '../../App/constant';
-import {compareByDay} from "../../../utils/Date";
+import { compareByDay } from '../../../utils/Date';
 
 export default function DropTargetCell(props) {
   const {
@@ -31,7 +31,7 @@ export default function DropTargetCell(props) {
       return { resource: resourceId, date: newStartDate };
     },
     collect: monitor => ({
-      isOver: monitor.isOver({ swallow: false }),
+      isOver: monitor.isOver({ swallow: true }),
     }),
   });
 

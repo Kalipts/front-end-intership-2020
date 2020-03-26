@@ -23,7 +23,6 @@ const CalendarProvider = props => {
   const [endDay, setEndDay] = useState(moment('2020-02-03', 'YYYY-MM-DD'));
   const [disabled, setDisabled] = useState(false);
   const [isHoverWorking, setIsHoverWorking] = useState(true);
-  const [isChildVisible, setIsChildVisible] = useState(false);
   const [addBookingStatus, setAddBookingStatus] = useState(true);
   const [content, setContent] = useState({
     resource: [],
@@ -44,7 +43,6 @@ const CalendarProvider = props => {
   const setContentGlobal = newContent => {
     setContent(newContent);
   };
-
   const hoverObject = {
     start,
     end,
@@ -76,21 +74,12 @@ const CalendarProvider = props => {
     setIsHoverWorking(true);
   };
   const handleCloseModal = key => {
-    if (isModalOpen) {
-      setIsModalOpen(true);
-    }
-
-    if (isChildVisible) {
-      return;
-    }
-    setFormIsOpening(!isModalOpen);
     setIsModalOpen(!isModalOpen);
-    if (key === false) setIsHoverWorking(false);
-    else setIsHoverWorking(true);
+    if (key !== false) setIsHoverWorking(true);
   };
 
   const onDisabled = () => {
-    setDisabled(true);
+    setDisabled(!disabled);
   };
   const fetchResource = async () => {
     setIsLoading(true);
@@ -194,17 +183,22 @@ const CalendarProvider = props => {
     } else if (startDayFormat === 'Sat') {
 
       if (length === 2) {
-        newBooking = objectBooking(newStartDay.clone().add(-1, 'days'), newEndDay.clone().add(1, 'days'))
-      }  else {
-          newBooking = objectBooking(newStartDay.clone().add(2, 'days'), newEndDay.clone().add(0, 'days'))
-
+        newBooking = objectBooking(
+          newStartDay.clone().add(-1, 'days'),
+          newEndDay.clone().add(1, 'days'),
+        );
+      } else {
+        newBooking = objectBooking(
+          newStartDay.clone().add(2, 'days'),
+          newEndDay.clone().add(0, 'days'),
+        );
       }
     } else if (endDayFormat === 'Sat' || endDayFormat === 'Sun') {
 
       if (endDayFormat === 'Sat') {
-          newBooking = objectBooking(
-              newStartDay.clone().add(-1, 'days'),
-          newEndDay.clone().add(-1, 'days')
+        newBooking = objectBooking(
+          newStartDay.clone().add(-1, 'days'),
+          newEndDay.clone().add(-1, 'days'),
         );
       } else {
         newBooking = objectBooking(
@@ -212,7 +206,6 @@ const CalendarProvider = props => {
           newEndDay.clone().add(-2, 'days'),
         );
       }
-
     } else {
       const distanceStartDay = getNumberOfDay(booking.startDay, newStartDay);
       newBooking = {
@@ -348,10 +341,7 @@ const CalendarProvider = props => {
         setIsHover,
         addBookingStatus,
         setAddBookingStatus,
-        isChildVisible,
-        setIsChildVisible,
         formIsOpening,
-        setFormIsOpening,
         hoverObject,
         hoverSetObject,
       }}
