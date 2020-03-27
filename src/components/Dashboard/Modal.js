@@ -9,7 +9,6 @@ const Modal = props => {
   const modal = useRef();
   const calendarContext = useContext(CalendarContext);
   const { handleCloseModal, isModalOpen, disabled } = calendarContext;
-
   useEffect(() => {
     window.addEventListener('keyup', handleKeyUp, false);
     document.addEventListener('click', handleOutsideClick, false);

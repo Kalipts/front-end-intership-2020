@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useDrop } from 'react-dnd';
 import moment from 'moment';
+import composeRefs from '@seznam/compose-react-refs';
 import ItemTypes from './ItemTypes';
 import ContentBooking from './ContentBooking';
 import { WIDTH_CELL_IN_TABLE_CALENDAR } from '../../App/constant';
-import { compareByDay } from '../../../utils/Date';
 
 export default function DropTargetCell(props) {
   const {
@@ -19,15 +19,26 @@ export default function DropTargetCell(props) {
     resourceId,
     date,
   } = props;
+
+  const ref = useRef(null);
+  const getDistanceChangeDate = (monitor, booking) => {
+    const coorPointer = monitor.getInitialClientOffset();
+    const coorDragSource = monitor.getInitialSourceClientOffset();
+    const distanceOfPointerAndDrag = Math.floor(
+      (coorPointer.x - coorDragSource.x) / WIDTH_CELL_IN_TABLE_CALENDAR,
+    );
+    return distanceOfPointerAndDrag;
+  };
+
   const [, drop] = useDrop({
     accept: ItemTypes.BOOKING,
     drop: (item, monitor) => {
-      const coorPointer = monitor.getClientOffset();
-      const coorDragSource = monitor.getSourceClientOffset();
-      const distanceOfPointerAndDrag = Math.floor(
-        (coorPointer.x - coorDragSource.x) / WIDTH_CELL_IN_TABLE_CALENDAR,
-      );
-      const newStartDate = date.clone().add(-distanceOfPointerAndDrag, 'days');
+      const { booking } = monitor.getItem();
+
+      const newStartDate = date
+        .clone()
+        .add(-getDistanceChangeDate(monitor, booking), 'days');
+
       return { resource: resourceId, date: newStartDate };
     },
     collect: monitor => ({
@@ -37,7 +48,7 @@ export default function DropTargetCell(props) {
 
   return (
     <ContentBooking
-      ref={drop}
+      ref={composeRefs(ref, drop)}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseMove={onMouseMove}

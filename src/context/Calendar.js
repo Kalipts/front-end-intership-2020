@@ -74,8 +74,10 @@ const CalendarProvider = props => {
     setIsHoverWorking(true);
   };
   const handleCloseModal = key => {
+    setFormIsOpening(!isModalOpen);
     setIsModalOpen(!isModalOpen);
-    if (key !== false) setIsHoverWorking(true);
+    if (key === false) setIsHoverWorking(false);
+    else setIsHoverWorking(true);
   };
 
   const onDisabled = () => {

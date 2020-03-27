@@ -4,6 +4,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 
 import { TextField } from '@material-ui/core';
+import AlertInput from './AlertInput';
 import Header from './HeaderBooking';
 import {
   BookingTime,
