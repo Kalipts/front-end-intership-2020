@@ -21,12 +21,29 @@ export default function DropTargetCell(props) {
   } = props;
 
   const ref = useRef(null);
-  const getDistanceChangeDate = (monitor, booking) => {
+  const checkDropInBooking = (coorDrop, coorPointerDrop) => {
+    let distance =
+      (coorDrop.x - coorPointerDrop.x) / WIDTH_CELL_IN_TABLE_CALENDAR;
+    distance = distance > 0 ? Math.floor(distance) : Math.ceil(distance);
+    return distance !== 0;
+  };
+
+  const getDistanceChangeDate = monitor => {
     const coorPointer = monitor.getInitialClientOffset();
     const coorDragSource = monitor.getInitialSourceClientOffset();
     const distanceOfPointerAndDrag = Math.floor(
       (coorPointer.x - coorDragSource.x) / WIDTH_CELL_IN_TABLE_CALENDAR,
     );
+    const coorDrop = ref.current.getBoundingClientRect();
+    const coorPointerDrop = monitor.getClientOffset();
+    if (!checkDropInBooking(coorDrop, coorPointerDrop)) {
+      let distanceOfPointerAndDrop = Math.floor(
+        (coorPointerDrop.x - coorDrop.x) / WIDTH_CELL_IN_TABLE_CALENDAR,
+      );
+      distanceOfPointerAndDrop =
+        distanceOfPointerAndDrag - distanceOfPointerAndDrop;
+      return distanceOfPointerAndDrop;
+    }
     return distanceOfPointerAndDrag;
   };
 
