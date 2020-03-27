@@ -15,7 +15,7 @@ import { getHoursFromUtilize } from '../../../utils/Utilize';
 
 export default function Booking(props) {
   const { booking, isFirst, onClick } = props;
-  const { startDay, endDay, hour, isDuration, utilize, project, _id } = booking;
+  const { startDay, endDay, utilize, project, _id } = booking;
   const { color, name } = project;
   const calendarContext = useContext(CalendarContext);
   const {
@@ -27,7 +27,6 @@ export default function Booking(props) {
     item: { type: ItemTypes.BOOKING, booking },
     end: async (item, monitor) => {
       const { resource, date } = monitor.getDropResult();
-
       await updateOnDidDragBooking(booking, resource, date);
     },
     collect: monitor => ({

@@ -36,7 +36,7 @@ export default function DropTargetCell(props) {
     );
     const coorDrop = ref.current.getBoundingClientRect();
     const coorPointerDrop = monitor.getClientOffset();
-    if (!checkDropInBooking(coorDrop, coorPointerDrop)) {
+    if (checkDropInBooking(coorDrop, coorPointerDrop)) {
       let distanceOfPointerAndDrop = Math.floor(
         (coorPointerDrop.x - coorDrop.x) / WIDTH_CELL_IN_TABLE_CALENDAR,
       );
@@ -55,7 +55,6 @@ export default function DropTargetCell(props) {
       const newStartDate = date
         .clone()
         .add(-getDistanceChangeDate(monitor, booking), 'days');
-
       return { resource: resourceId, date: newStartDate };
     },
     collect: monitor => ({
