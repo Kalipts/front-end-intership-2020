@@ -9,7 +9,6 @@ import { CalendarContext } from '../../../context/Calendar';
 import { compareByDay } from '../../../utils/Date';
 import IconButton from '../../../components/shared/IconButton';
 
-
 import Close from './Style/Close';
 import ItemTypes from './ItemTypes';
 import { getHoursFromUtilize } from '../../../utils/Utilize';
@@ -28,6 +27,7 @@ export default function Booking(props) {
     item: { type: ItemTypes.BOOKING, booking },
     end: async (item, monitor) => {
       const { resource, date } = monitor.getDropResult();
+
       await updateOnDidDragBooking(booking, resource, date);
     },
     collect: monitor => ({
@@ -71,9 +71,7 @@ export default function Booking(props) {
       }}
     >
       <BookingText>{name}</BookingText>
-      <BookingTime isHovered={isHover}>{`${
-        isDuration ? hour : percentageHour
-      }h`}</BookingTime>
+      <BookingTime isHovered={isHover}>{`${percentageHour}h`}</BookingTime>
       {isHover ? (
         <div>
           <IconButton
