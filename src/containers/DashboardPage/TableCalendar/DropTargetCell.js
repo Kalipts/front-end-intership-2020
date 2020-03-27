@@ -55,7 +55,6 @@ export default function DropTargetCell(props) {
       const newStartDate = date
         .clone()
         .add(-getDistanceChangeDate(monitor, booking), 'days');
-
       return { resource: resourceId, date: newStartDate };
     },
     collect: monitor => ({
