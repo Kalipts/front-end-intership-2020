@@ -120,7 +120,7 @@ const AddBookingForm = props => {
       details,
       isDuration: true,
       resourceId: person._id,
-      project: project._id,
+      project,
     };
     const err = validate(startDay, endDay, project);
     if (!_.isEmpty(err)) {
