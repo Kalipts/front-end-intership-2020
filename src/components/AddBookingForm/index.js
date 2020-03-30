@@ -4,7 +4,6 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 
 import { TextField } from '@material-ui/core';
-import AlertInput from './AlertInput';
 import Header from './HeaderBooking';
 import {
   BookingTime,
@@ -56,7 +55,7 @@ const AddBookingForm = props => {
   const [isModify, setIsModify] = useState(false);
   const [errors, setErrors] = useState({});
   const [onEdit, setOnEdit] = useState(false);
-  const { handleCloseModal, persons, projects, fetchBooking } = useContext(
+  const { handleCloseModal, persons, projects, handleSetBookings } = useContext(
     CalendarContext,
   );
   useEffect(() => {
@@ -120,19 +119,22 @@ const AddBookingForm = props => {
       details,
       isDuration: true,
       resourceId: person._id,
-      project: project._id,
+      project,
     };
     const err = validate(startDay, endDay, project);
     if (!_.isEmpty(err)) {
       setErrors(err);
       return;
     }
-    if (!isModify) await addBooking(newBooking);
-    else {
+    if (!isModify) {
+      const req = await addBooking(newBooking);
+      newBooking._id = req.data.booking._id;
+      handleSetBookings(newBooking);
+    } else {
       newBooking._id = booking._id;
       await updateBooking(newBooking);
+      handleSetBookings(newBooking, false);
     }
-    fetchBooking();
     onClickCancle();
   };
 

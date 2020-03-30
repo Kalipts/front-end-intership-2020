@@ -17,16 +17,6 @@ export const updateBooking = booking =>
   updateData({ url: `${url}/${booking._id}`, data: booking });
 
 export const addBooking = newBooking => {
-  const bookings = [];
-  bookings.push(newBooking);
-  try {
-    bookings.map(booking => {
-      addData(`${url}`, {
-        ...newBooking,
-        startDay: booking.startDay,
-        endDay: booking.endDay,
-      });
-      return booking;
-    });
-  } catch (error) {}
+  const req = addData(`${url}`, newBooking);
+  return req;
 };
