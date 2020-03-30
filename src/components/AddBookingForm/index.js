@@ -29,11 +29,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './styles.css';
 import Modal from '../Dashboard/Modal';
 import { CalendarContext } from '../../context/Calendar';
-import { compareByDay, getTotalHour } from '../../utils/Date';
+import { compareByDay } from '../../utils/Date';
 import UtilizeInput from './UtilizeInput';
 import { MAX_UTILIZE } from '../../containers/App/constant';
 import { validate } from './validate';
 import { addBooking, updateBooking } from '../../api/bookingApi';
+import { getHoursFromUtilize } from '../../utils/Utilize';
 
 const AddBookingForm = props => {
   const {
@@ -113,7 +114,7 @@ const AddBookingForm = props => {
   const handleSummit = async () => {
     const newBooking = {
       utilize,
-      hour: getTotalHour(startDay, endDay, utilize),
+      hour: getHoursFromUtilize(startDay, endDay, utilize),
       startDay,
       endDay,
       details,
@@ -174,7 +175,9 @@ const AddBookingForm = props => {
         <BottomLine />
       </Utilization>
       <TotalTime>
-        <Label>Total: {getTotalHour(endDay, startDay, utilize)} hours</Label>
+        <Label>
+          Total: {getHoursFromUtilize(startDate, endDate, utilize)} hours
+        </Label>
       </TotalTime>
       <ProjectItem
         src={project.color}
