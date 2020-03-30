@@ -13,15 +13,20 @@ import Close from './Style/Close';
 import ItemTypes from './ItemTypes';
 import { getHoursFromUtilize } from '../../../utils/Utilize';
 
+import LoadingIcon from '../../../components/IconLoading';
+
 export default function Booking(props) {
   const { booking, isFirst, onClick } = props;
   const { startDay, endDay, utilize, project, _id } = booking;
   const { color, name } = project;
   const calendarContext = useContext(CalendarContext);
+  const {loading, setLoading} = useState(false);
   const {
     getMarginTopBooking,
     removeBooking,
     updateOnDidDragBooking,
+    isDragLoading,
+    bookingId,
   } = calendarContext;
   const [{ isDragging }, drag] = useDrag({
     item: { type: ItemTypes.BOOKING, booking },
@@ -42,6 +47,8 @@ export default function Booking(props) {
   const handleClick = () => {
     removeBooking(_id);
   };
+  let spiner = null;
+  if(isDragLoading && bookingId === booking._id ) spiner = <LoadingIcon />;
 
   return (
     <BookingCard
@@ -69,6 +76,7 @@ export default function Booking(props) {
         setIsHover(false);
       }}
     >
+      {spiner}
       <BookingText>{name}</BookingText>
       <BookingTime isHovered={isHover}>{`${percentageHour}h`}</BookingTime>
       {isHover ? (
