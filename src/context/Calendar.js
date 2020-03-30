@@ -12,6 +12,7 @@ import { compareByDay, getNumberOfDay, isWeekend } from '../utils/Date';
 const CalendarContext = createContext();
 
 const CalendarProvider = props => {
+  const [isDragLoading, setIsDragLoading] = useState(false);
   const [, setIsLoading] = useState(false);
   const [persons, setPersons] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -39,6 +40,8 @@ const CalendarProvider = props => {
   const [lastDate, setLastDate] = useState(0);
   const [isHover, setIsHover] = useState(false);
   const [formIsOpening, setFormIsOpening] = useState(false);
+  const [bookingId, setBookingId] = useState(null);
+
   const contentGlobal = () => content;
   const setContentGlobal = newContent => {
     setContent(newContent);
@@ -132,6 +135,8 @@ const CalendarProvider = props => {
     setSearch(event.target.value.toLowerCase());
   };
   const updateOnDidDragBooking = async (booking, resourceId, newStartDay) => {
+    setIsDragLoading(true);
+    setBookingId(booking._id);
     const checkWeekend = isWeekend(booking.startDay, booking.endDay);
     const length = compareByDay(booking.endDay, booking.startDay) + 1;
     const startDayFormat = moment(newStartDay)
@@ -143,7 +148,8 @@ const CalendarProvider = props => {
       .toString();
     let newBooking;
     const compareWeekend = startDayFormat === 'Sat' || startDayFormat === 'Sun';
-    const compareEndDayWeekend = endDayFormat === 'Sat' || endDayFormat === 'Sun';
+    const compareEndDayWeekend =
+      endDayFormat === 'Sat' || endDayFormat === 'Sun';
     const objectBooking = (startDay_, endDay_) => {
       newBooking = {
         ...booking,
@@ -157,8 +163,7 @@ const CalendarProvider = props => {
     if (checkWeekend && (compareWeekend || compareEndDayWeekend)) {
       return;
     }
-    else if (checkWeekend) {
-
+    if (checkWeekend) {
       if (isWeekend(newStartDay, newEndDay)) {
         newBooking = objectBooking(newStartDay, newEndDay);
       } else {
@@ -168,11 +173,8 @@ const CalendarProvider = props => {
         );
       }
     } else if (startDayFormat === 'Sun') {
-
       if (length === 2) {
-
-
-          newBooking = objectBooking(
+        newBooking = objectBooking(
           newStartDay.clone().add(-2, 'days'),
           newEndDay.clone().add(0, 'days'),
         );
@@ -183,7 +185,6 @@ const CalendarProvider = props => {
         );
       }
     } else if (startDayFormat === 'Sat') {
-
       if (length === 2) {
         newBooking = objectBooking(
           newStartDay.clone().add(-1, 'days'),
@@ -196,7 +197,6 @@ const CalendarProvider = props => {
         );
       }
     } else if (endDayFormat === 'Sat' || endDayFormat === 'Sun') {
-
       if (endDayFormat === 'Sat') {
         newBooking = objectBooking(
           newStartDay.clone().add(-1, 'days'),
@@ -224,7 +224,13 @@ const CalendarProvider = props => {
       }
       return schedule;
     });
-    await updateBooking(newBooking);
+    await updateBooking(newBooking)
+      // eslint-disable-next-line no-unused-vars
+      .then(response => {
+        setIsDragLoading(false);
+      })
+      .catch(error => console.log(error));
+
     setBookings([...newBookings]);
     return newBookings;
   };
@@ -346,6 +352,9 @@ const CalendarProvider = props => {
         formIsOpening,
         hoverObject,
         hoverSetObject,
+        isDragLoading,
+        setIsDragLoading,
+        bookingId,
       }}
     >
       {props.children}
