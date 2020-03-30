@@ -47,6 +47,7 @@ const AddBookingForm = props => {
     startDate,
     endDate,
   } = props.content;
+  console.log(props.content);
   const [startDay, setStartDay] = useState(moment());
   const [endDay, setEndDay] = useState(moment());
   const [details, setDetails] = useState('');
@@ -176,7 +177,7 @@ const AddBookingForm = props => {
       </Utilization>
       <TotalTime>
         <Label>
-          Total: {getHoursFromUtilize(startDate, endDate, utilize)} hours
+          Total: {getHoursFromUtilize(startDay, endDay, utilize)} hours
         </Label>
       </TotalTime>
       <ProjectItem
