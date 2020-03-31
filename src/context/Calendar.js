@@ -13,6 +13,7 @@ const CalendarContext = createContext();
 
 const CalendarProvider = props => {
   const [isDragLoading, setIsDragLoading] = useState(false);
+  const [ranks, setRanks] = useState(true);
   const [, setIsLoading] = useState(false);
   const [persons, setPersons] = useState([]);
   const [projects, setProjects] = useState([]);
