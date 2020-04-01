@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CES_ORANGE } from '../../constants/colorTypes';
+import { CES_ORANGE } from '../../../constants/colorTypes';
 
 export const FooterBooking = styled.div`
   height: 42px;

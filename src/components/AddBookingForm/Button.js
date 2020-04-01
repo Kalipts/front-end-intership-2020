@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyledButton } from './FooterBooking';
+import { StyledButton } from './Style/FooterBooking';
 
 const Button = props => {
   const { onClick, primary } = props;

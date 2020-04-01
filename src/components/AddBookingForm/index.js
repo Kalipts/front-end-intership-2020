@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 
 import { TextField } from '@material-ui/core';
-import Header from './HeaderBooking';
+import Header from './Style/HeaderBooking';
 import {
   BookingTime,
   Percentage,
@@ -14,15 +14,17 @@ import {
   TotalTime,
   Utilization,
   InputDetail,
-} from './BodyBooking';
+  Wrapper,
+} from './Style/BodyBooking';
 import Label from './Style/Label';
 import BottomLine from './Style/BottomLine';
 import SelectedItem from './SelectedItem';
 import ResourceItem from './ResourceItem';
 import ProjectItem from './ProjectItem';
-import { ContainButton, FooterBooking } from './FooterBooking';
+import { ContainButton, FooterBooking } from './Style/FooterBooking';
 import InputDate from './InputDate';
 import Button from './Button';
+import IconLoading from '../IconLoading';
 import iconDetail from '../../images/files-and-folders.svg';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -47,7 +49,6 @@ const AddBookingForm = props => {
     startDate,
     endDate,
   } = props.content;
-  console.log(props.content);
   const [startDay, setStartDay] = useState(moment());
   const [endDay, setEndDay] = useState(moment());
   const [details, setDetails] = useState('');
@@ -56,7 +57,7 @@ const AddBookingForm = props => {
   const [project, setProject] = useState(booking.project);
   const [isModify, setIsModify] = useState(false);
   const [errors, setErrors] = useState({});
-  const [onEdit, setOnEdit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { handleCloseModal, persons, projects, handleSetBookings } = useContext(
     CalendarContext,
   );
@@ -77,7 +78,6 @@ const AddBookingForm = props => {
       setProject(booking.project);
       setIsModify(false);
     }
-    setOnEdit(false);
   }, [resource, startDate, endDate]);
 
   const onClickCancle = i => handleCloseModal(i);
@@ -128,6 +128,7 @@ const AddBookingForm = props => {
       setErrors(err);
       return;
     }
+    setIsLoading(true);
     if (!isModify) {
       const req = await addBooking(newBooking);
       newBooking._id = req.data.booking._id;
@@ -137,72 +138,76 @@ const AddBookingForm = props => {
       await updateBooking(newBooking);
       handleSetBookings(newBooking, false);
     }
+    setIsLoading(false);
     onClickCancle();
   };
 
   return (
     <Modal>
-      <Header />
-      <TimeRatio>
-        <Percentage>
-          <Squater alt="" src={require('../../images/quarter.svg')} />
-          <PercentageInside>Percentage</PercentageInside>
-        </Percentage>
-      </TimeRatio>
-      <BookingTime>
-        <InputDate
-          label="Start"
-          handleChange={changeStartDay}
-          day={startDay}
-          errors={errors.startDay}
-        ></InputDate>
-        <InputDate
-          label="End"
-          handleChange={changeEndDay}
-          day={endDay}
-          errors={errors.endDay}
-        ></InputDate>
-      </BookingTime>
-      <Utilization>
-        <Label>Utilization</Label>
-        <TextField
-          value={utilize}
-          onChange={handleChangeUtilize}
-          id="formatted-numberformat-input"
-          InputProps={{
-            inputComponent: UtilizeInput,
-          }}
-        />
-        <BottomLine />
-      </Utilization>
-      <TotalTime>
-        <Label>
-          Total: {getHoursFromUtilize(startDay, endDay, utilize)} hours
-        </Label>
-      </TotalTime>
-      <ProjectItem
-        src={project.color}
-        onChangeItem={handleChangeProject}
-        errors={errors.project}
-      >
-        {project.name}
-      </ProjectItem>
-      <SelectedItem title="Details" src={iconDetail}>
-        <InputDetail onChange={handleChangeDetail} value={details} />
-      </SelectedItem>
-      <ResourceItem src={person.avatar} onChangeItem={handleChangePerson}>
-        {person.name}
-      </ResourceItem>
-      <FooterBooking>
-        <ContainButton>
-          <Button primary onClick={handleSummit}>
-            <span>{isModify ? 'Save Booking' : 'Add Booking'}</span>
-          </Button>
-          <Button onClick={() => onClickCancle(false)}>
-            <span>Cancle</span>
-          </Button>
-        </ContainButton>
-      </FooterBooking>
+      <Wrapper disabled={isLoading}>
+        <Header />
+        <TimeRatio>
+          <Percentage>
+            <Squater alt="" src={require('../../images/quarter.svg')} />
+            <PercentageInside>Percentage</PercentageInside>
+          </Percentage>
+        </TimeRatio>
+        <BookingTime>
+          <InputDate
+            label="Start"
+            handleChange={changeStartDay}
+            day={startDay}
+            errors={errors.startDay}
+          ></InputDate>
+          <InputDate
+            label="End"
+            handleChange={changeEndDay}
+            day={endDay}
+            errors={errors.endDay}
+          ></InputDate>
+        </BookingTime>
+        <Utilization>
+          <Label>Utilization</Label>
+          <TextField
+            value={utilize}
+            onChange={handleChangeUtilize}
+            id="formatted-numberformat-input"
+            InputProps={{
+              inputComponent: UtilizeInput,
+            }}
+          />
+          <BottomLine />
+        </Utilization>
+        <TotalTime>
+          <Label>
+            Total: {getHoursFromUtilize(startDay, endDay, utilize)} hours
+          </Label>
+        </TotalTime>
+        <ProjectItem
+          src={project.color}
+          onChangeItem={handleChangeProject}
+          errors={errors.project}
+        >
+          {project.name}
+        </ProjectItem>
+        <SelectedItem title="Details" src={iconDetail}>
+          <InputDetail onChange={handleChangeDetail} value={details} />
+        </SelectedItem>
+        <ResourceItem src={person.avatar} onChangeItem={handleChangePerson}>
+          {person.name}
+        </ResourceItem>
+        <FooterBooking>
+          <ContainButton>
+            <Button primary onClick={handleSummit}>
+              <span>{isModify ? 'Save Booking' : 'Add Booking'}</span>
+            </Button>
+            <Button onClick={() => onClickCancle(false)}>
+              <span>Cancle</span>
+            </Button>
+          </ContainButton>
+        </FooterBooking>
+      </Wrapper>
+      {isLoading && <IconLoading size="60" />}
     </Modal>
   );
 };
