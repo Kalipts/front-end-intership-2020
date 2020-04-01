@@ -1,12 +1,12 @@
 import React from 'react';
-import './index.css';
-export default function LoadingIcon() {
-  return (
-    <div className="lds-ring">
-      <div />
-      <div />
-      <div />
-      <div />
-    </div>
-  );
-}
+import StyledLoading from './StyledLoading';
+
+const LoadingIcon = props => (
+  <StyledLoading size={props.size}>
+    <div></div>
+    <div></div>
+    <div></div>
+  </StyledLoading>
+);
+
+export default LoadingIcon;

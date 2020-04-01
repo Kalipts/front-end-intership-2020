@@ -1,6 +1,10 @@
 import styled from 'styled-components';
-import { CES_GREY_BORDER, CES_ORANGE } from '../../constants/colorTypes';
+import { CES_GREY_BORDER, CES_ORANGE } from '../../../constants/colorTypes';
 
+export const Wrapper = styled.div`
+  position: relative;
+  opacity: ${props => (props.disabled ? 0.5 : 1)};
+`;
 export const TimeRatio = styled.div`
   height: 50px;
   display: flex;
