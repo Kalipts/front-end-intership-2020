@@ -11,16 +11,18 @@ import IconButton from '../../../components/shared/IconButton';
 
 import Close from './Style/Close';
 import ItemTypes from './ItemTypes';
-import { getHoursFromUtilize } from '../../../utils/Utilize';
+import {
+  getHoursFromUtilize,
+  getLengthOfBooking,
+} from '../../../utils/Utilize';
 
 import LoadingIcon from '../../../components/IconLoading';
 
-export default function Booking(props) {
-  const { booking, isFirst, onClick } = props;
+export default function Booking({ booking, isFirst = false, onClick }) {
   const { startDay, endDay, utilize, project, _id } = booking;
   const { color, name } = project;
   const calendarContext = useContext(CalendarContext);
-  const {loading, setLoading} = useState(false);
+  const { loading, setLoading } = useState(false);
   const {
     getMarginTopBooking,
     removeBooking,
@@ -40,16 +42,14 @@ export default function Booking(props) {
     }),
   });
   const [isHover, setIsHover] = useState(false);
-  const length = compareByDay(endDay, startDay) + 1;
+  const length = getLengthOfBooking(startDay, endDay, booking);
   const percentageHour = getHoursFromUtilize(startDay, endDay, utilize);
-  const top = isFirst ? getMarginTopBooking(booking) : 0;
-
+  const top = getMarginTopBooking(booking, isFirst);
   const handleClick = () => {
     removeBooking(_id);
   };
   let spiner = null;
-  if(isDragLoading && bookingId === booking._id ) spiner = <LoadingIcon />;
-
+  if (isDragLoading && bookingId === booking._id) spiner = <LoadingIcon />;
   return (
     <BookingCard
       isDragging={isDragging}

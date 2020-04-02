@@ -18,7 +18,6 @@ const CellInCalendar = props => {
     hoverObject,
     hoverSetObject,
   } = calendarContext;
-
   const numberOfDay = getNumberOfDay(startDay, endDay);
 
   const beginSelection = (indexCell, indexResource, startDayInCell) => {

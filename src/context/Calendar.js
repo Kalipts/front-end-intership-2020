@@ -3,17 +3,18 @@
 import React, { useState, useEffect, createContext, useCallback } from 'react';
 import moment from 'moment';
 
+import { number } from 'prop-types';
 import { getResource } from '../api/resourceApi';
 import { getProject } from '../api/projectApi';
 import { getBooking, deleteBooking, updateBooking } from '../api/bookingApi';
 import { HEIGHT_BOOKING } from '../containers/App/constant';
 import { compareByDay, getNumberOfDay, isWeekend } from '../utils/Date';
+import { useRank } from '../utils/Rank';
 
 const CalendarContext = createContext();
 
 const CalendarProvider = props => {
   const [isDragLoading, setIsDragLoading] = useState(false);
-  const [ranks, setRanks] = useState(true);
   const [, setIsLoading] = useState(false);
   const [persons, setPersons] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -42,6 +43,7 @@ const CalendarProvider = props => {
   const [isHover, setIsHover] = useState(false);
   const [formIsOpening, setFormIsOpening] = useState(false);
   const [bookingId, setBookingId] = useState(null);
+  const [ranks] = useState({});
 
   const contentGlobal = () => content;
   const setContentGlobal = newContent => {
@@ -73,7 +75,6 @@ const CalendarProvider = props => {
     setIsHoverWorking,
     setAddBookingStatus,
   };
-
   const setBegin = () => {
     setIsHoverWorking(true);
   };
@@ -147,6 +148,7 @@ const CalendarProvider = props => {
   const updateOnDidDragBooking = async (booking, resourceId, newStartDay) => {
     setIsDragLoading(true);
     setBookingId(booking._id);
+    ranks[booking._id] = 0;
     const checkWeekend = isWeekend(booking.startDay, booking.endDay);
     const length = compareByDay(booking.endDay, booking.startDay) + 1;
     const startDayFormat = moment(newStartDay)
@@ -244,20 +246,46 @@ const CalendarProvider = props => {
     setBookings([...newBookings]);
     return newBookings;
   };
-  const getMarginTopBooking = schedule => {
+  const getMarginTopBooking = (schedule, isFirst) => {
     let numberBookingOverlap = 0;
-    bookings.forEach(booking => {
+    let beforeSchedule = null;
+
+    bookings.map(booking => {
       const isOverlapBookingStart =
         compareByDay(schedule.startDay, booking.startDay) > 0 &&
         compareByDay(schedule.startDay, booking.endDay) <= 0 &&
-        schedule.resourceId === booking.resourceId;
+        schedule.resourceId === booking.resourceId &&
+        booking._id !== schedule._id;
       if (isOverlapBookingStart) {
-        numberBookingOverlap += 1;
+        if (ranks[schedule._id] === ranks[booking._id]) {
+          ranks[schedule._id] += 1;
+          numberBookingOverlap += 1;
+        }
+
+        return booking;
+      }
+      if (
+        schedule.resourceId === booking.resourceId &&
+        compareByDay(schedule.startDay, booking.startDay) === 0 &&
+        booking._id !== schedule._id &&
+        ranks[schedule._id] > ranks[booking._id] &&
+        !isFirst
+      ) {
+        if (beforeSchedule === null) {
+          beforeSchedule = booking;
+        }
       }
     });
-    const marginTop = `${numberBookingOverlap * HEIGHT_BOOKING}px`;
+    const top =
+      beforeSchedule === null
+        ? ranks[schedule._id]
+        : ranks[schedule._id] - ranks[beforeSchedule._id] - 1;
+    console.log(top);
+    console.log(ranks);
+    const marginTop = `${top * HEIGHT_BOOKING}px`;
     return marginTop;
   };
+
   const getMaxTotalOverlapBooking = resourceId => {
     let maxNumberOfBookingOverlap = 0;
     bookings.forEach(val => {
@@ -280,20 +308,29 @@ const CalendarProvider = props => {
     });
     return maxNumberOfBookingOverlap;
   };
-  function getBookingWithResource(date, indexResource) {
-    const bookingsWithResource = bookings
-      .filter(booking => {
-        const isBookingBelongResource =
-          booking.startDay.isSame(date, 'day') &&
-          booking.resourceId === searchResult[indexResource]._id;
-        return isBookingBelongResource;
-      })
-      .sort(
-        // eslint-disable-next-line no-shadow
-        (first, second) => compareByDay(second.endDay, first.endDay),
-      );
-    return bookingsWithResource;
-  }
+  const getBookingWithResource = useCallback(
+    (date, indexResource) => {
+      const bookingsWithResource = bookings
+        .filter(booking => {
+          if (booking.resourceId !== searchResult[indexResource]._id) {
+            return false;
+          }
+          const isBookingBelongResource = booking.startDay.isSame(date, 'day');
+          const isBookingOutDuration =
+            compareByDay(date, booking.startDay) > 0 &&
+            compareByDay(date, startDay) === 0;
+          return isBookingBelongResource || isBookingOutDuration;
+        })
+        .sort((first, second) => compareByDay(second.endDay, first.endDay));
+      // Initial rank for booking
+      bookingsWithResource.map((booking, index) => {
+        ranks[booking._id] = index;
+        return booking;
+      });
+      return bookingsWithResource;
+    },
+    [bookings],
+  );
   useEffect(() => {
     fetchResource();
     return () => {};

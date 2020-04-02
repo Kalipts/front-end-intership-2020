@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -47,7 +47,6 @@ const AddBookingForm = props => {
     startDate,
     endDate,
   } = props.content;
-  console.log(props.content);
   const [startDay, setStartDay] = useState(moment());
   const [endDay, setEndDay] = useState(moment());
   const [details, setDetails] = useState('');
@@ -66,8 +65,8 @@ const AddBookingForm = props => {
       setProject(booking.project);
       setDetails(booking.details);
       setUtilize(booking.utilize);
-      setStartDay(moment(booking.startDay));
-      setEndDay(moment(booking.endDay));
+      setStartDay(moment(booking.startDay.toString()));
+      setEndDay(moment(booking.endDay.toString()));
       setIsModify(true);
       setDetails(booking.details);
     } else {

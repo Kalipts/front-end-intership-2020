@@ -13,7 +13,6 @@ const RenderRowsInCalendar = () => {
   const { getMaxTotalOverlapBooking, startDay, endDay } = calendarContext;
 
   const { cells } = useCellsInCalendar(startDay, endDay);
-
   const renderCells = cells.map((row, indexResource) => {
     const { contentResource, resource } = row;
     const days = renderCellsInCalendar(

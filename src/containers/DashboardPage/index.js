@@ -13,10 +13,7 @@ function DashboardPage() {
       <ToolbarCalendar />
       <DndProvider backend={Backend}>
         <CalendarProvider>
-          <TableCalendar
-            endDay={moment('2020-02-03', 'YYYY-MM-DD')}
-            startDay={moment('2019-12-30', 'YYYY-MM-DD')}
-          />
+          <TableCalendar />
         </CalendarProvider>
       </DndProvider>
     </div>

@@ -6,12 +6,12 @@ const ContainerResource = styled.div`
   overflow-x: scroll;
   direction: inherit;
   ::-webkit-scrollbar {
-    border-right: 1px solid ${props => props.theme.color.borderCellCalendar};
+    border-right: 0px solid ${props => props.theme.color.borderCellCalendar};
     width: 1px;
     background-color: transparent;
   }
   z-index: 3;
-  border-bottom: 1px solid ${props => props.theme.color.borderCellCalendar};
+  border-bottom: 0px solid ${props => props.theme.color.borderCellCalendar};
   height: 600px;
 `;
 export default ContainerResource;
