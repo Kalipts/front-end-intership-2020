@@ -67,8 +67,8 @@ const AddBookingForm = props => {
       setProject(booking.project);
       setDetails(booking.details);
       setUtilize(booking.utilize);
-      setStartDay(moment(booking.startDay));
-      setEndDay(moment(booking.endDay));
+      setStartDay(moment(booking.startDay.toString()));
+      setEndDay(moment(booking.endDay.toString()));
       setIsModify(true);
       setDetails(booking.details);
     } else {

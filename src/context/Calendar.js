@@ -8,6 +8,7 @@ import { getProject } from '../api/projectApi';
 import { getBooking, deleteBooking, updateBooking } from '../api/bookingApi';
 import { HEIGHT_BOOKING } from '../containers/App/constant';
 import { compareByDay, getNumberOfDay, isWeekend } from '../utils/Date';
+import { checkOvertimeNewBooking } from '../utils/Booking';
 
 const CalendarContext = createContext();
 
@@ -31,6 +32,10 @@ const CalendarProvider = props => {
     startDate: moment(),
     endDate: moment(),
   });
+  const [overTime, setOverTime] = useState({
+    isOver: false,
+    newBooking: {},
+  });
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(0);
   const [selecting, setSelecting] = useState(false);
@@ -41,6 +46,7 @@ const CalendarProvider = props => {
   const [isHover, setIsHover] = useState(false);
   const [formIsOpening, setFormIsOpening] = useState(false);
   const [bookingId, setBookingId] = useState(null);
+  const [ranks] = useState({});
 
   const contentGlobal = () => content;
   const setContentGlobal = newContent => {
@@ -72,7 +78,6 @@ const CalendarProvider = props => {
     setIsHoverWorking,
     setAddBookingStatus,
   };
-
   const setBegin = () => {
     setIsHoverWorking(true);
   };
@@ -126,8 +131,10 @@ const CalendarProvider = props => {
     setIsLoading(false);
   }, [startDay, endDay]);
   const removeBooking = async id => {
-    const newBookings = bookings.filter(booking => booking._id !== id);
+    setIsDragLoading(true);
     await deleteBooking(id);
+    setIsDragLoading(false);
+    const newBookings = bookings.filter(booking => booking._id !== id);
     setBookings([...newBookings]);
   };
 
@@ -143,6 +150,24 @@ const CalendarProvider = props => {
   const updateSearch = event => {
     setSearch(event.target.value.toLowerCase());
   };
+  const updateOnOvertime = async newBooking => {
+    setIsDragLoading(true);
+    try {
+      await updateBooking(newBooking);
+    } catch (err) {}
+    const indexBooking = bookings.findIndex(
+      booking => booking._id === newBooking._id,
+    );
+    setIsDragLoading(false);
+    bookings[indexBooking] = newBooking;
+    handleOnCloseAlert();
+  };
+  const handleOnCloseAlert = () => {
+    setIsDragLoading(true);
+    setOverTime({ newBooking: {}, isOver: false });
+    setBookings([...bookings]);
+    setIsDragLoading(false);
+  };
   const updateOnDidDragBooking = async (booking, resourceId, newStartDay) => {
     setIsDragLoading(true);
     setBookingId(booking._id);
@@ -151,10 +176,14 @@ const CalendarProvider = props => {
     const startDayFormat = moment(newStartDay)
       .format('ddd')
       .toString();
-    const newEndDay = moment(newStartDay).add(length - 1, 'days');
+    const newEndDay = moment(newStartDay)
+      .clone()
+      .add(length - 1, 'days');
     const endDayFormat = moment(newEndDay)
+      .clone()
       .format('ddd')
       .toString();
+
     let newBooking;
     const compareWeekend = startDayFormat === 'Sat' || startDayFormat === 'Sun';
     const compareEndDayWeekend =
@@ -168,6 +197,7 @@ const CalendarProvider = props => {
       };
       return newBooking;
     };
+
     if (length === 1 && compareWeekend) return;
     if (checkWeekend && (compareWeekend || compareEndDayWeekend)) {
       return;
@@ -222,8 +252,8 @@ const CalendarProvider = props => {
       newBooking = {
         ...booking,
         resourceId,
-        startDay: booking.startDay.add(distanceStartDay, 'days'),
-        endDay: booking.endDay.add(distanceStartDay, 'days'),
+        startDay: booking.startDay.clone().add(distanceStartDay, 'days'),
+        endDay: booking.endDay.clone().add(distanceStartDay, 'days'),
       };
     }
 
@@ -233,6 +263,13 @@ const CalendarProvider = props => {
       }
       return schedule;
     });
+
+    const isOvertime = await checkOvertimeNewBooking(newBooking, bookings);
+    if (isOvertime) {
+      setIsDragLoading(false);
+      setOverTime({ isOver: true, newBooking });
+      return;
+    }
     await updateBooking(newBooking)
       // eslint-disable-next-line no-unused-vars
       .then(response => {
@@ -241,7 +278,6 @@ const CalendarProvider = props => {
       .catch(error => console.log(error));
 
     setBookings([...newBookings]);
-    return newBookings;
   };
   const getMarginTopBooking = schedule => {
     let numberBookingOverlap = 0;
@@ -257,6 +293,7 @@ const CalendarProvider = props => {
     const marginTop = `${numberBookingOverlap * HEIGHT_BOOKING}px`;
     return marginTop;
   };
+
   const getMaxTotalOverlapBooking = resourceId => {
     let maxNumberOfBookingOverlap = 0;
     bookings.forEach(val => {
@@ -279,20 +316,30 @@ const CalendarProvider = props => {
     });
     return maxNumberOfBookingOverlap;
   };
-  function getBookingWithResource(date, indexResource) {
-    const bookingsWithResource = bookings
-      .filter(booking => {
-        const isBookingBelongResource =
-          booking.startDay.isSame(date, 'day') &&
-          booking.resourceId === searchResult[indexResource]._id;
-        return isBookingBelongResource;
-      })
-      .sort(
+  const getBookingWithResource = useCallback(
+    (date, indexResource) => {
+      const bookingsWithResource = bookings
+        .filter(booking => {
+          if (booking.resourceId !== searchResult[indexResource]._id) {
+            return false;
+          }
+          const isBookingBelongResource = booking.startDay.isSame(date, 'day');
+          const isBookingOutDuration =
+            compareByDay(date, booking.startDay) > 0 &&
+            compareByDay(date, startDay) === 0;
+          return isBookingBelongResource || isBookingOutDuration;
+        })
         // eslint-disable-next-line no-shadow
-        (first, second) => compareByDay(second.endDay, first.endDay),
-      );
-    return bookingsWithResource;
-  }
+        .sort((first, second) => compareByDay(second.endDay, first.endDay));
+      // Initial rank for booking
+      bookingsWithResource.map((booking, index) => {
+        ranks[booking._id] = index;
+        return booking;
+      });
+      return bookingsWithResource;
+    },
+    [bookings, searchResult, overTime.newBooking, overTime.isOver],
+  );
   useEffect(() => {
     fetchResource();
     return () => {};
@@ -363,6 +410,9 @@ const CalendarProvider = props => {
         isDragLoading,
         setIsDragLoading,
         bookingId,
+        overTime,
+        updateOnOvertime,
+        handleOnCloseAlert,
       }}
     >
       {props.children}

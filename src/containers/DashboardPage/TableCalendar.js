@@ -13,6 +13,7 @@ import './TableCalendar/Style/Hover.css';
 import BodyCalendar from './TableCalendar/Style/BodyCalendar';
 import AddBookingForm from '../../components/AddBookingForm';
 import RenderRowsInCalendar from './RowCalendar';
+import AlertDialog from '../../components/Diaglog/AlertDiaglog';
 
 function TableCalendar() {
   const [size] = useWindowSize();
@@ -24,6 +25,9 @@ function TableCalendar() {
     setStartDay,
     setEndDay,
     contentGlobal,
+    overTime,
+    updateOnOvertime,
+    handleOnCloseAlert,
   } = calendarContext;
   const ref = useRef({ current: { scrollTop: 0 } });
   const [scrollTop, setScrollTop] = useState(0);
@@ -37,6 +41,10 @@ function TableCalendar() {
       setStartDay(moment(startDay.toString()).add(-35, 'days'));
     }
     setScrollTop(ref.current.scrollTop);
+  };
+  const handleOnAgreeOvertime = async () => {
+    await updateOnOvertime(overTime.newBooking);
+    handleOnCloseAlert();
   };
   return (
     <Container height={size.height} width={size.width}>
@@ -56,6 +64,13 @@ function TableCalendar() {
         </BodyCalendar>
       </DateBooking>
       <AddBookingForm content={contentGlobal()} />
+      <AlertDialog
+        title="Overtime"
+        diaglog="Do you want to create overtime?"
+        open={overTime.isOver}
+        handleOnAccept={handleOnAgreeOvertime}
+        handleOnDisagree={handleOnCloseAlert}
+      />
     </Container>
   );
 }

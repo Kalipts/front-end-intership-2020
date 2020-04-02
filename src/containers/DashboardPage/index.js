@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
@@ -13,10 +12,7 @@ function DashboardPage() {
       <ToolbarCalendar />
       <DndProvider backend={Backend}>
         <CalendarProvider>
-          <TableCalendar
-            endDay={moment('2020-02-03', 'YYYY-MM-DD')}
-            startDay={moment('2019-12-30', 'YYYY-MM-DD')}
-          />
+          <TableCalendar />
         </CalendarProvider>
       </DndProvider>
     </div>

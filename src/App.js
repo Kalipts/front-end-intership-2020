@@ -1,6 +1,6 @@
 import './App.css';
 import './containers/Header/Header.css';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
@@ -25,6 +25,5 @@ function App() {
     </ThemeProvider>
   );
 }
-
 
 export default App;

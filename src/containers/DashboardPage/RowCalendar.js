@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import RowBookingView from './TableCalendar/Style/RowBookingView';
 import useCellsInCalendar from './TableCalendar/useCellsInCalendar';
 import { CalendarContext } from '../../context/Calendar';
@@ -13,7 +13,6 @@ const RenderRowsInCalendar = () => {
   const { getMaxTotalOverlapBooking, startDay, endDay } = calendarContext;
 
   const { cells } = useCellsInCalendar(startDay, endDay);
-
   const renderCells = cells.map((row, indexResource) => {
     const { contentResource, resource } = row;
     const days = renderCellsInCalendar(
