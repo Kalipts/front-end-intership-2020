@@ -6,7 +6,6 @@ import BookingCard from './Style/BookingCard';
 import BookingText from './Style/BookingContent';
 import BookingTime from './Style/BookingTime';
 import { CalendarContext } from '../../../context/Calendar';
-import { compareByDay } from '../../../utils/Date';
 import IconButton from '../../../components/shared/IconButton';
 
 import Close from './Style/Close';
@@ -22,7 +21,6 @@ export default function Booking({ booking, isFirst = false, onClick }) {
   const { startDay, endDay, utilize, project, _id } = booking;
   const { color, name } = project;
   const calendarContext = useContext(CalendarContext);
-  const { loading, setLoading } = useState(false);
   const {
     getMarginTopBooking,
     removeBooking,
@@ -44,7 +42,7 @@ export default function Booking({ booking, isFirst = false, onClick }) {
   const [isHover, setIsHover] = useState(false);
   const length = getLengthOfBooking(startDay, endDay, booking);
   const percentageHour = getHoursFromUtilize(startDay, endDay, utilize);
-  const top = getMarginTopBooking(booking, isFirst);
+  const top = isFirst ? getMarginTopBooking(booking) : 0;
   const handleClick = () => {
     removeBooking(_id);
   };

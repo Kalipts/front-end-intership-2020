@@ -1,11 +1,12 @@
 import moment from 'moment';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { CES_GREY_HOVER } from '../../constants/colorTypes';
 import { CalendarContext } from '../../context/Calendar';
 import { getNumberOfDay } from '../../utils/Date';
 import Booking from './TableCalendar/Booking';
 import DropTargetCell from './TableCalendar/DropTargetCell';
 const CellInCalendar = props => {
+  const [isDrop, setIsDrop] = useState(true);
   const calendarContext = useContext(CalendarContext);
   const {
     startDay,
@@ -71,6 +72,7 @@ const CellInCalendar = props => {
         isDuration
         isFirst={index === 0}
         booking={booking}
+        setIsDrop={setIsDrop}
       />
     ));
   }
@@ -147,7 +149,7 @@ const CellInCalendar = props => {
         resourceId={resource._id}
         date={dateInCell}
       >
-        {bookingDateWithResource}
+        {isDrop && bookingDateWithResource}
       </DropTargetCell>
     );
   });

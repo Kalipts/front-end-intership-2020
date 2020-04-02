@@ -25,9 +25,11 @@ export default function DropTargetCell(props) {
   const { startDay } = calendarContext;
 
   const ref = useRef(null);
+
   const checkDropInBooking = (coorDrop, coorPointerDrop) => {
     let distance =
       (coorDrop.x - coorPointerDrop.x) / WIDTH_CELL_IN_TABLE_CALENDAR;
+    // round distance
     distance = distance > 0 ? Math.floor(distance) : Math.ceil(distance);
     return distance !== 0;
   };
@@ -40,6 +42,7 @@ export default function DropTargetCell(props) {
     );
     const coorDrop = ref.current.getBoundingClientRect();
     const coorPointerDrop = monitor.getClientOffset();
+    // solve when drop in booking
     if (checkDropInBooking(coorDrop, coorPointerDrop)) {
       let distanceOfPointerAndDrop = Math.floor(
         (coorPointerDrop.x - coorDrop.x) / WIDTH_CELL_IN_TABLE_CALENDAR,
@@ -52,7 +55,8 @@ export default function DropTargetCell(props) {
   };
   const getDateDropForOverBooking = (dateDrop, booking) => {
     const distance = getNumberOfDay(startDay, dateDrop);
-    return booking.startDay.clone().add(distance, 'days');
+    const newDates = moment(booking.startDay.toString());
+    return newDates.add(distance, 'days');
   };
 
   const [, drop] = useDrop({
