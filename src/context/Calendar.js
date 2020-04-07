@@ -78,6 +78,7 @@ const CalendarProvider = props => {
     setIsHoverWorking,
     setAddBookingStatus,
   };
+
   const setBegin = () => {
     setIsHoverWorking(true);
   };
@@ -263,13 +264,6 @@ const CalendarProvider = props => {
       }
       return schedule;
     });
-
-    const isOvertime = await checkOvertimeNewBooking(newBooking, bookings);
-    if (isOvertime) {
-      setIsDragLoading(false);
-      setOverTime({ isOver: true, newBooking });
-      return;
-    }
     await updateBooking(newBooking)
       // eslint-disable-next-line no-unused-vars
       .then(response => {
@@ -278,6 +272,7 @@ const CalendarProvider = props => {
       .catch(error => console.log(error));
 
     setBookings([...newBookings]);
+    return newBookings;
   };
   const getMarginTopBooking = schedule => {
     let numberBookingOverlap = 0;

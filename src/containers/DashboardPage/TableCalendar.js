@@ -25,9 +25,6 @@ function TableCalendar() {
     setStartDay,
     setEndDay,
     contentGlobal,
-    overTime,
-    updateOnOvertime,
-    handleOnCloseAlert,
   } = calendarContext;
   const ref = useRef({ current: { scrollTop: 0 } });
   const [scrollTop, setScrollTop] = useState(0);
